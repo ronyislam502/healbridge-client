@@ -1,31 +1,31 @@
 "use client";
 
 import React from "react";
-import { Users, UserRound, Hospital, Award } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 
 const stats = [
   {
     label: "Happy Patients",
     value: "10K+",
-    icon: Users,
+    icon: Icons.users,
     color: "bg-blue-600",
   },
   {
     label: "Expert Doctors",
     value: "500+",
-    icon: UserRound,
+    icon: Icons.userCheck,
     color: "bg-teal-500",
   },
   {
     label: "Medical Clinics",
     value: "100+",
-    icon: Hospital,
+    icon: Icons.hospital,
     color: "bg-orange-500",
   },
   {
     label: "Awards Won",
     value: "25+",
-    icon: Award,
+    icon: Icons.award,
     color: "bg-purple-600",
   },
 ];

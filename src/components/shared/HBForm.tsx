@@ -1,45 +1,62 @@
 "use client";
 
-import React from "react";
-import {
-  useForm,
-  UseFormReturn,
-  SubmitHandler,
-  DefaultValues,
-  FieldValues,
+import React, { ReactNode } from "react";
+import { 
+  FormProvider, 
+  FieldValues, 
+  SubmitHandler, 
+  useForm, 
+  UseFormProps,
+  UseFormReturn
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodSchema } from "zod";
 import { cn } from "@/lib/utils";
 
-interface HBFormProps<T extends FieldValues> {
-  schema: ZodSchema<T>;
-  onSubmit: SubmitHandler<T>;
-  defaultValues?: DefaultValues<T>;
-  children: (form: UseFormReturn<T>) => React.ReactNode;
+interface FormConfig {
+  defaultValues?: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resolver?: any;
+}
+
+interface HBFormProps extends FormConfig {
+  children: ReactNode;
+  onSubmit: SubmitHandler<FieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  methods?: any;
   className?: string;
 }
 
-const HBForm = <T extends FieldValues,>({
+const HBForm = ({ 
+  children, 
+  onSubmit, 
+  defaultValues, 
+  resolver, 
+  methods: externalMethods,
+  className
+}: HBFormProps) => {
+  const formConfig: UseFormProps = {};
 
-  schema,
-  onSubmit,
-  defaultValues,
-  children,
-  className,
-}: HBFormProps<T>) => {
-  const form = useForm<T>({
-    resolver: zodResolver(schema),
-    defaultValues,
-  });
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
+
+  const internalMethods = useForm(formConfig);
+  const methods = externalMethods || internalMethods;
+
+  const submitHandler = methods.handleSubmit;
 
   return (
-    <form 
-      onSubmit={form.handleSubmit(onSubmit)} 
-      className={cn("space-y-4", className)}
-    >
-      {children(form)}
-    </form>
+    <FormProvider {...methods}>
+      <form 
+        onSubmit={submitHandler(onSubmit)} 
+        className={cn("space-y-4", className)}
+      >
+        {children}
+      </form>
+    </FormProvider>
   );
 };
 

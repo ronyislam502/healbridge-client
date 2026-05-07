@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Heart, Activity, Brain, Baby, Microscope, Pill } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
 import {
   Carousel,
@@ -15,59 +15,131 @@ const specialties = [
   {
     title: "Cardiology",
     doctors: "254 Doctors",
-    image: "/spec-1.png",
-    icon: Heart,
+    image: "/specialties/cardiology.png",
+    icon: Icons.heart,
     color: "text-red-500",
   },
   {
     title: "Orthopedics",
     doctors: "151 Doctors",
-    image: "/spec-2.png",
-    icon: Activity,
+    image: "/specialties/orthopedics.png",
+    icon: Icons.bone,
     color: "text-blue-500",
   },
   {
     title: "Neurology",
     doctors: "176 Doctors",
-    image: "/spec-3.png",
-    icon: Brain,
+    image: "/specialties/neurology.png",
+    icon: Icons.brain,
     color: "text-purple-500",
   },
   {
     title: "Pediatrics",
     doctors: "124 Doctors",
-    image: "/spec-4.png",
-    icon: Baby,
+    image: "/specialties/pediatrics.png",
+    icon: Icons.baby,
     color: "text-yellow-500",
+  },
+  {
+    title: "Dentistry",
+    doctors: "135 Doctors",
+    image: "/specialties/dentistry.png",
+    icon: Icons.tooth,
+    color: "text-teal-500",
+  },
+  {
+    title: "Ophthalmology",
+    doctors: "89 Doctors",
+    image: "/specialties/ophthalmology.png",
+    icon: Icons.eye,
+    color: "text-indigo-500",
   },
   {
     title: "Psychiatry",
     doctors: "112 Doctors",
-    image: "/spec-1.png",
-    icon: Microscope,
+    image: "/specialties/psychiatry.png",
+    icon: Icons.userCheck,
     color: "text-green-500",
+  },
+  {
+    title: "Pulmonology",
+    doctors: "92 Doctors",
+    image: "/specialties/pulmonology.png",
+    icon: Icons.lungs,
+    color: "text-cyan-500",
+  },
+  {
+    title: "Oncology",
+    doctors: "78 Doctors",
+    image: "/specialties/oncology.png",
+    icon: Icons.dna,
+    color: "text-rose-500",
   },
   {
     title: "Endocrinology",
     doctors: "104 Doctors",
-    image: "/spec-2.png",
-    icon: Pill,
+    image: "/specialties/endocrinology.png",
+    icon: Icons.pill,
     color: "text-pink-500",
+  },
+  {
+    title: "General Surgery",
+    doctors: "142 Doctors",
+    image: "/specialties/general_surgery.png",
+    icon: Icons.stethoscope,
+    color: "text-slate-600",
+  },
+  {
+    title: "Urology",
+    doctors: "67 Doctors",
+    image: "/specialties/urology.png",
+    icon: Icons.activity,
+    color: "text-blue-600",
   },
   {
     title: "Gastroenterology",
     doctors: "98 Doctors",
-    image: "/spec-3.png",
-    icon: Activity,
+    image: "/specialties/gastroenterology.png",
+    icon: Icons.activity,
     color: "text-orange-500",
   },
   {
     title: "Dermatology",
     doctors: "87 Doctors",
-    image: "/spec-4.png",
-    icon: Heart,
+    image: "/specialties/dermatology.png",
+    icon: Icons.heart,
     color: "text-teal-500",
   },
+  {
+    title: "Radiology",
+    doctors: "110 Doctors",
+    image: "/specialties/radiology.png",
+    icon: Icons.microscope,
+    color: "text-slate-500",
+  },
+  {
+    title: "Hematology",
+    doctors: "56 Doctors",
+    image: "/specialties/hematology.png",
+    icon: Icons.heartPulse,
+    color: "text-red-600",
+  },
+  {
+    title: "Nephrology",
+    doctors: "64 Doctors",
+    image: "https://images.unsplash.com/photo-1559839734-2b71f1536783?q=80&w=2070&auto=format&fit=crop", 
+    icon: Icons.microscope,
+    color: "text-blue-400",
+  },
+
+  {
+    title: "Gynecology",
+    doctors: "128 Doctors",
+    image: "https://images.unsplash.com/photo-1579152276502-542301b70461?q=80&w=2070&auto=format&fit=crop", 
+    icon: Icons.userPlus,
+    color: "text-pink-600",
+  },
+
 ];
 
 const Specialties = () => {

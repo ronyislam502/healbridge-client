@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Star, Quote } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 import Image from "next/image";
 
 const testimonials = [
@@ -44,7 +44,7 @@ const AboutTestimonials = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, idx) => (
             <div key={idx} className="bg-gray-50 p-10 rounded-[2.5rem] relative group hover:bg-blue-600 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-200">
-              <Quote className="absolute top-8 right-8 w-12 h-12 text-blue-100 group-hover:text-blue-400/30 transition-colors" />
+              <Icons.quote className="absolute top-8 right-8 w-12 h-12 text-blue-100 group-hover:text-blue-400/30 transition-colors" />
               
               <div className="flex items-center gap-4 mb-8">
                 <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-4 border-white shadow-md">
@@ -58,12 +58,12 @@ const AboutTestimonials = () => {
 
               <div className="flex gap-1 mb-6">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-4 h-4 ${i < t.rating ? "text-orange-400 fill-current" : "text-gray-300"}`} />
+                  <Icons.star key={i} className={`w-4 h-4 ${i < t.rating ? "text-orange-400 fill-current" : "text-gray-300"}`} />
                 ))}
               </div>
 
               <p className="text-gray-600 leading-relaxed group-hover:text-white transition-colors text-lg italic">
-                "{t.content}"
+                &quot;{t.content}&quot;
               </p>
             </div>
           ))}

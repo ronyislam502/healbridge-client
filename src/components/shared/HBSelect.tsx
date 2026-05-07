@@ -1,4 +1,7 @@
+'use client';
+
 import * as React from "react";
+import { useFormContext, Controller } from "react-hook-form";
 import { 
   Select, 
   SelectContent, 
@@ -6,86 +9,88 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import { IInput } from "@/types/global";
 import { cn } from "@/lib/utils";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 
-interface HBSelectProps {
-  label?: string;
+interface HBSelectProps extends IInput {
+  options: {
+    key: string;
+    label: string;
+  }[];
   labelRight?: React.ReactNode;
-  placeholder?: string;
-  options?: { value: string; label: string }[];
-  error?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  defaultValue?: string;
-  className?: string;
   containerClassName?: string;
-  disabled?: boolean;
+  className?: string;
 }
 
 const HBSelect = ({
+  name,
   label,
-  labelRight,
   placeholder,
   options = [],
-  error,
-  value,
-  onValueChange,
-  defaultValue,
-  className,
-  containerClassName,
   disabled,
+  labelRight,
+  containerClassName,
+  className,
 }: HBSelectProps) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const error = errors[name];
+
   return (
-    <div className={cn("space-y-2 w-full", containerClassName)}>
-      {(label || labelRight) && (
-        <div className="flex items-center justify-between">
-          {label && (
-            <Label 
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <Field className={cn("w-full", containerClassName)} data-invalid={!!error}>
+          {(label || labelRight) && (
+            <div className="flex items-center justify-between mb-1">
+              {label && (
+                <FieldLabel className="text-[10px] font-black text-success uppercase tracking-widest italic">
+                  {label}
+                </FieldLabel>
+              )}
+              {labelRight}
+            </div>
+          )}
+          
+          <Select 
+            value={field.value} 
+            onValueChange={field.onChange} 
+            disabled={disabled}
+          >
+            <SelectTrigger 
               className={cn(
-                "text-sm font-medium transition-colors",
-                error ? "text-destructive" : "text-slate-700 dark:text-slate-300"
+                "w-full bg-success/5 border border-success/30 rounded-2xl py-6 px-6 transition-all duration-300 outline-none",
+                "text-slate-900 dark:text-white font-bold placeholder:text-gray-500",
+                "hover:border-teal-500/40 hover:bg-teal-500/5",
+                "focus:ring-0 focus:ring-offset-0 focus:border-teal-500/60 focus:bg-teal-500/8",
+                error && "border-error focus:border-error",
+                className
               )}
             >
-              {label}
-            </Label>
-          )}
-          {labelRight}
-        </div>
-      )}
-      
-      <Select 
-        value={value} 
-        onValueChange={onValueChange} 
-        defaultValue={defaultValue}
-        disabled={disabled}
-      >
-        <SelectTrigger 
-          className={cn(
-            "w-full transition-all duration-200",
-            "focus:ring-teal-500",
-            error && "border-destructive focus:ring-destructive",
-            "bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm",
-            className
-          )}
-        >
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+              <SelectValue placeholder={placeholder || `Select ${label}`} />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-slate-800 text-white">
+              {options.map((option) => (
+                <SelectItem 
+                  key={option.key} 
+                  value={option.key}
+                  className="focus:bg-teal-600 focus:text-white cursor-pointer"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      {error && (
-        <p className="text-xs font-medium text-destructive animate-in fade-in slide-in-from-top-1">
-          {error}
-        </p>
+          <FieldError className="text-error text-[10px] font-bold mt-2 uppercase tracking-wide animate-in fade-in slide-in-from-top-1" errors={[error as any]} />
+        </Field>
       )}
-    </div>
+    />
   );
 };
 

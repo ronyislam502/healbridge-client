@@ -39,7 +39,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-success: var(--success);
+  --color-error: var(--error);
   --radius-sm: calc(var(--radius) * 0.6);
+
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
@@ -81,7 +84,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --success: oklch(0.627 0.194 149.214); /* Teal-ish success */
+  --error: oklch(0.577 0.245 27.325); /* Red-ish error */
 }
+
 
 .dark {
   --background: oklch(0.145 0 0);
@@ -115,7 +121,10 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --success: oklch(0.7 0.194 149.214);
+  --error: oklch(0.704 0.191 22.216);
 }
+
 
 @layer base {
   * {

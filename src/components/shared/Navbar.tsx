@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
-import { Menu, Phone } from 'lucide-react';
+import { Icons } from '@/components/shared/Icons';
 import { useState, useEffect } from 'react';
 
 const Navbar = () => {
@@ -27,11 +27,13 @@ const Navbar = () => {
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Doctors", href: "/doctors" },
-  { label: "Patients", href: "/patients" },
   { label: "Pharmacy", href: "/pharmacy" },
-  { label: "Pages", href: "/pages" },
+  { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
-  { label: "Admin", href: "/about" },
+  { label: "About", href: "/about" },
+  { label: "Admin", href: "/admin" },
+  { label: "Patient", href: "/patient" },
+  { label: "Doctor", href: "/doctor" },
 ];
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
@@ -67,7 +69,7 @@ const navItems = [
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700 mr-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                <Phone className="h-5 w-5" />
+                <Icons.phone className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-gray-500">Contact Us</span>
@@ -88,7 +90,7 @@ const navItems = [
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden">
-                  <Menu className="h-6 w-6" />
+                  <Icons.menu className="h-6 w-6" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>

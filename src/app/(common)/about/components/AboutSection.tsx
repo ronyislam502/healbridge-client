@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Phone, CheckCircle2 } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 
 const AboutSection = () => {
   return (
@@ -75,7 +75,7 @@ const AboutSection = () => {
                 "Personalized Care Plans"
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
+                  <Icons.checkCircle className="w-6 h-6 text-blue-600 shrink-0" />
                   <span className="font-semibold text-gray-900">{item}</span>
                 </div>
               ))}
@@ -84,7 +84,7 @@ const AboutSection = () => {
             <div className="pt-8 border-t flex flex-col sm:flex-row items-center gap-8">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200">
-                  <Phone className="w-6 h-6" />
+                  <Icons.phone className="w-6 h-6" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">Need Emergency?</p>

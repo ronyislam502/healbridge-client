@@ -1,28 +1,28 @@
 "use client";
 
 import React from "react";
-import { MessageSquare, Heart, Clock } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
 
 const reasons = [
   {
     title: "Follow-Up Care",
     description: "We ensure continuity of care through regular follow-ups and communication, helping you stay on track with health goals.",
-    icon: MessageSquare,
+    icon: Icons.messageSquare,
     color: "text-orange-500",
     bg: "bg-orange-50",
   },
   {
     title: "Patient-Centered",
     description: "We prioritize your comfort and preferences, tailoring our services to meet your individual needs and Care from Our Experts.",
-    icon: Heart,
+    icon: Icons.heart,
     color: "text-blue-500",
     bg: "bg-blue-50",
   },
   {
     title: "Convenient Access",
     description: "Easily book appointments online or through our dedicated customer service team, with flexible hours to fit your schedule.",
-    icon: Clock,
+    icon: Icons.clock,
     color: "text-teal-500",
     bg: "bg-teal-50",
   },

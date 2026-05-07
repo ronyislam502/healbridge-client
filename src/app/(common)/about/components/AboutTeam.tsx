@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Share2, Mail, Globe } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 
 const team = [
   {
@@ -57,13 +57,13 @@ const AboutTeam = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-6">
                   <div className="flex gap-4">
                     <button className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
-                      <Share2 className="w-5 h-5" />
+                      <Icons.share2 className="w-5 h-5" />
                     </button>
                     <button className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-blue-400 transition-colors">
-                      <Mail className="w-5 h-5" />
+                      <Icons.mail className="w-5 h-5" />
                     </button>
                     <button className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition-colors">
-                      <Globe className="w-5 h-5" />
+                      <Icons.globe className="w-5 h-5" />
                     </button>
                   </div>
                 </div>

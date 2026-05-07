@@ -1,34 +1,34 @@
 "use client";
 
 import React from "react";
-import { Search, UserCheck, CalendarDays, HeartPulse } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 
 const steps = [
   {
     title: "Search Doctor",
     description: "Search for doctors based on specialty, location, or availability.",
-    icon: Search,
+    icon: Icons.search,
     color: "text-blue-600",
     bg: "bg-blue-50",
   },
   {
     title: "View Profile",
     description: "Read doctor profiles, ratings, and feedback from other patients.",
-    icon: UserCheck,
+    icon: Icons.userCheck,
     color: "text-teal-600",
     bg: "bg-teal-50",
   },
   {
     title: "Book Appointment",
     description: "Select a convenient time slot and book your appointment instantly.",
-    icon: CalendarDays,
+    icon: Icons.calendar,
     color: "text-orange-600",
     bg: "bg-orange-50",
   },
   {
     title: "Get Treatment",
     description: "Visit the clinic or have a virtual consultation with your doctor.",
-    icon: HeartPulse,
+    icon: Icons.heartPulse,
     color: "text-purple-600",
     bg: "bg-purple-50",
   },
