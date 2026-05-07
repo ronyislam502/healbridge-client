@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Image from 'next/image';
-import { LoginForm } from '@/components/auth/login-form';
+import { RecoverForm } from '@/components/auth/recover-form';
 
 export const metadata = {
-  title: 'Login | HealBridge',
-  description: 'Access your HealBridge healthcare account.',
+  title: 'Recover Password | HealBridge',
+  description: 'Recover your HealBridge healthcare account password.',
 };
 
-const LoginPage = () => {
+const RecoverPage = () => {
   return (
     <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Background Image with Overlay */}
@@ -35,7 +35,7 @@ const LoginPage = () => {
           <span className="text-2xl font-bold tracking-tight text-white">HealBridge</span>
         </div>
         
-        <LoginForm />
+        <RecoverForm />
 
         <div className="mt-8 text-center text-sm text-slate-400">
           &copy; {new Date().getFullYear()} HealBridge Inc. All rights reserved.
@@ -49,4 +49,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RecoverPage;
