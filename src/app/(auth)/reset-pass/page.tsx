@@ -5,7 +5,7 @@ import { ResetPasswordForm } from '@/components/auth/reset-password-form';
 const ResetPassword = () => {
     
     return (
-        <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
+        <main className="relative h-full w-full flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image

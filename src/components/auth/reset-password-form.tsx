@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "@/lib/validations/auth";
+import Image from "next/image";
 
 const ResetPasswordForm = () => {
   const router = useRouter();
@@ -34,9 +35,13 @@ const ResetPasswordForm = () => {
   return (
     <div className="w-full max-w-md space-y-8 p-10 bg-slate-900/60 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-2xl relative z-10">
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-teal-500/10 border border-teal-500/20 mb-4 animate-bounce-slow">
-          <Icons.lock className="w-10 h-10 text-teal-400" />
-        </div>
+        <Image 
+            src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+            alt='HealBridge logo' 
+            width={150} 
+            height={120} 
+            className="mx-auto h-auto w-auto rounded-lg mb-4"
+         />
         <h1 className="text-4xl font-black text-white tracking-tight italic">
           Set New <span className="text-teal-400">Password</span>
         </h1>

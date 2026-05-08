@@ -10,27 +10,42 @@ import { HBForm } from '@/components/shared/HBForm';
 import { recoverSchema } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import Image from 'next/image';
+import { FieldValues } from 'react-hook-form';
+import { useForgotPasswordMutation } from '@/redux/features/auth/authApi';
+import { TError } from '@/types/global';
 
 export const RecoverForm = () => {
-  const [isPending, setIsPending] = React.useState(false);
+    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
-  const onSubmit = async (data: any) => {
-    setIsPending(true);
-    console.log('Recovery attempt for:', data.email);
+  const onSubmit = async (data: FieldValues) => {
+    console.log("data", data)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.success('Recovery link sent! Please check your email.');
-    } finally {
-      setIsPending(false);
+      const forgotData = {
+        email: data?.email,
+      };
+      const res = await forgotPassword(forgotData).unwrap();
+
+      if (res?.success) {
+        toast.success(res?.message);
+        // router.push("/reset-pass");
+      }
+    } catch (error) {
+      const err = error as TError;
+      toast.error(err?.data?.message);
     }
   };
 
   return (
     <Card className="w-full max-w-md border-none bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-900/80">
       <CardHeader className="space-y-1 text-center pt-8">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-900">
-          <Icons.lock className="h-6 w-6 text-teal-600 dark:text-teal-400" />
-        </div>
+        <Image 
+            src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+            alt='HealBridge logo' 
+            width={150} 
+            height={120} 
+            className="mx-auto h-auto w-auto rounded-lg mb-4"
+            />
         <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
           Reset Password
         </CardTitle>
@@ -58,14 +73,15 @@ export const RecoverForm = () => {
           <Button
             type="submit"
             className="w-full bg-teal-600 hover:bg-teal-700 text-white transition-all duration-200"
-            disabled={isPending}
+            disabled={isLoading}
           >
-            {isPending ? (
+            {isLoading ? (
               <>
                 <Icons.loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Sending Link...
               </>
             ) : (
+
               'Send Reset Link'
             )}
           </Button>

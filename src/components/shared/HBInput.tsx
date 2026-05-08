@@ -8,10 +8,12 @@ import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 
 interface HBInputProps extends IInput {
   icon?: React.ReactNode;
+  suffix?: React.ReactNode;
   labelRight?: React.ReactNode;
   containerClassName?: string;
   className?: string;
 }
+
 
 const HBInput = ({
   name,
@@ -20,10 +22,12 @@ const HBInput = ({
   placeholder = "",
   disabled,
   icon,
+  suffix,
   labelRight,
   containerClassName,
   className,
 }: HBInputProps) => {
+
   const {
     control,
     formState: { errors },
@@ -69,12 +73,18 @@ const HBInput = ({
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
                 "focus:border-teal-500/60 focus:bg-teal-500/8",
                 icon ? "pl-12" : "px-6",
-                "pr-6",
+                suffix ? "pr-12" : "pr-6",
                 error && "border-error focus:border-error",
                 className
               )}
             />
+            {suffix && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                {suffix}
+              </div>
+            )}
           </div>
+
           <FieldError className="text-error text-[10px] font-bold mt-2 uppercase tracking-wide animate-in fade-in slide-in-from-top-1" errors={[error as any]} />
         </Field>
       )}

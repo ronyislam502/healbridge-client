@@ -1,12 +1,10 @@
+'use client';
+
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-
-export const metadata = {
-  title: 'Specialty Management | HealBridge',
-  description: 'Add, edit, or remove medical specialties from the platform.',
-};
+import { SpecialtyModal } from '@/components/dashboard/SpecialtyModal';
 
 const specialtiesData = [
   { id: 1, title: "Cardiology", doctors: 254, icon: Icons.heart, image: "/specialties/cardiology.png", status: "Active" },
@@ -28,10 +26,15 @@ const SpecialtyManagement = () => {
           </h2>
           <p className="text-slate-500 dark:text-slate-400 font-medium">Manage medical categories and their associated doctor counts.</p>
         </div>
-        <Button className="h-14 px-8 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex items-center gap-3">
-          <Icons.userPlus className="w-5 h-5" />
-          Add New Specialty
-        </Button>
+        <SpecialtyModal 
+          mode="add"
+          trigger={
+            <Button className="h-14 px-8 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex items-center gap-3">
+              <Icons.userPlus className="w-5 h-5" />
+              Add New Specialty
+            </Button>
+          }
+        />
       </div>
 
       {/* Specialties Table */}
@@ -100,9 +103,15 @@ const SpecialtyManagement = () => {
                   </td>
                   <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-right">
                     <div className="flex items-center justify-end gap-3">
-                      <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 hover:bg-teal-500/10 transition-all">
-                        <Icons.activity className="w-4 h-4" />
-                      </button>
+                      <SpecialtyModal 
+                        mode="update"
+                        defaultValues={{ title: spec.title, image: spec.image }}
+                        trigger={
+                          <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 hover:bg-teal-500/10 transition-all">
+                            <Icons.activity className="w-4 h-4" />
+                          </button>
+                        }
+                      />
                       <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 hover:bg-red-500/10 transition-all">
                         <Icons.share2 className="w-4 h-4" />
                       </button>
@@ -112,43 +121,6 @@ const SpecialtyManagement = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Specialty Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
-           <div className="relative z-10">
-             <p className="text-[10px] font-black text-teal-400 uppercase tracking-widest mb-2 italic">Global Reach</p>
-             <h4 className="text-2xl font-black italic mb-1">Most Requested</h4>
-             <p className="text-slate-400 font-medium text-sm mb-6">Cardiology remains the top specialty.</p>
-             <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-               <div className="w-3/4 h-full bg-teal-500" />
-             </div>
-           </div>
-           <Icons.heart className="absolute -bottom-8 -right-8 w-32 h-32 text-white/5 rotate-12" />
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-xl">
-           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Resource Count</p>
-           <h4 className="text-2xl font-black italic text-slate-900 dark:text-white mb-1">18 Unique Categories</h4>
-           <p className="text-slate-500 font-medium text-sm">Covering all major medical fields.</p>
-           <div className="flex gap-2 mt-6">
-             {[1, 2, 3, 4, 5].map((i) => (
-               <div key={i} className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
-             ))}
-           </div>
-        </div>
-
-        <div className="bg-teal-500 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
-           <div className="relative z-10">
-             <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 italic">Action Required</p>
-             <h4 className="text-2xl font-black italic mb-4">Verification Pending</h4>
-             <button className="px-6 py-2.5 bg-white text-teal-600 rounded-xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform">
-               Review Submissions
-             </button>
-           </div>
-           <Icons.shieldCheck className="absolute -bottom-8 -right-8 w-32 h-32 text-white/10 -rotate-12" />
         </div>
       </div>
     </div>

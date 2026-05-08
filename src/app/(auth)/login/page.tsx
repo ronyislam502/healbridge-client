@@ -9,7 +9,7 @@ export const metadata = {
 
 const LoginPage = () => {
   return (
-    <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
+    <main className="relative h-full w-full flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -28,13 +28,6 @@ const LoginPage = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full px-4 py-12 flex flex-col items-center">
-        <div className="mb-8 flex items-center gap-2">
-          <div className="h-10 w-10 rounded-xl bg-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
-            <span className="text-white font-bold text-xl">H</span>
-          </div>
-          <span className="text-2xl font-bold tracking-tight text-white">HealBridge</span>
-        </div>
-        
         <LoginForm />
 
         <div className="mt-8 text-center text-sm text-slate-400">

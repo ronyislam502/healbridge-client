@@ -3,13 +3,24 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar";
 
 const menuItems = [
   { label: 'Dashboard', href: '/admin', icon: Icons.activity },
   { label: 'Appointments', href: '/admin/appointments', icon: Icons.calendar },
+  { label: 'Schedules', href: '/admin/schedules', icon: Icons.calendarClock },
   { label: 'Doctors', href: '/admin/doctors', icon: Icons.userCheck },
   { label: 'Patients', href: '/admin/patients', icon: Icons.users },
   { label: 'Specialties', href: '/admin/specialties', icon: Icons.microscope },
@@ -21,61 +32,66 @@ const DashboardSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-80 h-screen bg-slate-900 border-r border-slate-800 flex flex-col sticky top-0">
+    <Sidebar collapsible="icon" className="border-slate-800">
       {/* Brand Logo */}
-      <div className="p-8">
+      <SidebarHeader className="p-6 bg-slate-900">
         <Link href="/" className="flex items-center gap-3 group">
-          <Image 
-            src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-            alt='HealBridge logo' 
-            width={150} 
-            height={120} 
-            className="h-auto w-auto rounded-lg"
-            />
+             <Image 
+               src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+               alt='HealBridge logo' 
+               width={150} 
+               height={120} 
+               className="h-auto w-auto rounded-lg group-data-[collapsible=icon]:hidden"
+             />
         </Link>
-      </div>
+      </SidebarHeader>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-4 space-y-2 mt-4">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-4 px-6 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 group",
-                isActive
-                  ? "bg-teal-500 text-white shadow-xl shadow-teal-500/10"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
-              )}
-            >
-              <item.icon className={cn(
-                "w-5 h-5 transition-transform group-hover:scale-110",
-                isActive ? "text-white" : "text-slate-500"
-              )} />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
+      <SidebarContent className="px-4 bg-slate-900">
+
+        <SidebarMenu className="gap-2">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <SidebarMenuItem key={item.label}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  className={cn(
+                    "h-14 px-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all duration-300 group",
+                    isActive
+                      ? "bg-teal-500 text-white shadow-xl shadow-teal-500/10 hover:bg-teal-600 hover:text-white"
+                      : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                  )}
+                >
+                  <Link href={item.href}>
+                    <item.icon className={cn(
+                      "w-5 h-5 transition-transform group-hover:scale-110",
+                      isActive ? "text-white" : "text-slate-500"
+                    )} />
+                    <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarContent>
 
       {/* Bottom Profile / Logout */}
-      <div className="p-6 border-t border-slate-800">
-        <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50">
-          <div className="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center">
-            <Icons.userCheck className="w-6 h-6 text-teal-400" />
+      <SidebarFooter className="p-6 border-t border-slate-800 bg-slate-900">
+        <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:bg-transparent">
+          <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center flex-shrink-0">
+            <Icons.userCheck className="w-5 h-5 text-teal-400" />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
             <p className="text-sm font-black text-white truncate italic">Admin User</p>
             <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">System Admin</p>
           </div>
-          <button className="text-slate-500 hover:text-red-400 transition-colors">
-             <Icons.share2 className="w-5 h-5 rotate-90" />
-          </button>
         </div>
-      </div>
-    </aside>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
   );
 };
 

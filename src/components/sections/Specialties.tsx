@@ -127,7 +127,7 @@ const specialties = [
   {
     title: "Nephrology",
     doctors: "64 Doctors",
-    image: "https://images.unsplash.com/photo-1559839734-2b71f1536783?q=80&w=2070&auto=format&fit=crop", 
+    image: "/specialties/nephrology.png",
     icon: Icons.microscope,
     color: "text-blue-400",
   },
@@ -135,7 +135,7 @@ const specialties = [
   {
     title: "Gynecology",
     doctors: "128 Doctors",
-    image: "https://images.unsplash.com/photo-1579152276502-542301b70461?q=80&w=2070&auto=format&fit=crop", 
+    image: "/specialties/gynecology.png",
     icon: Icons.userPlus,
     color: "text-pink-600",
   },
@@ -174,7 +174,8 @@ const Specialties = () => {
                       <Image
                         src={item.image}
                         alt={item.title}
-                        fill
+                        width={500}
+                        height={500}
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
