@@ -1,34 +1,67 @@
 'use client';
 
-import * as React from "react";
+
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { HBForm } from "@/components/shared/HBForm";
 import { HBInput } from "@/components/shared/HBInput";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "@/lib/validations/auth";
 import Image from "next/image";
+import { setToken } from "@/redux/features/auth/authSlice";
+import { TError } from "@/types/global";
+import { useDispatch } from "react-redux";
+import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
+import { useEffect } from "react";
 
 const ResetPasswordForm = () => {
+    const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
   const router = useRouter();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  // console.log("searc", { email, token });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(setToken(token));
+    }
+  }, [token, dispatch]);
+
+  useEffect(() => {
+    if (!token) return;
+    localStorage.setItem("accessToken", token);
+  }, [token]);
+
+  const onSubmit = async (data: FieldValues) => {
+    if (!email || !token) {
+      toast.error("Invalid reset link. Please request a new one.");
+      return;
+    }
+
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Reset Password Data:", data);
-      toast.success("Password reset successful!");
-      router.push("/login");
+      const resetData = {
+        email,
+        newPassword: data.password,
+      };
+
+      const res = await resetPassword(resetData).unwrap();
+
+
+      if (res?.success) {
+        toast.success(res?.message || "Password reset successfully!");
+        dispatch(setToken(null));
+        router.push("/login");
+      }
     } catch (error) {
-      toast.error("Failed to reset password. Please try again.");
-    } finally {
-      setIsLoading(false);
+      const err = error as TError;
+      toast.error(err?.data?.message || "Failed to reset password");
     }
   };
 

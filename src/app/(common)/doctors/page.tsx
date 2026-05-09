@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { DoctorListing } from '@/components/sections/DoctorListing';
+import { DoctorListing } from '@/components/pages/doctors/DoctorListing';
 
 export const metadata = {
   title: 'Search Doctors | HealBridge',
   description: 'Find and book top-rated specialists near you with HealBridge.',
 };
 
-const DoctorsPage = () => {
+const Doctors = () => {
   return (
-    <main className="min-h-screen bg-white dark:bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Page Header */}
       <section className="relative py-20 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -31,8 +31,8 @@ const DoctorsPage = () => {
 
       {/* Main Content */}
       <DoctorListing />
-    </main>
+    </div>
   );
 };
 
-export default DoctorsPage;
+export default Doctors;

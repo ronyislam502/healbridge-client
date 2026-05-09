@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ResetPasswordForm } from '@/components/auth/reset-password-form';
+import { ResetPasswordForm } from '@/components/pages/auth/reset-password-form';
 
 
 const ResetPassword = () => {

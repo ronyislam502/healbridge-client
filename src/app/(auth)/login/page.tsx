@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Image from 'next/image';
-import { LoginForm } from '@/components/auth/login-form';
+import { LoginForm } from '@/components/pages/auth/login-form';
 
 export const metadata = {
   title: 'Login | HealBridge',

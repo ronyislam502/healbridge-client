@@ -22,7 +22,7 @@ import storage from "./storage";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "cart"],
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({

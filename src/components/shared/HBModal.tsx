@@ -36,9 +36,10 @@ const HBModal = ({
         {trigger}
       </DialogTrigger>
       <DialogContent className={cn(
-        "sm:max-w-[500px] bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-[2.5rem] p-0 overflow-hidden shadow-2xl",
+        "sm:max-w-[600px] bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-[2.5rem] p-0 overflow-hidden shadow-2xl flex flex-col",
         className
       )}>
+
         <div className="bg-slate-900 p-8 border-b border-slate-800">
            <DialogHeader>
              <DialogTitle className="text-2xl font-black text-white italic uppercase tracking-wider">
@@ -52,9 +53,10 @@ const HBModal = ({
            </DialogHeader>
         </div>
 
-        <div className="p-8">
+        <div className="p-8 overflow-y-auto max-h-[70vh] custom-scrollbar">
           {children}
         </div>
+
       </DialogContent>
     </Dialog>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -16,20 +16,35 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { adminLinks, doctorLinks, patientLinks } from "./constants";
+import { useEffect, useState } from "react";
 
-const menuItems = [
-  { label: 'Dashboard', href: '/admin', icon: Icons.activity },
-  { label: 'Appointments', href: '/admin/appointments', icon: Icons.calendar },
-  { label: 'Schedules', href: '/admin/schedules', icon: Icons.calendarClock },
-  { label: 'Doctors', href: '/admin/doctors', icon: Icons.userCheck },
-  { label: 'Patients', href: '/admin/patients', icon: Icons.users },
-  { label: 'Specialties', href: '/admin/specialties', icon: Icons.microscope },
-  { label: 'Reviews', href: '/admin/reviews', icon: Icons.star },
-  { label: 'Settings', href: '/admin/settings', icon: Icons.shieldCheck },
-];
+
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  const user = useAppSelector(selectCurrentUser);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  let menuItems:any[] = [];
+
+
+  if (user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') {
+    menuItems = adminLinks;
+  } else if (user?.role === 'DOCTOR') {
+    menuItems = doctorLinks;
+  } else if (user?.role === 'PATIENT') {
+    menuItems = patientLinks;
+  }
+
 
   return (
     <Sidebar collapsible="icon" className="border-slate-800">
@@ -85,10 +100,11 @@ const DashboardSidebar = () => {
             <Icons.userCheck className="w-5 h-5 text-teal-400" />
           </div>
           <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-black text-white truncate italic">Admin User</p>
-            <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">System Admin</p>
+            <p className="text-sm font-black text-white truncate italic">{user?.name || 'User'}</p>
+            <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{user?.role || 'Guest'}</p>
           </div>
         </div>
+
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

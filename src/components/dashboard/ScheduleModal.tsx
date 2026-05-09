@@ -7,6 +7,7 @@ import { HBInput } from "@/components/shared/HBInput";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useCreateScheduleMutation } from "@/redux/features/schedule/scheduleApi";
 
 interface ScheduleModalProps {
   trigger: React.ReactNode;
@@ -14,20 +15,27 @@ interface ScheduleModalProps {
 
 const ScheduleModal = ({ trigger }: ScheduleModalProps) => {
   const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  const [createSchedule, { isLoading }] = useCreateScheduleMutation();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
+
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Creating Schedule Slot:", data);
-      toast.success("Time slot created successfully!");
-      setOpen(false);
-    } catch (error) {
-      toast.error("Failed to create time slot. Please try again.");
-    } finally {
-      setIsLoading(false);
+      const res = await createSchedule(data).unwrap();
+      if (res?.success) {
+        toast.success("Bulk schedules created successfully!");
+        setOpen(false);
+      } else {
+        toast.error(res?.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to create schedules. Please try again.");
     }
   };
 
@@ -35,49 +43,73 @@ const ScheduleModal = ({ trigger }: ScheduleModalProps) => {
     <HBModal
       open={open}
       onOpenChange={setOpen}
-      title="Create Global Time Slot"
-      description="Define a new availability period that can be assigned to medical experts."
+      title="Generate Global Schedules"
+      description="Define a date range and daily time window to automatically generate medical slots."
       trigger={trigger}
     >
       <HBForm onSubmit={onSubmit}>
-        <div className="space-y-6">
-          <HBInput
-            label="Start Date & Time"
-            name="startDateTime"
-            type="datetime-local"
-            icon={<Icons.calendarClock className="w-4 h-4" />}
-            required
-          />
-          
-          <HBInput
-            label="End Date & Time"
-            name="endDateTime"
-            type="datetime-local"
-            icon={<Icons.calendarClock className="w-4 h-4" />}
-            required
-          />
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <HBInput
+              label="Start Date"
+              name="startDate"
+              type="date"
+              icon={<Icons.calendar className="w-4 h-4 text-teal-500" />}
+              required
+            />
+            <HBInput
+              label="End Date"
+              name="endDate"
+              type="date"
+              icon={<Icons.calendar className="w-4 h-4 text-teal-500" />}
+              required
+            />
+          </div>
 
-          <div className="p-6 rounded-2xl bg-teal-500/5 border border-dashed border-teal-500/20 flex items-center gap-4">
-            <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-teal-500 shadow-md">
-              <Icons.activity className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <HBInput
+              label="Daily Start Time"
+              name="startTime"
+              type="time"
+              icon={<Icons.activity className="w-4 h-4 text-blue-500" />}
+              required
+            />
+            <HBInput
+              label="Daily End Time"
+              name="endTime"
+              type="time"
+              icon={<Icons.activity className="w-4 h-4 text-blue-500" />}
+              required
+            />
+          </div>
+
+          <div className="p-4 rounded-[1.5rem] bg-slate-900 text-white shadow-2xl relative overflow-hidden group">
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <Icons.calendarClock className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-teal-400 italic">Bulk Generation Logic</p>
+                <p className="text-xs font-medium text-slate-300 mt-1">This will create <span className="text-white font-black">30-minute slots</span> for every day in the selected range.</p>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest italic">Slot Preview</p>
-              <p className="text-[10px] font-medium text-slate-500 mt-1">This slot will be available for assignment to all doctors globally.</p>
-            </div>
+            <Icons.activity className="absolute -bottom-6 -right-6 w-24 h-24 text-white/5 rotate-12" />
           </div>
         </div>
 
-        <div className="mt-10 flex gap-4">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Button
             type="submit"
             disabled={isLoading}
-            className="h-14 px-10 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex-1"
+            className="h-14 px-10 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex-1 group"
           >
             {isLoading ? (
               <Icons.loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              "Create Time Slot"
+              <span className="flex items-center gap-3">
+                Generate Schedules
+                <Icons.plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+              </span>
             )}
           </Button>
           <Button
@@ -86,12 +118,14 @@ const ScheduleModal = ({ trigger }: ScheduleModalProps) => {
             onClick={() => setOpen(false)}
             className="h-14 px-10 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-1"
           >
-            Cancel
+            Discard
           </Button>
         </div>
       </HBForm>
+
     </HBModal>
   );
 };
 
 export { ScheduleModal };
+

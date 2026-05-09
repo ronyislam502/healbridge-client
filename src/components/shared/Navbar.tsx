@@ -20,8 +20,9 @@ import { useMyProfilQuery } from '@/redux/features/user/userApi';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const user = useAppSelector(selectCurrentUser);
-  const { data: userData } = useMyProfilQuery({ user }, { skip: !user || !mounted });
+  const loggedUser = useAppSelector((state) => state?.auth?.user) as TUser;
+  const { data: userData } = useMyProfilQuery({ user: loggedUser }, { skip: !loggedUser || !mounted });
+
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -57,7 +58,6 @@ const navItems = [
   { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
-  { label: "Admin", href: "/admin" },
   { label: "Patient", href: "/patient" },
   { label: "Doctor", href: "/doctor" },
 ];
@@ -105,14 +105,14 @@ const navItems = [
 
             <div className="hidden sm:flex items-center gap-3 border-l pl-4 ml-2">
               {mounted && (
-                user ? (
+                loggedUser ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                         <Avatar className="h-10 w-10 border border-blue-100">
-                          <AvatarImage src={userData?.data?.avatar || ""} alt={user?.name || "User"} />
+                          <AvatarImage src={userData?.data?.avatar || ""} alt={loggedUser?.name || "User"} />
                           <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
-                            {user?.name?.charAt(0).toUpperCase() || "U"}
+                            {loggedUser?.name?.charAt(0).toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </Button>
@@ -120,13 +120,13 @@ const navItems = [
                     <DropdownMenuContent className="w-56" align="end" forceMount>
                       <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">{user?.name}</p>
-                          <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                          <p className="text-sm font-medium leading-none">{loggedUser?.name}</p>
+                          <p className="text-xs leading-none text-muted-foreground">{loggedUser?.email}</p>
                         </div>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        <Link href={`/${user?.role?.toLowerCase()}`} className="cursor-pointer">
+                        <Link href={`/${loggedUser?.role?.toLowerCase()}`} className="cursor-pointer">
                           <Icons.layoutDashboard className="mr-2 h-4 w-4" />
                           <span>Dashboard</span>
                         </Link>
@@ -147,6 +147,7 @@ const navItems = [
                 )
               )}
             </div>
+
 
             {/* Mobile Navigation */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -176,10 +177,10 @@ const navItems = [
                   <hr />
                   <div className="flex flex-col gap-2">
                     {mounted && (
-                      user ? (
+                      loggedUser ? (
                         <>
                           <Button asChild variant="outline" className="w-full justify-start">
-                            <Link href={`/${user?.role?.toLowerCase()}`}>
+                            <Link href={`/${loggedUser?.role?.toLowerCase()}`}>
                               <Icons.layoutDashboard className="mr-2 h-4 w-4" />
                               Dashboard
                             </Link>
@@ -197,6 +198,7 @@ const navItems = [
                         </>
                       )
                     )}
+
                   </div>
                 </div>
               </SheetContent>

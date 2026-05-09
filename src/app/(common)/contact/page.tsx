@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { ContactForm } from '@/components/sections/ContactForm';
+import { ContactForm } from '@/components/pages/contact/ContactForm';
 
 export const metadata = {
   title: 'Contact Us | HealBridge',

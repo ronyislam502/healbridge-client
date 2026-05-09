@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Image from 'next/image';
-import { RecoverForm } from '@/components/auth/recover-form';
+import { RecoverForm } from '@/components/pages/auth/recover-form';
 
 export const metadata = {
   title: 'Recover Password | HealBridge',

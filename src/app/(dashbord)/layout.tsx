@@ -1,13 +1,27 @@
+"use client"
+
 import * as React from 'react';
 import { DashboardSidebar } from '@/components/dashboard/Sidebar';
 import { Icons } from '@/components/shared/Icons';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { useAppSelector } from '@/redux/hooks';
+import { TUser } from '@/redux/features/auth/authSlice';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [mounted, setMounted] = React.useState(false);
+  const user = useAppSelector((state) => state?.auth?.user) as TUser;
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-slate-50 dark:bg-slate-950">
@@ -35,11 +49,11 @@ export default function DashboardLayout({
               </button>
               <div className="flex items-center gap-4 pl-6 border-l border-slate-100 dark:border-slate-800">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm font-black text-slate-900 dark:text-white italic">Admin User</p>
-                  <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">Master Admin</p>
+                  <p className="text-sm font-black text-slate-900 dark:text-white italic">{user?.name || 'User'}</p>
+                  <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{user?.role || 'Guest'}</p>
                 </div>
                 <div className="w-12 h-12 rounded-2xl bg-teal-500 flex items-center justify-center text-white shadow-lg shadow-teal-500/20 font-black italic">
-                  AU
+                  {(user?.name || 'U').charAt(0).toUpperCase()}
                 </div>
               </div>
             </div>

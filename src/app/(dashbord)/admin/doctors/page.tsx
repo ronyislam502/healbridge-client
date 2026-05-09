@@ -1,23 +1,18 @@
-import * as React from 'react';
+'use client';
+
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useGetAllDoctorsQuery } from '@/redux/features/doctor/doctorApi';
+import { HBTable } from '@/components/shared/HBTable';
 
-export const metadata = {
-  title: 'Doctor Management | HealBridge',
-  description: 'Manage doctor profiles, verifications, and platform activity.',
-};
 
-const doctorsData = [
-  { id: 1, name: "Dr. Charles Scott", specialty: "Neurology", joined: "24 Oct 2023", status: "Verified", rating: "4.8", image: "/specialties/neurology.png" },
-  { id: 2, name: "Dr. Michael Brown", specialty: "Psychiatry", joined: "22 Oct 2023", status: "Verified", rating: "5.0", image: "/specialties/psychiatry.png" },
-  { id: 3, name: "Dr. Sarah Johnson", specialty: "Cardiology", joined: "21 Oct 2023", status: "Pending", rating: "4.9", image: "/specialties/cardiology.png" },
-  { id: 4, name: "Dr. Emily Davis", specialty: "Dermatology", joined: "20 Oct 2023", status: "Verified", rating: "4.7", image: "/specialties/dermatology.png" },
-  { id: 5, name: "Dr. Robert Wilson", specialty: "Orthopedic", joined: "18 Oct 2023", status: "Suspended", rating: "4.5", image: "/specialties/orthopedics.png" },
-];
 
 const DoctorManagement = () => {
+  const { data, isLoading } = useGetAllDoctorsQuery({});
+  const doctors = data?.data || [];
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Heading */}
@@ -49,96 +44,83 @@ const DoctorManagement = () => {
       </div>
 
       {/* Doctors Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden">
-        <div className="p-8 border-b border-slate-50 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 px-6 py-2 rounded-xl border border-slate-100 dark:border-slate-800 w-full max-w-md">
-            <Icons.search className="w-4 h-4 text-slate-400" />
-            <input 
-              type="text" 
-              placeholder="Search by name or specialty..." 
-              className="bg-transparent border-none outline-none text-xs font-bold text-slate-700 dark:text-slate-300 w-full"
-            />
-          </div>
-          <div className="flex items-center gap-4">
-             <button className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-teal-500 transition-colors">
-               <Icons.activity className="w-4 h-4" />
-               Filter
-             </button>
-             <button className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-teal-500 transition-colors">
-               <Icons.share2 className="w-4 h-4" />
-               Export
-             </button>
-          </div>
-        </div>
+      <HBTable 
+        isLoading={isLoading}
+        loadingMessage="Synchronizing Medical Experts..."
+        data={doctors}
+        columns={[
+          {
+            header: "Doctor Profile",
+            key: "name",
+            render: (row) => (
+              <div className="flex items-center gap-4">
+                <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-teal-500/20 group-hover:border-teal-500 transition-colors">
+                  <Image
+                    src={row.avatar || "/specialties/neurology.png"}
+                    alt={row.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <span className="text-base font-black text-slate-900 dark:text-white italic block">{row.name}</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase">{row.email}</span>
+                </div>
+              </div>
+            )
+          },
+          {
+            header: "Specialties",
+            key: "doctorSpecialties",
+            render: (row) => (
+              <div className="flex flex-wrap gap-1">
+                {row.doctorSpecialties?.map((ds: any) => (
+                  <span key={ds.specialtiesId} className="text-[9px] font-black text-teal-500 uppercase tracking-tighter italic bg-teal-500/5 px-2 py-0.5 rounded-md border border-teal-500/10">
+                    {ds.specialties?.title}
+                  </span>
+                ))}
+              </div>
+            )
+          },
+          {
+            header: "Reg Number",
+            key: "registrationNumber",
+            render: (row) => <span className="text-sm font-bold text-slate-900 dark:text-white italic">{row.registrationNumber}</span>
+          },
+          {
+            header: "Fee",
+            key: "appointmentFee",
+            align: "center",
+            render: (row) => <span className="text-sm font-black text-slate-900 dark:text-white italic">${row.appointmentFee}</span>
+          },
+          {
+            header: "Status",
+            key: "status",
+            align: "center",
+            render: (row) => (
+              <span className={`inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic bg-emerald-500/10 text-emerald-500`}>
+                Active
+              </span>
+            )
+          },
+          {
+            header: "Actions",
+            key: "actions",
+            align: "right",
+            render: () => (
+              <div className="flex items-center justify-end gap-3">
+                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all">
+                  <Icons.eye className="w-4 h-4" />
+                </button>
+                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
+                  <Icons.share2 className="w-4 h-4" />
+                </button>
+              </div>
+            )
+          }
+        ]}
+      />
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/50">
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Doctor Profile</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Specialty</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Joined Date</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Rating</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Status</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {doctorsData.map((doc) => (
-                <tr key={doc.id} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                    <div className="flex items-center gap-4">
-                      <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-teal-500/20 group-hover:border-teal-500 transition-colors">
-                        <Image
-                          src={doc.image}
-                          alt={doc.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <span className="text-base font-black text-slate-900 dark:text-white italic block">{doc.name}</span>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase">ID: HB-00{doc.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400">{doc.specialty}</span>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">{doc.joined}</span>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
-                      <Icons.star className="w-3.5 h-3.5 text-orange-500 fill-orange-500" />
-                      <span className="text-sm font-black text-slate-900 dark:text-white">{doc.rating}</span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                    <span className={`inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic ${
-                      doc.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-500' :
-                      doc.status === 'Pending' ? 'bg-orange-500/10 text-orange-500' :
-                      'bg-red-500/10 text-red-500'
-                    }`}>
-                      {doc.status}
-                    </span>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-right">
-                    <div className="flex items-center justify-end gap-3">
-                      <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all">
-                        <Icons.eye className="w-4 h-4" />
-                      </button>
-                      <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
-                        <Icons.share2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 };

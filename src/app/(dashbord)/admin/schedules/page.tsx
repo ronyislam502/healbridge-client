@@ -7,24 +7,26 @@ import { cn } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScheduleModal } from '@/components/dashboard/ScheduleModal';
 import { AssignScheduleModal } from '@/components/dashboard/AssignScheduleModal';
+import { useGetAllSchedulesQuery } from '@/redux/features/schedule/scheduleApi';
+import { format } from 'date-fns';
+import { HBTable } from '@/components/shared/HBTable';
 
-const scheduleData = [
-  { id: '1', date: '24 Oct 2023', startTime: '09:00 AM', endTime: '10:00 AM', status: 'Available' },
-  { id: '2', date: '24 Oct 2023', startTime: '10:00 AM', endTime: '11:00 AM', status: 'Assigned' },
-  { id: '3', date: '25 Oct 2023', startTime: '02:00 PM', endTime: '03:00 PM', status: 'Available' },
-  { id: '4', date: '25 Oct 2023', startTime: '03:00 PM', endTime: '04:00 PM', status: 'Assigned' },
-  { id: '5', date: '26 Oct 2023', startTime: '11:00 AM', endTime: '12:00 PM', status: 'Available' },
-];
+
 
 const doctorAssignmentsData = [
+
   { id: '1', doctor: "Dr. Charles Scott", specialty: "Neurology", date: "24 Oct 2023", time: "10:00 AM - 11:00 AM", status: "Booked" },
   { id: '2', doctor: "Dr. Michael Brown", specialty: "Psychiatry", date: "25 Oct 2023", time: "03:00 PM - 04:00 PM", status: "Available" },
   { id: '3', doctor: "Dr. Sarah Johnson", specialty: "Cardiology", date: "26 Oct 2023", time: "09:00 AM - 10:00 AM", status: "Available" },
 ];
 
 const ScheduleManagement = () => {
+  const { data, isLoading } = useGetAllSchedulesQuery({});
+  const schedules = data?.data || [];
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+
       {/* Page Heading */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
@@ -91,108 +93,123 @@ const ScheduleManagement = () => {
         </div>
 
         <TabsContent value="global" className="mt-0">
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/50">
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Date</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Start Time</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">End Time</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Status</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {scheduleData.map((item) => (
-                    <tr key={item.id} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 font-bold text-slate-900 dark:text-white italic">{item.date}</td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 font-black text-teal-500 italic uppercase tracking-wider text-xs">{item.startTime}</td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 font-black text-teal-500 italic uppercase tracking-wider text-xs">{item.endTime}</td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                        <span className={cn(
-                          "inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
-                          item.status === 'Available' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-500/10 text-slate-500'
-                        )}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-right">
-                        <div className="flex justify-end gap-2">
-                           <AssignScheduleModal
-                             scheduleId={item.id}
-                             trigger={
-                               <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-500/10 hover:text-teal-500">
-                                 <Icons.userPlus className="w-4 h-4" />
-                               </Button>
-                             }
-                           />
-                           <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500">
-                             <Icons.close className="w-4 h-4" />
-                           </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <HBTable 
+            isLoading={isLoading}
+            loadingMessage="Synchronizing Schedules..."
+            emptyMessage="No schedules found"
+            data={schedules}
+            columns={[
+              { 
+                header: "Date", 
+                key: "startDateTime",
+                render: (row) => <span className="font-bold text-slate-900 dark:text-white italic">{format(new Date(row.startDateTime), 'dd MMM yyyy')}</span>
+              },
+              { 
+                header: "Start Time", 
+                key: "startDateTime",
+                render: (row) => <span className="font-black text-teal-500 italic uppercase tracking-wider text-xs">{format(new Date(row.startDateTime), 'hh:mm a')}</span>
+              },
+              { 
+                header: "End Time", 
+                key: "endDateTime",
+                render: (row) => <span className="font-black text-teal-500 italic uppercase tracking-wider text-xs">{format(new Date(row.endDateTime), 'hh:mm a')}</span>
+              },
+              { 
+                header: "Status", 
+                key: "status",
+                align: "center",
+                render: () => (
+                  <span className="inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic bg-emerald-500/10 text-emerald-500">
+                    Available
+                  </span>
+                )
+              },
+              { 
+                header: "Actions", 
+                key: "actions",
+                align: "right",
+                render: (row) => (
+                  <div className="flex justify-end gap-2">
+                    <AssignScheduleModal
+                      scheduleId={row.id}
+                      trigger={
+                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-500/10 hover:text-teal-500">
+                          <Icons.userPlus className="w-4 h-4" />
+                        </Button>
+                      }
+                    />
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500">
+                      <Icons.close className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )
+              }
+            ]}
+          />
         </TabsContent>
 
+
         <TabsContent value="assignments" className="mt-0">
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/50">
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Doctor</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Specialty</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Date & Time</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Status</th>
-                    <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {doctorAssignmentsData.map((item) => (
-                    <tr key={item.id} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400 italic">
-                            {item.doctor.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div>
-                            <p className="font-bold text-slate-900 dark:text-white">{item.doctor}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                        <span className="text-[10px] font-black text-teal-500 uppercase tracking-widest italic">{item.specialty}</span>
-                      </td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5 italic">{item.date}</p>
-                        <p className="text-[10px] font-black text-slate-400 uppercase italic">{item.time}</p>
-                      </td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                        <span className={cn(
-                          "inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
-                          item.status === 'Booked' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
-                        )}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-right">
-                         <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500">
-                           <Icons.close className="w-4 h-4" />
-                         </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <HBTable 
+            data={doctorAssignmentsData}
+            columns={[
+              { 
+                header: "Doctor", 
+                key: "doctor",
+                render: (row) => (
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400 italic">
+                      {row.doctor.split(' ').map((n: string) => n[0]).join('')}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 dark:text-white">{row.doctor}</p>
+                    </div>
+                  </div>
+                )
+              },
+              { 
+                header: "Specialty", 
+                key: "specialty",
+                render: (row) => <span className="text-[10px] font-black text-teal-500 uppercase tracking-widest italic">{row.specialty}</span>
+              },
+              { 
+                header: "Date & Time", 
+                key: "date",
+                align: "center",
+                render: (row) => (
+                  <>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5 italic">{row.date}</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase italic">{row.time}</p>
+                  </>
+                )
+              },
+              { 
+                header: "Status", 
+                key: "status",
+                align: "center",
+                render: (row) => (
+                  <span className={cn(
+                    "inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
+                    row.status === 'Booked' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
+                  )}>
+                    {row.status}
+                  </span>
+                )
+              },
+              { 
+                header: "Actions", 
+                key: "actions",
+                align: "right",
+                render: () => (
+                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500">
+                    <Icons.close className="w-4 h-4" />
+                  </Button>
+                )
+              }
+            ]}
+          />
         </TabsContent>
+
       </Tabs>
     </div>
   );

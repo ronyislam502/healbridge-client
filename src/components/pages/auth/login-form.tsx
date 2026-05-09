@@ -19,8 +19,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { useLogInMutation } from '@/redux/features/auth/authApi';
 import { useSignUpMutation } from '@/redux/features/user/userApi';
-
-import { verifyToken } from '../utilities/verifyToken';
+import { verifyToken } from '../../utilities/verifyToken';
 import { setUser, TUser } from '@/redux/features/auth/authSlice';
 import Cookies from "js-cookie";
 import Image from 'next/image';
@@ -152,7 +151,7 @@ export const LoginForm = () => {
                   </button>
                 }
                 labelRight={
-                  <Link href="/recover" className="text-sm font-medium text-teal-600 hover:underline dark:text-teal-400">
+                  <Link href="/forget-pass" className="text-sm font-medium text-teal-600 hover:underline dark:text-teal-400">
                     Forgot password?
                   </Link>
                 }

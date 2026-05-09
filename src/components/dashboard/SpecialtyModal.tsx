@@ -7,6 +7,7 @@ import { HBInput } from "@/components/shared/HBInput";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useCreateSpecialtyMutation, useUpdateSpecialtyMutation } from "@/redux/features/specialties/specialtiesApi";
 
 interface SpecialtyModalProps {
   mode: 'add' | 'update';
@@ -16,20 +17,46 @@ interface SpecialtyModalProps {
 
 const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) => {
   const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [file, setFile] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(defaultValues?.image || null);
+  
+  const [createSpecialty, { isLoading: isCreating }] = useCreateSpecialtyMutation();
+  const [updateSpecialty, { isLoading: isUpdating }] = useUpdateSpecialtyMutation();
+
+  const isLoading = isCreating || isUpdating;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log(`${mode === 'add' ? 'Creating' : 'Updating'} Specialty:`, data);
-      toast.success(`Specialty ${mode === 'add' ? 'added' : 'updated'} successfully!`);
-      setOpen(false);
-    } catch (error) {
-      toast.error(`Failed to ${mode} specialty. Please try again.`);
-    } finally {
-      setIsLoading(false);
+      const formData = new FormData();
+      formData.append('data', JSON.stringify({ title: data.title }));
+      if (file) {
+        formData.append('icon', file);
+      }
+
+      let res;
+      if (mode === 'add') {
+        res = await createSpecialty(formData).unwrap();
+      } else {
+        res = await updateSpecialty({ id: defaultValues.id, data: formData }).unwrap();
+      }
+
+      if (res?.success) {
+        toast.success(`Specialty ${mode === 'add' ? 'created' : 'updated'} successfully!`);
+        setOpen(false);
+        setFile(null);
+      } else {
+        toast.error(res?.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || `Failed to ${mode} specialty. Please try again.`);
     }
   };
 
@@ -45,60 +72,82 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
       trigger={trigger}
     >
       <HBForm onSubmit={onSubmit} defaultValues={defaultValues}>
-        <div className="space-y-6">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
           <HBInput
             label="Specialty Title"
             name="title"
             placeholder="e.g. Cardiology"
-            icon={<Icons.activity className="w-4 h-4" />}
+            icon={<Icons.activity className="w-4 h-4 text-teal-500" />}
             required
           />
           
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic ml-1">Icon Representation</label>
-            <div className="grid grid-cols-5 gap-3">
-              {[Icons.heart, Icons.brain, Icons.baby, Icons.award, Icons.microscope].map((Icon, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className="w-full aspect-square rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-teal-500 hover:bg-teal-500/10 border border-transparent hover:border-teal-500/20 transition-all"
-                >
-                  <Icon className="w-6 h-6" />
-                </button>
-              ))}
-            </div>
+          <div className="space-y-4">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic ml-1 block">Icon Representation</label>
+            
+            <label className="relative cursor-pointer group block">
+              <input 
+                type="file" 
+                className="hidden" 
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              <div className="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-200 dark:border-slate-800 group-hover:border-teal-500/50 transition-all flex flex-col items-center justify-center text-center">
+                {preview ? (
+                  <div className="relative w-24 h-24 rounded-2xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-900 group-hover:scale-110 transition-transform">
+                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Icons.share2 className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-teal-500 shadow-md mb-4 transition-colors">
+                      <Icons.share2 className="w-6 h-6" />
+                    </div>
+                    <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest italic">Upload 3D Asset</p>
+                    <p className="text-[10px] font-medium text-slate-500 mt-1">Recommended: 800x800px PNG</p>
+                  </>
+                )}
+              </div>
+            </label>
           </div>
 
-          <div className="p-6 rounded-2xl bg-teal-500/5 border border-dashed border-teal-500/20 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-teal-500/10 transition-colors">
-             <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-teal-500 mb-3 shadow-md group-hover:scale-110 transition-transform">
-                <Icons.share2 className="w-6 h-6" />
-             </div>
-             <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest italic">
-                {defaultValues?.image ? "Change 3D Asset" : "Upload 3D Asset"}
-             </p>
-             <p className="text-[10px] font-medium text-slate-500 mt-1">Recommended: 800x800px PNG</p>
+          <div className="p-6 rounded-2xl bg-slate-900 text-white relative overflow-hidden group shadow-2xl">
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center">
+                <Icons.activity className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-[10px] font-black uppercase tracking-widest text-teal-400 italic">Platform Sync</p>
+                <p className="text-[10px] font-medium text-slate-400 mt-0.5">Changes will reflect instantly across all doctor profiles and search filters.</p>
+              </div>
+            </div>
+            <Icons.activity className="absolute -bottom-4 -right-4 w-20 h-20 text-white/5 rotate-12" />
           </div>
         </div>
 
-        <div className="mt-10 flex gap-4">
+        <div className="mt-10 flex flex-col sm:flex-row gap-4">
           <Button
             type="submit"
             disabled={isLoading}
-            className="h-14 px-10 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex-1"
+            className="h-16 px-10 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex-1 group"
           >
             {isLoading ? (
               <Icons.loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              mode === 'add' ? "Create Specialty" : "Save Changes"
+              <span className="flex items-center gap-3">
+                {mode === 'add' ? "Create Specialty" : "Save Changes"}
+                <Icons.plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+              </span>
             )}
           </Button>
           <Button
             type="button"
             variant="outline"
             onClick={() => setOpen(false)}
-            className="h-14 px-10 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-1"
+            className="h-16 px-10 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-1"
           >
-            Cancel
+            Discard
           </Button>
         </div>
       </HBForm>
@@ -107,3 +156,4 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
 };
 
 export { SpecialtyModal };
+
