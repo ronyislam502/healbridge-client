@@ -21,7 +21,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const loggedUser = useAppSelector((state) => state?.auth?.user) as TUser;
-  const { data: userData } = useMyProfilQuery({ user: loggedUser }, { skip: !loggedUser || !mounted });
+  const { data: userData } = useMyProfilQuery({}, { skip: !loggedUser || !mounted });
+
+  console.log("Navbar userData:", userData);
+
+  const profile = userData?.data;
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -58,8 +62,6 @@ const navItems = [
   { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
-  { label: "Patient", href: "/patient" },
-  { label: "Doctor", href: "/doctor" },
 ];
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
@@ -110,9 +112,9 @@ const navItems = [
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                         <Avatar className="h-10 w-10 border border-blue-100">
-                          <AvatarImage src={userData?.data?.avatar || ""} alt={loggedUser?.name || "User"} />
+                          <AvatarImage src={profile?.avatar || ""} alt={profile?.name || "User"} />
                           <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
-                            {loggedUser?.name?.charAt(0).toUpperCase() || "U"}
+                            {(profile?.name || loggedUser?.name)?.charAt(0).toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </Button>
@@ -120,8 +122,8 @@ const navItems = [
                     <DropdownMenuContent className="w-56" align="end" forceMount>
                       <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">{loggedUser?.name}</p>
-                          <p className="text-xs leading-none text-muted-foreground">{loggedUser?.email}</p>
+                          <p className="text-sm font-medium leading-none">{profile?.name || loggedUser?.name}</p>
+                          <p className="text-xs leading-none text-muted-foreground">{profile?.email || loggedUser?.email}</p>
                         </div>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />

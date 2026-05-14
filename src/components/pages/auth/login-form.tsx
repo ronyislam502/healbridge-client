@@ -9,8 +9,6 @@ import { toast } from 'sonner';
 import { Icons } from '@/components/shared/Icons';
 import { HBInput } from '@/components/shared/HBInput';
 import { HBForm } from '@/components/shared/HBForm';
-import { HBFileUpload } from '@/components/shared/HBFileUpload';
-
 import { loginSchema, patientRegisterSchema } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -23,6 +21,7 @@ import { verifyToken } from '../../utilities/verifyToken';
 import { setUser, TUser } from '@/redux/features/auth/authSlice';
 import Cookies from "js-cookie";
 import Image from 'next/image';
+import { HBSelect } from '@/components/shared/HBSelect';
 
 
 export const LoginForm = () => {
@@ -30,7 +29,9 @@ export const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
   const [signIn, {isLoading: isLoginLoading}] = useLogInMutation();
-  const [signUp, {isLoading: isRegisterLoading}] = useSignUpMutation();
+  const [signUp, { isLoading: isRegisterLoading }] = useSignUpMutation();
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(null);
 
 
   const onLoginSubmit = async (data: FieldValues) => {
@@ -57,6 +58,15 @@ export const LoginForm = () => {
       toast.error(err?.data?.message || "Login failed. Please check your credentials.");
     }
   };
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setSelectedImage(file);
+        const url = URL.createObjectURL(file);
+        setPreview(url);
+      }
+    };
 
   const onRegisterSubmit = async (data: FieldValues) => {
     try {
@@ -205,10 +215,37 @@ export const LoginForm = () => {
                 <HBInput label="Phone Number" name="phone" placeholder="+1 234 567 890" icon={<Icons.phone className="h-4 w-4" />} required containerClassName="flex-1" />
                 <HBInput label="Address" name="address" placeholder="123 Street, City" icon={<Icons.mapPin className="h-4 w-4" />} required containerClassName="flex-1" />
               </div>
-
+            <div className="grid grid-cols-2 gap-4">
+            <HBInput
+              label="Phone Number"
+              name="phone"
+              placeholder="+1..."
+              className="h-12 rounded-xl focus:border-blue-600 focus:ring-blue-600/10"
+            />
+            <HBSelect
+              label="Gender"
+              name="gender"
+              placeholder="Select"
+              options={[
+                { label: "Male", value: "MALE" },
+                { label: "Female", value: "FEMALE" }
+              ]}
+              className="h-12 rounded-xl focus:border-blue-600"
+            />
+          </div>
               
               <div className='flex gap-2 items-end'>
-                <HBFileUpload label="Profile Picture" name="avatar" containerClassName="flex-1" />
+                 <div className="flex flex-col items-center gap-3">
+                      <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+                        {preview ? (
+                          <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                            ) : (
+                              <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                            )}
+                            <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+                          </div>
+                          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profile Photo</span>
+                        </div>
                 <HBInput 
                   label="Password" 
                   name="password" 

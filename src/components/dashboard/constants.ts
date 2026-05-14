@@ -8,6 +8,9 @@ export const adminLinks = [
   { label: 'Patients', href: '/admin/patients', icon: Icons.users },
   { label: 'Specialties', href: '/admin/specialties', icon: Icons.microscope },
   { label: 'Reviews', href: '/admin/reviews', icon: Icons.star },
+  { label: 'Prescriptions', href: '/admin/prescriptions', icon: Icons.scrollText },
+  { label: 'Admins', href: '/admin/admins', icon: Icons.shieldCheck },
+  { label: 'Users', href: '/admin/users', icon: Icons.users },
   { label: 'Settings', href: '/admin/settings', icon: Icons.shieldCheck },
 ];
 

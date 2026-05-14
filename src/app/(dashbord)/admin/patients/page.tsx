@@ -8,6 +8,8 @@ import { useGetAllPatientsQuery } from '@/redux/features/patient/patientApi';
 import { HBTable } from '@/components/shared/HBTable';
 
 
+import { TPatient } from '@/types/user';
+
 const PatientManagement = () => {
   const { data, isLoading } = useGetAllPatientsQuery({});
   const patients = data?.data || [];
@@ -34,7 +36,7 @@ const PatientManagement = () => {
         </div>
       </div>
 
-      <HBTable 
+      <HBTable<TPatient> 
         isLoading={isLoading}
         loadingMessage="Synchronizing Patient Records..."
         data={patients}
@@ -56,10 +58,10 @@ const PatientManagement = () => {
           },
           {
             header: "Contact / Gender",
-            key: "contactNumber",
+            key: "phone",
             render: (row) => (
               <>
-                <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">{row.contactNumber || 'No Contact'}</p>
+                <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">{row.phone || 'No Contact'}</p>
                 <p className="text-[10px] font-black text-slate-400 uppercase italic">{row.gender || 'Not specified'}</p>
               </>
             )

@@ -29,7 +29,7 @@ interface HBTableProps<T> {
   skeletonCount?: number;
 }
 
-const HBTable = <T extends Record<string, unknown>>({
+const HBTable = <T extends object>({
   columns,
   data,
   isLoading,

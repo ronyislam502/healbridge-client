@@ -20,6 +20,8 @@ const doctorAssignmentsData = [
   { id: '3', doctor: "Dr. Sarah Johnson", specialty: "Cardiology", date: "26 Oct 2023", time: "09:00 AM - 10:00 AM", status: "Available" },
 ];
 
+import { Schedule } from '@/types/specialty';
+
 const ScheduleManagement = () => {
   const { data, isLoading } = useGetAllSchedulesQuery({});
   const schedules = data?.data || [];
@@ -93,7 +95,7 @@ const ScheduleManagement = () => {
         </div>
 
         <TabsContent value="global" className="mt-0">
-          <HBTable 
+          <HBTable<Schedule> 
             isLoading={isLoading}
             loadingMessage="Synchronizing Schedules..."
             emptyMessage="No schedules found"
@@ -116,7 +118,7 @@ const ScheduleManagement = () => {
               },
               { 
                 header: "Status", 
-                key: "status",
+                key: "id",
                 align: "center",
                 render: () => (
                   <span className="inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic bg-emerald-500/10 text-emerald-500">
@@ -126,7 +128,7 @@ const ScheduleManagement = () => {
               },
               { 
                 header: "Actions", 
-                key: "actions",
+                key: "id",
                 align: "right",
                 render: (row) => (
                   <div className="flex justify-end gap-2">

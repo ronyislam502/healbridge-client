@@ -1,12 +1,12 @@
+'use client';
+
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-
-export const metadata = {
-  title: 'Doctor Dashboard | HealBridge',
-  description: 'Manage your appointments, patient records, and professional profile.',
-};
+import { useGetMyAppointmentsQuery } from '@/redux/features/appointment/appointmentApi';
+import { useMyProfilQuery } from '@/redux/features/user/userApi';
+import { HBSuspense } from '@/components/shared/HBSuspense';
 
 const stats = [
   { label: "Today's Appointments", value: '12', icon: Icons.calendar, color: 'text-blue-500', bg: 'bg-blue-500/10' },
@@ -15,26 +15,26 @@ const stats = [
   { label: 'Total Earnings', value: '$14,500', icon: Icons.activity, color: 'text-purple-500', bg: 'bg-purple-500/10' },
 ];
 
-const appointments = [
-  { id: 1, patient: 'John Doe', type: 'Neurology', time: '10:00 AM', date: '24 Oct 2023', status: 'Confirmed' },
-  { id: 2, patient: 'Sarah Jenkins', type: 'Follow-up', time: '11:30 AM', date: '24 Oct 2023', status: 'Pending' },
-  { id: 3, patient: 'James Williams', type: 'Consultation', time: '02:00 PM', date: '24 Oct 2023', status: 'Confirmed' },
-];
-
 const DoctorDashboard = () => {
+  const { data: profileData } = useMyProfilQuery({});
+  const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ limit: 5 });
+  
+  const appointments = appointmentsData?.data || [];
+  const doctorName = profileData?.name || 'Doctor';
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Heading */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic">
-            Welcome, <span className="text-teal-500">Dr. Charles</span>
+            Welcome, <span className="text-teal-500">{doctorName}</span>
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">You have 12 appointments scheduled for today.</p>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">Manage your professional schedule and patients.</p>
         </div>
         <button className="h-14 px-8 rounded-2xl bg-teal-500 text-white font-black text-sm uppercase tracking-widest shadow-xl hover:bg-teal-600 transition-all flex items-center gap-3">
           <Icons.calendar className="w-5 h-5" />
-          View Schedule
+          View Full Schedule
         </button>
       </div>
 
@@ -58,33 +58,45 @@ const DoctorDashboard = () => {
             <h3 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Upcoming Appointments</h3>
             <button className="text-xs font-black text-teal-500 uppercase tracking-widest italic">View All</button>
           </div>
-          <div className="space-y-4">
-            {appointments.map((apt) => (
-              <div key={apt.id} className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-lg flex items-center justify-between group hover:border-teal-500 transition-colors">
-                <div className="flex items-center gap-4">
-                   <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-teal-500 transition-colors">
-                     <Icons.users className="w-7 h-7" />
-                   </div>
-                   <div>
-                     <p className="text-lg font-black text-slate-900 dark:text-white italic">{apt.patient}</p>
-                     <p className="text-[10px] font-black text-teal-500 uppercase tracking-widest">{apt.type}</p>
-                   </div>
+          
+          <HBSuspense isLoading={isLoading} variant="card" count={3}>
+            <div className="space-y-4">
+                {appointments.map((apt: any) => (
+                <div key={apt.id} className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-lg flex items-center justify-between group hover:border-teal-500 transition-colors">
+                    <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-teal-500 transition-colors">
+                        <Icons.users className="w-7 h-7" />
+                    </div>
+                    <div>
+                        <p className="text-lg font-black text-slate-900 dark:text-white italic">{apt.patient?.name}</p>
+                        <p className="text-[10px] font-black text-teal-500 uppercase tracking-widest">Medical Consultation</p>
+                    </div>
+                    </div>
+                    <div className="text-right flex items-center gap-10">
+                    <div className="hidden md:block">
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">
+                            {new Date(apt.schedule?.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase">
+                            {new Date(apt.schedule?.startDate).toLocaleDateString()}
+                        </p>
+                    </div>
+                    <span className={cn(
+                        "px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
+                        apt.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-orange-500/10 text-orange-500'
+                    )}>
+                        {apt.status}
+                    </span>
+                    </div>
                 </div>
-                <div className="text-right flex items-center gap-10">
-                   <div className="hidden md:block">
-                     <p className="text-sm font-bold text-slate-900 dark:text-white">{apt.time}</p>
-                     <p className="text-[10px] font-black text-slate-400 uppercase">{apt.date}</p>
-                   </div>
-                   <span className={cn(
-                     "px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
-                     apt.status === 'Confirmed' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-orange-500/10 text-orange-500'
-                   )}>
-                     {apt.status}
-                   </span>
-                </div>
-              </div>
-            ))}
-          </div>
+                ))}
+                {appointments.length === 0 && (
+                    <div className="py-20 text-center bg-white dark:bg-slate-900 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-800 italic font-bold text-slate-400">
+                        No upcoming appointments for today.
+                    </div>
+                )}
+            </div>
+          </HBSuspense>
         </div>
 
         {/* Quick Actions / Activity */}
@@ -92,7 +104,7 @@ const DoctorDashboard = () => {
            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
              <div className="relative z-10">
                <h4 className="text-xl font-black italic uppercase tracking-widest mb-4">Patient Reviews</h4>
-               <p className="text-slate-400 font-medium text-sm mb-6">You have 15 unread reviews from your patients.</p>
+               <p className="text-slate-400 font-medium text-sm mb-6">Stay updated with your patient feedback and ratings.</p>
                <button className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-teal-400 hover:text-white transition-colors">
                  <Icons.star className="w-4 h-4" />
                  Read All Reviews

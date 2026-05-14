@@ -73,6 +73,14 @@ const doctorApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    updateDoctorSpecialties: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/doctors/include-specialties/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
     deleteDoctor: builder.mutation({
       query: (id: string) => ({
         url: `/doctors/delete/${id}`,
@@ -88,5 +96,6 @@ export const {
   useGetAllDoctorsQuery,
   useGetSingleDoctorQuery,
   useUpdateDoctorMutation,
+  useUpdateDoctorSpecialtiesMutation,
   useDeleteDoctorMutation,
 } = doctorApi;

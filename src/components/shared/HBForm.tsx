@@ -46,6 +46,14 @@ const HBForm = ({
   const internalMethods = useForm(formConfig);
   const methods = externalMethods || internalMethods;
 
+  const { reset } = methods;
+
+  React.useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+
   const submitHandler = methods.handleSubmit;
 
   return (

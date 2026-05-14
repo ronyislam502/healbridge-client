@@ -1,17 +1,56 @@
 'use client';
 
+import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useGetAllDoctorsQuery } from '@/redux/features/doctor/doctorApi';
+import { useGetAllDoctorsQuery, useCreateDoctorMutation } from '@/redux/features/doctor/doctorApi';
+import { useGetAllSpecialtiesQuery } from '@/redux/features/specialties/specialtiesApi';
 import { HBTable } from '@/components/shared/HBTable';
+import { HBModal } from '@/components/shared/HBModal';
+import { HBForm } from '@/components/shared/HBForm';
+import { HBInput } from '@/components/shared/HBInput';
+import { HBSelect } from '@/components/shared/HBSelect';
+import { toast } from 'sonner';
+import { FieldValues } from 'react-hook-form';
 
 
 
 const DoctorManagement = () => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { data, isLoading } = useGetAllDoctorsQuery({});
+  const { data: specialtiesData } = useGetAllSpecialtiesQuery({});
+  const [createDoctor, { isLoading: isCreating }] = useCreateDoctorMutation();
   const doctors = data?.data || [];
+
+  const onSubmit = async (values: FieldValues) => {
+    try {
+      const formData = new FormData();
+      const { profilePhoto, password, ...doctorData } = values;
+      
+      const payload = {
+        ...doctorData,
+        experience: Number(doctorData.experience),
+        appointmentFee: Number(doctorData.appointmentFee),
+      };
+
+      formData.append('data', JSON.stringify(payload));
+      formData.append('password', password);
+      
+      if (profilePhoto && profilePhoto[0]) {
+        formData.append('image', profilePhoto[0]);
+      }
+
+      const res = await createDoctor(formData).unwrap();
+      if (res?.success) {
+        toast.success('Doctor registered successfully!');
+        setIsModalOpen(false);
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || 'Failed to register doctor');
+    }
+  };
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -23,10 +62,42 @@ const DoctorManagement = () => {
           </h2>
           <p className="text-slate-500 dark:text-slate-400 font-medium">Review and manage professional medical profiles on the platform.</p>
         </div>
-        <Button className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm uppercase tracking-widest shadow-xl hover:bg-teal-500 transition-all flex items-center gap-3">
-          <Icons.userPlus className="w-5 h-5" />
-          Add New Doctor
-        </Button>
+        <HBModal
+          title="Register New Doctor"
+          description="Enter the professional credentials to onboard a new medical specialist."
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          className="sm:max-w-[800px]"
+          trigger={
+            <Button className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm uppercase tracking-widest shadow-xl hover:bg-teal-500 transition-all flex items-center gap-3">
+              <Icons.userPlus className="w-5 h-5" />
+              Add New Doctor
+            </Button>
+          }
+        >
+          <HBForm onSubmit={onSubmit} className="space-y-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />
+                <HBInput name="email" label="Email Address" type="email" icon={<Icons.mail className="w-4 h-4" />} />
+                <HBInput name="password" label="Password" type="password" icon={<Icons.lock className="w-4 h-4" />} />
+                <HBInput name="phone" label="Contact Number" icon={<Icons.phone className="w-4 h-4" />} />
+                <HBInput name="registrationNumber" label="Registration ID" icon={<Icons.shieldCheck className="w-4 h-4" />} />
+                <HBInput name="designation" label="Designation" icon={<Icons.award className="w-4 h-4" />} />
+                <HBInput name="qualification" label="Qualification" icon={<Icons.graduationCap className="w-4 h-4" />} />
+                <HBInput name="currentWorkingPlace" label="Current Workplace" icon={<Icons.mapPin className="w-4 h-4" />} />
+                <HBInput name="experience" label="Experience (Years)" type="number" icon={<Icons.activity className="w-4 h-4" />} />
+                <HBInput name="appointmentFee" label="Consultation Fee ($)" type="number" icon={<Icons.creditCard className="w-4 h-4" />} />
+                <HBSelect name="gender" label="Gender" options={[{ key: 'MALE', label: 'Male' }, { key: 'FEMALE', label: 'Female' }]} />
+             </div>
+             <Button 
+               type="submit" 
+               disabled={isCreating}
+               className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest transition-all"
+             >
+               {isCreating ? <Icons.loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Registration'}
+             </Button>
+          </HBForm>
+        </HBModal>
       </div>
 
       {/* Stats Summary */}

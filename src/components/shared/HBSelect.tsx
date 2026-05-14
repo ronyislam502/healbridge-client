@@ -15,7 +15,8 @@ import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 
 interface HBSelectProps extends IInput {
   options: {
-    key: string;
+    key?: string;
+    value?: string;
     label: string;
   }[];
   labelRight?: React.ReactNode;
@@ -75,10 +76,10 @@ const HBSelect = ({
               <SelectValue placeholder={placeholder || `Select ${label}`} />
             </SelectTrigger>
             <SelectContent className="bg-slate-900 border-slate-800 text-white">
-              {options.map((option) => (
+              {options.map((option, index) => (
                 <SelectItem 
-                  key={option.key} 
-                  value={option.key}
+                  key={option.key || option.value || index} 
+                  value={option.value || option.key || ""}
                   className="focus:bg-teal-600 focus:text-white cursor-pointer"
                 >
                   {option.label}

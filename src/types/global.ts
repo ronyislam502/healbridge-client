@@ -11,6 +11,7 @@ export type IInput = {
   name: string;
   disabled?: boolean;
   placeholder?: string;
+  defaultValue?: string | number;
 };
 
 export type TError = {

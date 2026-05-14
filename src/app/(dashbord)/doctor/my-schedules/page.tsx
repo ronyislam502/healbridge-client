@@ -1,16 +1,15 @@
 'use client';
 
-import * as React from 'react';
-import { Icons } from '@/components/shared/Icons';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { useGetMySchedulesQuery, useDeleteDoctorScheduleMutation } from '@/redux/features/doctorSchedule/doctorScheduleApi';
-import { format } from 'date-fns';
 import { HBTable } from '@/components/shared/HBTable';
 import { toast } from 'sonner';
 import { HBSuspense } from '@/components/shared/HBSuspense';
+import { format } from 'date-fns';
 import { IDoctorSchedule } from '@/types/schedule';
 import { TError } from '@/types/global';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/shared/Icons';
 
 const MySchedules = () => {
   const { data, isLoading } = useGetMySchedulesQuery({});

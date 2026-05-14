@@ -27,6 +27,13 @@ const userApi = baseApi?.injectEndpoints({
       },
       providesTags: ["user"],
     }),
+    getSingleUser: builder.query({
+      query: (email: string) => ({
+        url: `/users/${email}`,
+        method: "GET",
+      }),
+      providesTags: ["user"],
+    }),
     myProfil: builder.query({
       query: () => ({
         url: `/users/my-profile`,
@@ -42,6 +49,14 @@ const userApi = baseApi?.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    updateMyProfile: builder.mutation({
+      query: (data) => ({
+        url: `/users/update-my-profile`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
     signUp: builder.mutation({
       query: (userInfo) => ({
         url: "/users/create-patient",
@@ -49,12 +64,32 @@ const userApi = baseApi?.injectEndpoints({
         body: userInfo,
       }),
     }),
+    createAdmin: builder.mutation({
+      query: (data) => ({
+        url: "/users/create-admin",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    updateUserStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/users/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
 export const {
   useAllUsersQuery,
+  useGetSingleUserQuery,
   useMyProfilQuery,
   useUpdateUserMutation,
+  useUpdateMyProfileMutation,
   useSignUpMutation,
+  useCreateAdminMutation,
+  useUpdateUserStatusMutation,
 } = userApi;

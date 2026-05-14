@@ -19,6 +19,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { adminLinks, doctorLinks, patientLinks } from "./constants";
+import { useMyProfilQuery } from "@/redux/features/user/userApi";
 import { useEffect, useState } from "react";
 
 
@@ -27,12 +28,15 @@ const DashboardSidebar = () => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectCurrentUser);
+  const { data: profileData } = useMyProfilQuery({}, { skip: !mounted });
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
+
+  const displayUser = profileData?.data || user;
 
   let menuItems:any[] = [];
 
@@ -96,12 +100,16 @@ const DashboardSidebar = () => {
       {/* Bottom Profile / Logout */}
       <SidebarFooter className="p-6 border-t border-slate-800 bg-slate-900">
         <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:bg-transparent">
-          <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center flex-shrink-0">
-            <Icons.userCheck className="w-5 h-5 text-teal-400" />
+          <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {displayUser?.avatar ? (
+              <Image src={displayUser.avatar} alt="Avatar" width={40} height={40} className="w-full h-full object-cover" />
+            ) : (
+              <Icons.userCheck className="w-5 h-5 text-teal-400" />
+            )}
           </div>
           <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-black text-white truncate italic">{user?.name || 'User'}</p>
-            <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{user?.role || 'Guest'}</p>
+            <p className="text-sm font-black text-white truncate italic">{displayUser?.name || 'User'}</p>
+            <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{displayUser?.role || 'Guest'}</p>
           </div>
         </div>
 

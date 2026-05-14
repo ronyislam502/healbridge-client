@@ -19,7 +19,7 @@ const LoginPage = () => {
           className="object-cover opacity-40"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-900/40 via-slate-950/80 to-slate-950" />
+        <div className="absolute inset-0 from-teal-900/40 via-slate-950/80 to-slate-950" />
       </div>
 
       {/* Decorative Blur Blobs */}
