@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import { HBForm } from '@/components/shared/HBForm';
 import { HBInput } from '@/components/shared/HBInput';
 import { HBSelect } from '@/components/shared/HBSelect';
-import { HBFileUpload } from '@/components/shared/HBFileUpload';
 import { HBTextarea } from '@/components/shared/HBTextarea';
 import { Button } from '@/components/ui/button';
 import { FieldValues } from 'react-hook-form';
@@ -21,20 +20,36 @@ const PatientProfile = () => {
   const { data, isLoading } = useMyProfilQuery({});
   const [updateProfile, { isLoading: isUpdating }] = useUpdateMyProfileMutation();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(null);
 
   const profileData = data?.data;
 
-  console.log("profile", profileData)
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      console.log('file', file)
+        if (file) {
+          setSelectedImage(file);
+          const url = URL.createObjectURL(file);
+          setPreview(url);
+        }
+      };
 
-  const onSubmit = async (values: FieldValues) => {
+  const onSubmit = async (data: FieldValues) => {
     try {
       const formData = new FormData();
-      const { profilePhoto, ...dataValues } = values;
-      formData.append('data', JSON.stringify(dataValues));
-      
-      if (profilePhoto && profilePhoto[0]) {
-        formData.append('avatar', profilePhoto[0]);
+      const patientData = {
+        name: data?.name,
+        phone: data?.phone,
+        gender: data?.gender,
+        address: data?.address,
       }
+      formData.append('data', JSON.stringify(patientData));
+      
+      if (selectedImage) {
+        formData.append("avatar", selectedImage);
+      }
+      
 
       const res = await updateProfile(formData).unwrap();
       if (res?.success) {
@@ -97,11 +112,14 @@ const PatientProfile = () => {
               address: profileData?.address,
             }}
           >
-            <HBFileUpload 
-              name="profilePhoto" 
-              label="Profile Image" 
-              defaultValue={profileData?.avatar}
-            />
+            <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+              {preview ? (
+                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                  )}
+                <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />
               <HBInput name="email" label="Email" disabled icon={<Icons.mail className="w-4 h-4" />} />

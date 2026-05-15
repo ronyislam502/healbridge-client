@@ -60,7 +60,8 @@ export const LoginForm = () => {
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
+    const file = e.target.files?.[0];
+    console.log('file', file)
       if (file) {
         setSelectedImage(file);
         const url = URL.createObjectURL(file);
@@ -80,11 +81,12 @@ export const LoginForm = () => {
         }
       };
      
+      console.log(registerData)
       const formData = new FormData();
       formData.append("data", JSON.stringify(registerData));
       
-      if (data.avatar && data.avatar[0]) {
-        formData.append("avatar", data.avatar[0]);
+      if (selectedImage) {
+        formData.append("avatar", selectedImage);
       }
       
       const res = await signUp(formData).unwrap();

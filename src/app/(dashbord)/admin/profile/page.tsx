@@ -2,10 +2,8 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { cn } from '@/lib/utils';
 import { HBForm } from '@/components/shared/HBForm';
 import { HBInput } from '@/components/shared/HBInput';
-import { HBFileUpload } from '@/components/shared/HBFileUpload';
 import { Button } from '@/components/ui/button';
 import { FieldValues } from 'react-hook-form';
 import Image from 'next/image';
@@ -18,8 +16,20 @@ const AdminProfile = () => {
   const { data, isLoading } = useMyProfilQuery({});
   const [updateProfile, { isLoading: isUpdating }] = useUpdateMyProfileMutation();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(null);
 
   const profileData = data?.data;
+
+   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        console.log('file', file)
+          if (file) {
+            setSelectedImage(file);
+            const url = URL.createObjectURL(file);
+            setPreview(url);
+          }
+        };
 
   const onSubmit = async (values: FieldValues) => {
     try {
@@ -27,8 +37,8 @@ const AdminProfile = () => {
       const { profilePhoto, ...dataValues } = values;
       formData.append('data', JSON.stringify(dataValues));
       
-      if (profilePhoto && profilePhoto[0]) {
-        formData.append('image', profilePhoto[0]);
+       if (selectedImage) {
+        formData.append("avatar", selectedImage);
       }
 
       const res = await updateProfile(formData).unwrap();
@@ -85,11 +95,14 @@ const AdminProfile = () => {
             }}
           >
             <div className="flex flex-col items-center">
-              <HBFileUpload 
-                name="profilePhoto" 
-                label="Profile Image" 
-                defaultValue={profileData?.avatar}
-              />
+              <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+                              {preview ? (
+                                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                                    ) : (
+                                  <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                                  )}
+                                  <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+                            </div>
             </div>
             <div className="grid grid-cols-1 gap-4">
               <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />

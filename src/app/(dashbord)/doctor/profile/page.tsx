@@ -6,7 +6,6 @@ import { HBForm } from '@/components/shared/HBForm';
 import { HBInput } from '@/components/shared/HBInput';
 import { HBSelect } from '@/components/shared/HBSelect';
 import { HBTextarea } from '@/components/shared/HBTextarea';
-import { HBFileUpload } from '@/components/shared/HBFileUpload';
 import { Button } from '@/components/ui/button';
 import { FieldValues } from 'react-hook-form';
 import Image from 'next/image';
@@ -44,30 +43,45 @@ const DoctorProfile = () => {
   const { data: allSpecialties } = useGetAllSpecialtiesQuery({});
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isSpecialtyModalOpen, setIsSpecialtyModalOpen] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(null);
 
   const profileData = data?.data;
 
+   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      console.log('file', file)
+        if (file) {
+          setSelectedImage(file);
+          const url = URL.createObjectURL(file);
+          setPreview(url);
+        }
+      };
+
   //  console.log("avtr", profileData)
 
-  const onSubmit = async (values: FieldValues) => {
+  const onSubmit = async (data: FieldValues) => {
     try {
       const formData = new FormData();
-      const { avatar, experience, appointmentFee, specialty, ...dataValues } = values;
-
-      console.log("avatar", avatar)
       
-      const payload = {
-        ...dataValues,
-        experience: Number(experience),
-        appointmentFee: Number(appointmentFee),
+      const doctorData = {
+        name: data?.name,
+        phone: data?.phone,
+        avatar:data.avatar,
+        gender: data?.gender,
+        address: data?.address,
+        designation: data?.designation,
+        qualification: data?.qualification,
+        experience: Number(data?.experience),
+        appointmentFee: Number(data?.appointmentFee),
       };
       
-      formData.append('data', JSON.stringify(payload));
+      formData.append('data', JSON.stringify(doctorData));
       
-      if (avatar && avatar[0]) {
-        formData.append('avatar', avatar[0]);
-        console.log("Selected File:", avatar[0]);
+      if (selectedImage) {
+        formData.append("avatar", selectedImage);
       }
+      
 
       const res = await updateProfile(formData).unwrap();
       if (res?.success) {
@@ -181,11 +195,14 @@ const DoctorProfile = () => {
             }}
           >
             <div className="flex flex-col items-center mb-6">
-              <HBFileUpload 
-                name="avatar" 
-                label="Profile Photo" 
-                defaultValue={profileData?.avatar}
-              />
+              <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+                {preview ? (
+                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                      ) : (
+                    <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                    )}
+                    <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+              </div>
             </div>
 
             <div className="space-y-6">
