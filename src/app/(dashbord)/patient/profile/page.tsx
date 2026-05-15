@@ -315,131 +315,178 @@ const PatientProfile = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Left Column: Avatar & Quick Stats */}
-        <div className="space-y-8">
-          <div className="bg-white dark:bg-slate-900 p-10 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-2xl relative overflow-hidden group">
-            <div className="relative z-10 flex flex-col items-center text-center space-y-6">
-              <div className="relative w-40 h-40 rounded-full border-8 border-slate-50 dark:border-slate-800 shadow-2xl overflow-hidden">
-                <Image 
-                  src={profileData?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop'} 
-                  alt="Avatar" 
-                  fill 
-                  className="object-cover"
-                />
+        <div className="space-y-10">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-[3rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            <div className="relative bg-white dark:bg-slate-900 p-10 rounded-[3rem] border border-white/20 dark:border-slate-800 shadow-2xl overflow-hidden text-center backdrop-blur-xl">
+              <div className="relative z-10 flex flex-col items-center space-y-6">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-teal-500/10 rounded-full blur-2xl animate-pulse"></div>
+                  <div className="relative w-44 h-44 rounded-full border-8 border-white dark:border-slate-800 shadow-inner overflow-hidden ring-4 ring-teal-500/20">
+                    <Image 
+                      src={profileData?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop'} 
+                      alt="Avatar" 
+                      fill 
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-black text-slate-900 dark:text-white italic tracking-tight">{profileData?.name}</h3>
+                  <div className="flex items-center justify-center gap-2 mt-2">
+                    <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                    <p className="text-teal-500 font-black uppercase tracking-[0.2em] text-[10px] italic">Patient Profile</p>
+                  </div>
+                </div>
+                
+                <div className="w-full pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center gap-6">
+                   <div className="text-center">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-1">Status</p>
+                      <p className="text-xs font-black text-emerald-500 uppercase italic tracking-wider">{profileData?.status}</p>
+                   </div>
+                   <div className="w-px h-8 bg-slate-100 dark:bg-slate-800"></div>
+                   <div className="text-center">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-1">ID</p>
+                      <p className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase italic tracking-wider">#{profileData?.id?.slice(0, 5)}</p>
+                   </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-3xl font-black text-slate-900 dark:text-white italic tracking-tight">{profileData?.name}</h3>
-                <p className="text-teal-500 font-black uppercase tracking-widest text-xs italic mt-1">Patient ID: {profileData?.id?.slice(0, 8)}</p>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase italic tracking-widest border border-emerald-500/20">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                {profileData?.status} Member
-              </div>
+              <Icons.heartPulse className="absolute -bottom-10 -right-10 w-40 h-40 text-teal-500/5 rotate-12" />
             </div>
-            <Icons.heartPulse className="absolute -bottom-10 -right-10 w-40 h-40 text-teal-500/5 rotate-12" />
           </div>
 
-          <div className="bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="bg-slate-900 dark:bg-slate-950 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
              <div className="relative z-10 flex items-center gap-6">
-                <div className="w-16 h-16 rounded-[2rem] bg-teal-500/20 flex items-center justify-center text-teal-400 border border-teal-500/20">
+                <div className="w-16 h-16 rounded-[2rem] bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-teal-500/20 group-hover:scale-110 transition-transform duration-500">
                   <Icons.shieldCheck className="w-8 h-8" />
                 </div>
                 <div>
-                   <p className="text-[10px] font-black text-teal-400/70 uppercase tracking-widest italic mb-1">Account Role</p>
-                   <p className="text-xl font-black italic uppercase tracking-wider">{profileData?.role}</p>
+                   <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] italic mb-1">Account Role</p>
+                   <p className="text-xl font-black italic uppercase tracking-widest">{profileData?.role}</p>
                 </div>
              </div>
-             <Icons.userCircle className="absolute -bottom-10 -right-10 w-40 h-40 text-white/5 rotate-12" />
+             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+               <Icons.userCircle className="w-32 h-32 rotate-12" />
+             </div>
           </div>
         </div>
 
         {/* Right Column: Detailed Info & Health Stats */}
-        <div className="lg:col-span-2 space-y-10">
-          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden">
-            <div className="relative z-10 space-y-12">
-               <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500">
-                    <Icons.activity className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Profile Information</h3>
+        <div className="lg:col-span-2 space-y-12">
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-white/20 dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden backdrop-blur-xl">
+            <div className="relative z-10 space-y-14">
+               <div className="flex items-center justify-between">
+                 <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500 shadow-inner">
+                      <Icons.userCircle className="w-7 h-7" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Identity Details</h3>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Personal verification info</p>
+                    </div>
+                 </div>
                </div>
 
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
                   {infoItems.map((item, index) => (
-                    <div key={index} className="space-y-3 group">
-                      <div className="flex items-center gap-3">
-                         <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors duration-300">
+                    <div key={index} className="space-y-4 group">
+                      <div className="flex items-center gap-4">
+                         <div className="w-11 h-11 rounded-2xl bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 group-hover:bg-teal-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-teal-500/20 transition-all duration-500 flex items-center justify-center">
                            {item.icon}
                          </div>
-                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{item.label}</p>
+                         <div className="flex-1">
+                           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-1">{item.label}</p>
+                           <p className="text-lg font-black text-slate-900 dark:text-white italic leading-tight">
+                            {item.value || '---'}
+                           </p>
+                         </div>
                       </div>
-                      <p className="text-lg font-black text-slate-900 dark:text-white italic pl-11">
-                        {item.value}
-                      </p>
                     </div>
                   ))}
                </div>
             </div>
+            <Icons.activity className="absolute -bottom-12 -right-12 w-64 h-64 text-slate-500/5 rotate-12" />
           </div>
 
           {/* Vitals & Health Data Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { label: 'Blood Group', value: profileData?.patientHealthData?.bloodGroup?.replace('_POSITIVE', '+')?.replace('_NEGATIVE', '-'), icon: <Icons.droplets className="w-6 h-6" />, color: 'bg-rose-500' },
-              { label: 'Height', value: profileData?.patientHealthData?.height || 'N/A', icon: <Icons.ruler className="w-6 h-6" />, color: 'bg-indigo-500' },
-              { label: 'Weight', value: profileData?.patientHealthData?.weight || 'N/A', icon: <Icons.weight className="w-6 h-6" />, color: 'bg-amber-500' },
-            ].map((stat, idx) => (
-              <div key={idx} className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl group hover:-translate-y-2 transition-all duration-500">
-                <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg", stat.color)}>
-                  {stat.icon}
-                </div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-1">{stat.label}</p>
-                <p className="text-2xl font-black text-slate-900 dark:text-white italic">{stat.value}</p>
+          <div>
+            <div className="flex items-center gap-4 mb-8 pl-4">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-500">
+                <Icons.heartPulse className="w-5 h-5" />
               </div>
-            ))}
+              <h3 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Vitals Overview</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { label: 'Blood Group', value: profileData?.patientHealthData?.bloodGroup?.replace('_POSITIVE', '+')?.replace('_NEGATIVE', '-'), icon: <Icons.droplets className="w-6 h-6" />, color: 'bg-rose-500', shadow: 'shadow-rose-500/20' },
+                { label: 'Height', value: profileData?.patientHealthData?.height || 'N/A', icon: <Icons.ruler className="w-6 h-6" />, color: 'bg-indigo-500', shadow: 'shadow-indigo-500/20' },
+                { label: 'Weight', value: profileData?.patientHealthData?.weight || 'N/A', icon: <Icons.weight className="w-6 h-6" />, color: 'bg-amber-500', shadow: 'shadow-amber-500/20' },
+              ].map((stat, idx) => (
+                <div key={idx} className="bg-white dark:bg-slate-900 p-10 rounded-[2.5rem] border border-white dark:border-slate-800 shadow-xl group hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
+                  <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-8 shadow-2xl relative z-10", stat.color, stat.shadow)}>
+                    {stat.icon}
+                  </div>
+                  <div className="relative z-10">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic mb-2">{stat.label}</p>
+                    <p className="text-3xl font-black text-slate-900 dark:text-white italic tracking-tighter">{stat.value}</p>
+                  </div>
+                  <div className={cn("absolute top-0 right-0 w-32 h-32 opacity-[0.03] rotate-12 -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-1000", stat.color)}>
+                     {stat.icon}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Medical Reports Gallery */}
-          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden">
-             <div className="relative z-10 space-y-8">
-                <div className="flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-white dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden">
+             <div className="relative z-10 space-y-10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                        <Icons.fileText className="w-6 h-6" />
+                      <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
+                        <Icons.fileText className="w-7 h-7" />
                       </div>
-                      <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Medical Reports</h3>
+                      <div>
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Medical Repository</h3>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{profileData?.medicalReport?.length || 0} Documents Archived</p>
+                      </div>
                    </div>
-                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest italic">{profileData?.medicalReport?.length || 0} Reports Found</p>
                 </div>
 
                 {profileData?.medicalReport?.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
                     {profileData.medicalReport.map((report: any, idx: number) => (
-                      <div key={idx} className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-md hover:shadow-2xl transition-all duration-500">
+                      <div key={idx} className="group relative aspect-[3/4] rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-700 bg-slate-50">
                         <img 
                           src={report.reportLink} 
                           alt={report.reportName} 
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-2 transition-transform duration-1000"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                           <p className="text-white font-black italic text-xs truncate mb-2">{report.reportName}</p>
-                           <a 
-                             href={report.reportLink} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="w-full py-2 rounded-xl bg-white text-slate-900 text-[10px] font-black uppercase tracking-widest text-center hover:bg-teal-500 hover:text-white transition-colors"
-                           >
-                             View Report
-                           </a>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500 flex flex-col justify-end p-6">
+                           <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                             <p className="text-white font-black italic text-xs truncate mb-4 drop-shadow-lg">{report.reportName}</p>
+                             <a 
+                               href={report.reportLink} 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="w-full py-3 rounded-xl bg-white text-slate-900 text-[10px] font-black uppercase tracking-[0.2em] text-center hover:bg-teal-500 hover:text-white transition-all duration-300 inline-block shadow-xl"
+                             >
+                               View File
+                             </a>
+                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-20 flex flex-col items-center justify-center text-center space-y-4 bg-slate-50 dark:bg-slate-800/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-700">
-                    <Icons.folderOpen className="w-16 h-16 text-slate-300" />
+                  <div className="py-24 flex flex-col items-center justify-center text-center space-y-6 bg-slate-50/50 dark:bg-slate-800/20 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-700">
+                    <div className="w-20 h-20 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center shadow-xl">
+                      <Icons.folderOpen className="w-10 h-10 text-slate-300" />
+                    </div>
                     <div>
-                      <p className="text-lg font-black text-slate-900 dark:text-white italic">No reports uploaded yet</p>
-                      <p className="text-sm text-slate-500 font-medium max-w-xs mx-auto">Upload your medical documents to keep them organized and accessible.</p>
+                      <p className="text-xl font-black text-slate-900 dark:text-white italic">Archive is Empty</p>
+                      <p className="text-sm text-slate-500 font-medium max-w-xs mx-auto mt-2">No medical records found. Use the Health Profile button to upload your first document.</p>
                     </div>
                   </div>
                 )}
