@@ -28,7 +28,6 @@ export const patientLinks = [
   { label: 'Dashboard', href: '/patient', icon: Icons.activity },
   { label: 'Appointments', href: '/patient/appointments', icon: Icons.calendar },
   { label: 'Prescriptions', href: '/patient/prescriptions', icon: Icons.scrollText },
-  { label: 'Medical Reports', href: '/patient/medical-reports', icon: Icons.fileText },
   { label: 'Payments', href: '/patient/payments', icon: Icons.creditCard },
   { label: 'Profile', href: '/patient/profile', icon: Icons.userCircle },
 ];

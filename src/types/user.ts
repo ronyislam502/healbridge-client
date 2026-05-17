@@ -44,3 +44,22 @@ export type TPatient= {
   createdAt: string
   updatedAt: string
 }
+
+
+const healthDataSchema = z.object({
+  bloodGroup: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  hasAllergies: z.string().optional(),
+  hasDiabetes: z.string().optional(),
+  smokingStatus: z.string().optional(),
+  pregnancyStatus: z.string().optional(),
+  hasPastSurgeries: z.string().optional(),
+  recentAnxiety: z.string().optional(),
+  recentDepression: z.string().optional(),
+  maritalStatus: z.string().optional(),
+  dietaryPreferences: z.string().optional(),
+  mentalHealthHistory: z.string().optional(),
+  immunizationStatus: z.string().optional(),
+});

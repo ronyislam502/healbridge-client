@@ -32,6 +32,37 @@ const patientApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    createHealthData: builder.mutation({
+      query: (data) => ({
+        url: `/patients/health-data`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    updateHealthData: builder.mutation({
+      query: (data) => ({
+        url: `/patients/health-data`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    createMedicalReport: builder.mutation({
+      query: (data) => ({
+        url: `/patients/medical-report`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    deleteMedicalReport: builder.mutation({
+      query: (id: string) => ({
+        url: `/patients/medical-report/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
@@ -40,4 +71,8 @@ export const {
   useGetSinglePatientQuery,
   useUpdatePatientMutation,
   useDeletePatientMutation,
+  useCreateHealthDataMutation,
+  useUpdateHealthDataMutation,
+  useCreateMedicalReportMutation,
+  useDeleteMedicalReportMutation,
 } = patientApi;
