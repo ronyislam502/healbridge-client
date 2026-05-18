@@ -18,8 +18,8 @@ const patientApi = baseApi.injectEndpoints({
       providesTags: ["user"],
     }),
     updatePatient: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/patients/update/${id}`,
+      query: (data) => ({
+        url: `/patients/update`,
         method: "PATCH",
         body: data,
       }),

@@ -8,7 +8,8 @@ import { useMyProfilQuery } from '@/redux/features/user/userApi';
 import { HBProfileSkeleton } from '@/components/shared/HBSkeletons';
 import { CreateMedicalReportModal } from './_components/CreateMedicalReportModal';
 import { UpdateProfileModal } from './_components/UpdateProfileModal';
-
+import { UpdateHealthProfileModal } from './_components/UpdateHealthProfileModal';
+import { MedicalReportsGallery } from './_components/MedicalReportsGallery';
 
 const PatientProfile = () => {
   const { data, isLoading } = useMyProfilQuery({});
@@ -42,7 +43,7 @@ const PatientProfile = () => {
 
         <div className="flex flex-wrap items-center gap-4">
           <UpdateProfileModal profileData={profileData} />
-          {/* Create Medical Report Modal */}
+          <UpdateHealthProfileModal profileData={profileData} />
           <CreateMedicalReportModal profileData={profileData} />
         </div>
       </div>
@@ -106,7 +107,8 @@ const PatientProfile = () => {
         </div>
 
         {/* Right Column: Detailed Info & Health Stats */}
-        <div className="lg:col-span-2 space-y-12">
+        <div className="lg:col-span-2 space-y-10">
+          {/* Card 1: Identity Details */}
           <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-white/20 dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden backdrop-blur-xl">
             <div className="relative z-10 space-y-14">
                <div className="flex items-center justify-between">
@@ -141,7 +143,190 @@ const PatientProfile = () => {
             </div>
             <Icons.activity className="absolute -bottom-12 -right-12 w-64 h-64 text-slate-500/5 rotate-12" />
           </div>
+
+          {/* Card 2: Health & Clinical Details */}
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-white/20 dark:border-slate-800 shadow-2xl p-10 lg:p-14 relative overflow-hidden backdrop-blur-xl">
+            <div className="relative z-10 space-y-12">
+               <div className="flex items-center justify-between">
+                 <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500 shadow-inner">
+                      <Icons.activity className="w-7 h-7" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Health & Clinical Profile</h3>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Personal health metrics and indicators</p>
+                    </div>
+                 </div>
+               </div>
+
+               {/* Metrics Grid */}
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 {/* Blood Group */}
+                 <div className="p-6 rounded-[2rem] bg-rose-500/5 dark:bg-rose-500/10 border border-rose-500/25 flex flex-col items-center justify-center text-center space-y-3 relative group hover:scale-[1.03] transition-all duration-300">
+                   <div className="w-12 h-12 rounded-full bg-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
+                     <Icons.heartPulse className="w-6 h-6 animate-pulse" />
+                   </div>
+                   <div>
+                     <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest italic">Blood Group</p>
+                     <p className="text-2xl font-black text-rose-600 dark:text-rose-400 italic mt-1">
+                       {profileData?.patientHealthData?.bloodGroup?.replace('_POSITIVE', '+')?.replace('_NEGATIVE', '-') || 'Not Set'}
+                     </p>
+                   </div>
+                 </div>
+
+                 {/* Height */}
+                 <div className="p-6 rounded-[2rem] bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-500/25 flex flex-col items-center justify-center text-center space-y-3 relative group hover:scale-[1.03] transition-all duration-300">
+                   <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                     <Icons.ruler className="w-6 h-6" />
+                   </div>
+                   <div>
+                     <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest italic">Height</p>
+                     <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400 italic mt-1">
+                       {profileData?.patientHealthData?.height || 'Not Set'}
+                     </p>
+                   </div>
+                 </div>
+
+                 {/* Weight */}
+                 <div className="p-6 rounded-[2rem] bg-sky-500/5 dark:bg-sky-500/10 border border-sky-500/25 flex flex-col items-center justify-center text-center space-y-3 relative group hover:scale-[1.03] transition-all duration-300">
+                   <div className="w-12 h-12 rounded-full bg-sky-500 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+                     <Icons.weight className="w-6 h-6" />
+                   </div>
+                   <div>
+                     <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest italic">Weight</p>
+                     <p className="text-2xl font-black text-sky-600 dark:text-sky-400 italic mt-1">
+                       {profileData?.patientHealthData?.weight || 'Not Set'}
+                     </p>
+                   </div>
+                 </div>
+               </div>
+
+               {/* Indicators Grid */}
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                 {/* Allergies */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Allergies</p>
+                   {profileData?.patientHealthData?.hasAllergies ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 font-black uppercase text-[10px] italic border border-red-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Diabetes */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Diabetes</p>
+                   {profileData?.patientHealthData?.hasDiabetes ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 font-black uppercase text-[10px] italic border border-red-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Smoking */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Smoker</p>
+                   {profileData?.patientHealthData?.smokingStatus ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 font-black uppercase text-[10px] italic border border-red-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Past Surgeries */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Past Surgeries</p>
+                   {profileData?.patientHealthData?.hasPastSurgeries ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-500 font-black uppercase text-[10px] italic border border-amber-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Anxiety */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Anxiety</p>
+                   {profileData?.patientHealthData?.recentAnxiety ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 font-black uppercase text-[10px] italic border border-red-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Depression */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Depression</p>
+                   {profileData?.patientHealthData?.recentDepression ? (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 font-black uppercase text-[10px] italic border border-red-500/20">Yes</span>
+                   ) : (
+                     <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                   )}
+                 </div>
+
+                 {/* Marital Status */}
+                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Marital Status</p>
+                   <span className="w-fit px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-500 font-black uppercase text-[10px] italic border border-blue-500/20">
+                     {profileData?.patientHealthData?.maritalStatus?.toLowerCase() || 'unmarried'}
+                   </span>
+                 </div>
+
+                 {/* Pregnancy Status (Conditional) */}
+                 {profileData?.gender === 'FEMALE' && (
+                   <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col justify-between space-y-3">
+                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Pregnant</p>
+                     {profileData?.patientHealthData?.pregnancyStatus ? (
+                       <span className="w-fit px-3 py-1.5 rounded-xl bg-pink-500/10 text-pink-500 font-black uppercase text-[10px] italic border border-pink-500/20">Yes</span>
+                     ) : (
+                       <span className="w-fit px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-black uppercase text-[10px] italic border border-emerald-500/20">No</span>
+                     )}
+                   </div>
+                 )}
+               </div>
+
+               {/* Detailed Information Rows */}
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-6 border-t border-slate-100 dark:border-slate-800">
+                 {/* Dietary & DOB */}
+                 <div className="space-y-6">
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-2">Dietary Preferences</p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        {profileData?.patientHealthData?.dietaryPreferences || 'No specific diet preferences.'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-2">Date of Birth</p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        {profileData?.patientHealthData?.dateOfBirth || 'Not provided.'}
+                      </p>
+                    </div>
+                 </div>
+
+                 {/* Mental & Immunization */}
+                 <div className="space-y-6">
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-2">Mental Health History</p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        {profileData?.patientHealthData?.mentalHealthHistory || 'No historical records logged.'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic mb-2">Immunization & Vaccines</p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        {profileData?.patientHealthData?.immunizationStatus || 'No logged vaccine records.'}
+                      </p>
+                    </div>
+                 </div>
+               </div>
+            </div>
+            <Icons.heartPulse className="absolute -bottom-12 -right-12 w-64 h-64 text-slate-500/5 rotate-12" />
+          </div>
         </div>
+      </div>
+
+      {/* Full Width Bottom Column: Medical Repository */}
+      <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+        <MedicalReportsGallery profileData={profileData} />
       </div>
     </div>
   );
