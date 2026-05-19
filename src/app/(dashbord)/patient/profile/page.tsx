@@ -8,7 +8,8 @@ import { useMyProfilQuery } from '@/redux/features/user/userApi';
 import { HBProfileSkeleton } from '@/components/shared/HBSkeletons';
 import { CreateMedicalReportModal } from './_components/CreateMedicalReportModal';
 import { UpdateProfileModal } from './_components/UpdateProfileModal';
-import { UpdateHealthProfileModal } from './_components/UpdateHealthProfileModal';
+import { UpdateHealthDataModal } from './_components/UpdateHealthDataModal';
+import { CreateHealthDataModal } from './_components/CreateHealthDataModal';
 import { MedicalReportsGallery } from './_components/MedicalReportsGallery';
 
 const PatientProfile = () => {
@@ -16,7 +17,6 @@ const PatientProfile = () => {
   
   const profileData = data?.data;
 
-  console.log("data", profileData)
 
   if (isLoading) {
     return <HBProfileSkeleton />;
@@ -43,7 +43,11 @@ const PatientProfile = () => {
 
         <div className="flex flex-wrap items-center gap-4">
           <UpdateProfileModal profileData={profileData} />
-          <UpdateHealthProfileModal profileData={profileData} />
+          {profileData?.patientHealthData ? (
+            <UpdateHealthDataModal profileData={profileData} />
+          ) : (
+            <CreateHealthDataModal profileData={profileData} />
+          )}
           <CreateMedicalReportModal profileData={profileData} />
         </div>
       </div>
@@ -59,7 +63,7 @@ const PatientProfile = () => {
                   <div className="absolute -inset-4 bg-teal-500/10 rounded-full blur-2xl animate-pulse"></div>
                   <div className="relative w-44 h-44 rounded-full border-8 border-white dark:border-slate-800 shadow-inner overflow-hidden ring-4 ring-teal-500/20">
                     <Image 
-                      src={profileData?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop'} 
+                      src={profileData?.avatar} 
                       alt="Avatar" 
                       fill 
                       className="object-cover group-hover:scale-110 transition-transform duration-700"

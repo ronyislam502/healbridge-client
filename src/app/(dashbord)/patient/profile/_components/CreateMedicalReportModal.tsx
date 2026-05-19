@@ -8,7 +8,7 @@ import { HBForm } from '@/components/shared/HBForm';
 import { HBInput } from '@/components/shared/HBInput';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useUpdatePatientMutation } from '@/redux/features/patient/patientApi';
+import { useCreateMedicalReportMutation } from '@/redux/features/patient/patientApi';
 
 interface CreateMedicalReportModalProps {
   profileData: any;
@@ -16,7 +16,7 @@ interface CreateMedicalReportModalProps {
 
 export const CreateMedicalReportModal = ({ profileData }: CreateMedicalReportModalProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [updatePatient, { isLoading: isUploading }] = useUpdatePatientMutation();
+  const [createMedicalReport, { isLoading: isUploading }] = useCreateMedicalReportMutation();
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
 
@@ -46,16 +46,10 @@ export const CreateMedicalReportModal = ({ profileData }: CreateMedicalReportMod
 
     try {
       const formData = new FormData();
-      const payload = {
-        medicalReport: {
-          reportName: values?.reportName || 'Medical Report',
-        }
-      };
-      
-      formData.append('data', JSON.stringify(payload));
+      formData.append('data', JSON.stringify({ reportName: values?.reportName || 'Medical Report' }));
       formData.append('image', selectedFile);
-      
-      const res = await updatePatient(formData).unwrap();
+
+      const res = await createMedicalReport(formData).unwrap();
       if (res?.success) {
         toast.success('Medical report uploaded successfully!');
         setSelectedFile(null);

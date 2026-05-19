@@ -4,13 +4,13 @@ import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { Button } from '@/components/ui/button';
 import { useGetAllSchedulesQuery } from '@/redux/features/schedule/scheduleApi';
-import { useCreateDoctorScheduleMutation } from '@/redux/features/doctorSchedule/doctorScheduleApi';
+import { useCreateDoctorScheduleMutation, useGetMySchedulesQuery } from '@/redux/features/doctorSchedule/doctorScheduleApi';
 import { toast } from 'sonner';
 import { ScheduleFilterBar } from '@/components/dashboard/ScheduleFilterBar';
 import { ScheduleCard } from '@/components/dashboard/ScheduleCard';
 import { HBPagination } from '@/components/shared/HBPagination';
 import { HBSuspense } from '@/components/shared/HBSuspense';
-import { ISchedule, IScheduleFilters } from '@/types/schedule';
+import { ISchedule, IScheduleFilters, IDoctorSchedule } from '@/types/schedule';
 import { TError } from '@/types/global';
 
 const DoctorScheduleManagement = () => {
@@ -23,6 +23,27 @@ const DoctorScheduleManagement = () => {
     startTime: '',
     endTime: '',
   });
+
+  // Load selection from localStorage on mount (client-side only)
+  React.useEffect(() => {
+    const saved = localStorage.getItem('doctor_selected_schedules');
+    if (saved) {
+      try {
+        setSelectedSchedules(JSON.parse(saved));
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, []);
+
+  // Persist selection to localStorage when it changes
+  React.useEffect(() => {
+    if (selectedSchedules.length > 0) {
+      localStorage.setItem('doctor_selected_schedules', JSON.stringify(selectedSchedules));
+    } else {
+      localStorage.removeItem('doctor_selected_schedules');
+    }
+  }, [selectedSchedules]);
   
   const { data, isLoading, isFetching } = useGetAllSchedulesQuery({
     page,
@@ -31,11 +52,18 @@ const DoctorScheduleManagement = () => {
   }, {
     refetchOnMountOrArgChange: true
   });
+
+  const { data: mySchedulesData } = useGetMySchedulesQuery({});
   
   const [createDoctorSchedule, { isLoading: isAssigning }] = useCreateDoctorScheduleMutation();
   
   const schedules: ISchedule[] = data?.data || [];
   const meta = data?.meta;
+  const mySchedules: IDoctorSchedule[] = mySchedulesData?.data || [];
+
+  const assignedScheduleIds = React.useMemo(() => {
+    return mySchedules.map((ms) => ms.scheduleId);
+  }, [mySchedules]);
 
   const handleFilterChange = (newFilters: Partial<IScheduleFilters>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
@@ -59,6 +87,7 @@ const DoctorScheduleManagement = () => {
       if (res) {
         toast.success("Schedules assigned successfully!");
         setSelectedSchedules([]);
+        localStorage.removeItem('doctor_selected_schedules');
       }
     } catch (error) {
       const err = error as TError;
@@ -103,6 +132,7 @@ const DoctorScheduleManagement = () => {
                   startDateTime={schedule.startDateTime}
                   endDateTime={schedule.endDateTime}
                   isSelected={selectedSchedules.includes(schedule.id)}
+                  isAssigned={assignedScheduleIds.includes(schedule.id)}
                   onSelect={handleSelect}
                 />
               ))}

@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { toast } from 'sonner';
 import { useDeleteMedicalReportMutation } from '@/redux/features/patient/patientApi';
+import { toast } from 'sonner';
 
 interface MedicalReportsGalleryProps {
   profileData: any;

@@ -47,16 +47,23 @@ export type TQueryParam = {
 };
 
 
-export const maritalStatus=[{ key: 'MARRIED', label: 'Married' }, { key: 'UNMARRIED', label: 'Unmarried' }]
-export const options = [{ key: 'true', label: 'Yes' }, { key: 'false', label: 'No' }]
-export const bloods=[
-              { key: 'NONE', label: 'None / Unknown' },
-              { key: 'A_POSITIVE', label: 'A+' },
-              { key: 'A_NEGATIVE', label: 'A-' },
-              { key: 'B_POSITIVE', label: 'B+' },
-              { key: 'B_NEGATIVE', label: 'B-' },
-              { key: 'AB_POSITIVE', label: 'AB+' },
-              { key: 'AB_NEGATIVE', label: 'AB-' },
-              { key: 'O_POSITIVE', label: 'O+' },
-              { key: 'O_NEGATIVE', label: 'O-' },
-            ]
+export const bloodGroupOptions = [
+    { value: 'A_POSITIVE', label: 'A+' },
+    { value: 'B_POSITIVE', label: 'B+' },
+    { value: 'O_POSITIVE', label: 'O+' },
+    { value: 'AB_POSITIVE', label: 'AB+' },
+    { value: 'A_NEGATIVE', label: 'A-' },
+    { value: 'B_NEGATIVE', label: 'B-' },
+    { value: 'O_NEGATIVE', label: 'O-' },
+    { value: 'AB_NEGATIVE', label: 'AB-' },
+  ];
+
+ export const maritalStatusOptions = [
+    { value: 'MARRIED', label: 'Married' },
+    { value: 'UNMARRIED', label: 'Unmarried' },
+  ];
+
+export  const booleanOptions = [
+    { value: 'true', label: 'Yes' },
+    { value: 'false', label: 'No' },
+  ];

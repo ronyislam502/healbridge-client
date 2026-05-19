@@ -17,36 +17,22 @@ const patientApi = baseApi.injectEndpoints({
       }),
       providesTags: ["user"],
     }),
-    updatePatient: builder.mutation({
-      query: (data) => ({
-        url: `/patients/update`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["user"],
-    }),
-    deletePatient: builder.mutation({
-      query: (id: string) => ({
-        url: `/patients/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["user"],
-    }),
-    createHealthData: builder.mutation({
+
+    createPatientHealthData: builder.mutation({
       query: (data) => ({
         url: `/patients/health-data`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["user", "patient"],
     }),
-    updateHealthData: builder.mutation({
+    updatePatientHealthData: builder.mutation({
       query: (data) => ({
         url: `/patients/health-data`,
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["user", "patient"],
     }),
     createMedicalReport: builder.mutation({
       query: (data) => ({
@@ -54,14 +40,14 @@ const patientApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["user", "patient"],
     }),
     deleteMedicalReport: builder.mutation({
       query: (id: string) => ({
         url: `/patients/medical-report/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["user", "patient"],
     }),
   }),
 });
@@ -69,10 +55,9 @@ const patientApi = baseApi.injectEndpoints({
 export const {
   useGetAllPatientsQuery,
   useGetSinglePatientQuery,
-  useUpdatePatientMutation,
-  useDeletePatientMutation,
-  useCreateHealthDataMutation,
-  useUpdateHealthDataMutation,
+
+  useCreatePatientHealthDataMutation,
+  useUpdatePatientHealthDataMutation,
   useCreateMedicalReportMutation,
   useDeleteMedicalReportMutation,
 } = patientApi;

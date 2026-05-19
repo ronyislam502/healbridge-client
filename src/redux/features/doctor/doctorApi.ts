@@ -88,6 +88,13 @@ const doctorApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    getAIDoctorSuggestion: builder.mutation({
+      query: (data: { symptoms: string }) => ({
+        url: "/doctors/suggestion",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -98,4 +105,5 @@ export const {
   useUpdateDoctorMutation,
   useUpdateDoctorSpecialtiesMutation,
   useDeleteDoctorMutation,
+  useGetAIDoctorSuggestionMutation,
 } = doctorApi;

@@ -6,21 +6,28 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useGetMyAppointmentsQuery } from '@/redux/features/appointment/appointmentApi';
 import { useMyProfilQuery } from '@/redux/features/user/userApi';
+import { useGetStatsQuery } from '@/redux/features/statistics/statisticsApi';
 import { HBSuspense } from '@/components/shared/HBSuspense';
-
-const stats = [
-  { label: "Today's Appointments", value: '12', icon: Icons.calendar, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-  { label: 'Total Patients', value: '840', icon: Icons.users, color: 'text-teal-500', bg: 'bg-teal-500/10' },
-  { label: 'Pending Reviews', value: '15', icon: Icons.star, color: 'text-orange-500', bg: 'bg-orange-500/10' },
-  { label: 'Total Earnings', value: '$14,500', icon: Icons.activity, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-];
 
 const DoctorDashboard = () => {
   const { data: profileData } = useMyProfilQuery({});
   const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ limit: 5 });
+  const { data: statsData, isLoading: isLoadingStats } = useGetStatsQuery({});
   
   const appointments = appointmentsData?.data || [];
   const doctorName = profileData?.name || 'Doctor';
+
+  const appointmentCount = statsData?.data?.appointmentCount || 0;
+  const reviewCount = statsData?.data?.reviewCount || 0;
+  const patientCount = statsData?.data?.patientCount || 0;
+  const totalRevenue = statsData?.data?.totalRevenue?._sum?.amount || 0;
+
+  const stats = [
+    { label: "Total Appointments", value: isLoadingStats ? '...' : appointmentCount.toString(), icon: Icons.calendar, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+    { label: 'Total Patients', value: isLoadingStats ? '...' : patientCount.toString(), icon: Icons.users, color: 'text-teal-500', bg: 'bg-teal-500/10' },
+    { label: 'Total Reviews', value: isLoadingStats ? '...' : reviewCount.toString(), icon: Icons.star, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+    { label: 'Total Earnings', value: isLoadingStats ? '...' : `$${totalRevenue.toLocaleString()}`, icon: Icons.activity, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+  ];
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">

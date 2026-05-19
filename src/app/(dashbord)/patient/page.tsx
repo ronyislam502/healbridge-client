@@ -22,6 +22,7 @@ const medicalHistory = [
 import { useGetMyAppointmentsQuery } from '@/redux/features/appointment/appointmentApi';
 import { useMyProfilQuery } from '@/redux/features/user/userApi';
 import { HBSuspense } from '@/components/shared/HBSuspense';
+import { AIDoctorSuggestion } from './_components/AIDoctorSuggestion';
 
 const PatientDashboard = () => {
   const { data: profileData } = useMyProfilQuery({});
@@ -70,6 +71,9 @@ const PatientDashboard = () => {
           return <div key={idx}>{content}</div>;
         })}
       </div>
+
+      {/* AI Doctor Suggestion Section */}
+      <AIDoctorSuggestion />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
         {/* Medical History */}

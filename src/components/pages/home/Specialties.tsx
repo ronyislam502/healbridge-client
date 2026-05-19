@@ -55,7 +55,7 @@ const Specialties = () => {
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {specialties.map((item: TSpecialty) => (
+              {specialties?.map((item: TSpecialty) => (
                 <CarouselItem key={item?.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/6">
                   <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 h-full">
                     <div className="relative h-48 w-full overflow-hidden">
