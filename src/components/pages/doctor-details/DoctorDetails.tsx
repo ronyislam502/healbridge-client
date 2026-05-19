@@ -19,6 +19,8 @@ const DoctorDetails = ({ doctor }: DoctorDetailsProps) => {
         <DoctorSchedules 
           doctorSchedules={doctor.doctorSchedules} 
           appointmentFee={doctor.appointmentFee} 
+          doctorId={doctor.id}
+          doctorName={doctor.name}
         />
       </div>
     </div>
