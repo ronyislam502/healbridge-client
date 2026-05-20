@@ -8,9 +8,6 @@ export const adminLinks = [
   { label: 'Patients', href: '/admin/patients', icon: Icons.users },
   { label: 'Specialties', href: '/admin/specialties', icon: Icons.microscope },
   { label: 'Reviews', href: '/admin/reviews', icon: Icons.star },
-  { label: 'Prescriptions', href: '/admin/prescriptions', icon: Icons.scrollText },
-  { label: 'Admins', href: '/admin/admins', icon: Icons.shieldCheck },
-  { label: 'Users', href: '/admin/users', icon: Icons.users },
   { label: 'Settings', href: '/admin/settings', icon: Icons.shieldCheck },
 ];
 
@@ -28,6 +25,7 @@ export const patientLinks = [
   { label: 'Dashboard', href: '/patient', icon: Icons.activity },
   { label: 'Appointments', href: '/patient/appointments', icon: Icons.calendar },
   { label: 'Prescriptions', href: '/patient/prescriptions', icon: Icons.scrollText },
+  { label: 'Medical Reports', href: '/patient/medical-reports', icon: Icons.fileText },
   { label: 'Payments', href: '/patient/payments', icon: Icons.creditCard },
   { label: 'Profile', href: '/patient/profile', icon: Icons.userCircle },
 ];

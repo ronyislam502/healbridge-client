@@ -4,14 +4,24 @@ import * as React from "react";
 import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
 
-const stats = [
-  { label: 'Total Doctors', value: '840', icon: Icons.userCheck, color: 'text-blue-500', bg: 'bg-blue-500/10', trend: '+12.5%' },
-  { label: 'New Patients', value: '1,240', icon: Icons.users, color: 'text-teal-500', bg: 'bg-teal-500/10', trend: '+18.2%' },
-  { label: 'Appointments', value: '3,450', icon: Icons.calendar, color: 'text-purple-500', bg: 'bg-purple-500/10', trend: '+5.4%' },
-  { label: 'Total Revenue', value: '$124,500', icon: Icons.activity, color: 'text-orange-500', bg: 'bg-orange-500/10', trend: '+22.1%' },
-];
+interface AdminStatsProps {
+  data?: any;
+  isLoading?: boolean;
+}
 
-const AdminStats = () => {
+const AdminStats = ({ data, isLoading }: AdminStatsProps) => {
+  const doctorCount = data?.doctorCount || 0;
+  const patientCount = data?.patientCount || 0;
+  const appointmentCount = data?.appointmentCount || 0;
+  const totalRevenue = data?.totalRevenue?._sum?.amount || 0;
+
+  const stats = [
+    { label: 'Total Doctors', value: isLoading ? '...' : doctorCount.toString(), icon: Icons.userCheck, color: 'text-blue-500', bg: 'bg-blue-500/10', trend: '+12.5%' },
+    { label: 'New Patients', value: isLoading ? '...' : patientCount.toString(), icon: Icons.users, color: 'text-teal-500', bg: 'bg-teal-500/10', trend: '+18.2%' },
+    { label: 'Appointments', value: isLoading ? '...' : appointmentCount.toString(), icon: Icons.calendar, color: 'text-purple-500', bg: 'bg-purple-500/10', trend: '+5.4%' },
+    { label: 'Total Revenue', value: isLoading ? '...' : `$${totalRevenue.toLocaleString()}`, icon: Icons.activity, color: 'text-orange-500', bg: 'bg-orange-500/10', trend: '+22.1%' },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
       {stats.map((stat, idx) => (

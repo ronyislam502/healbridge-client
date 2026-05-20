@@ -1,22 +1,96 @@
+'use client';
+
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-export const metadata = {
-  title: 'Appointment Management | HealBridge',
-  description: 'Monitor and manage all medical appointments and scheduling across the platform.',
-};
-
-const appointmentsData = [
-  { id: 1, doctor: "Dr. Charles Scott", patient: "John Doe", specialty: "Neurology", date: "24 Oct 2023", time: "10:00 AM", status: "Upcoming", fee: "$600" },
-  { id: 2, doctor: "Dr. Michael Brown", patient: "Sarah Jenkins", specialty: "Psychiatry", date: "22 Oct 2023", time: "02:30 PM", status: "Completed", fee: "$650" },
-  { id: 3, doctor: "Dr. Sarah Johnson", patient: "James Williams", specialty: "Cardiology", date: "21 Oct 2023", time: "11:15 AM", status: "Cancelled", fee: "$700" },
-  { id: 4, doctor: "Dr. Emily Davis", patient: "Emily Davis", specialty: "Dermatology", date: "20 Oct 2023", time: "04:00 PM", status: "Upcoming", fee: "$450" },
-  { id: 5, doctor: "Dr. Harold Bryant", patient: "Robert Miller", specialty: "Neurology", date: "18 Oct 2023", time: "09:00 AM", status: "Completed", fee: "$500" },
-];
+import { useGetAllAppointmentsQuery } from '@/redux/features/appointment/appointmentApi';
+import { HBTable } from '@/components/shared/HBTable';
 
 const AppointmentManagement = () => {
+  const [activeTab, setActiveTab] = React.useState('ALL');
+  const queryParams: Record<string, any> = { limit: 10 };
+  if (activeTab !== 'ALL') {
+    queryParams.status = activeTab;
+  }
+  const { data: appointmentsRes, isLoading } = useGetAllAppointmentsQuery(queryParams);
+
+  const appointments = appointmentsRes?.data || [];
+
+  const tabs = [
+    { label: 'All Appointments', value: 'ALL' },
+    { label: 'Scheduled', value: 'SCHEDULED' },
+    { label: 'Completed', value: 'COMPLETED' },
+    { label: 'Cancelled', value: 'CANCELLED' },
+  ];
+
+  const columns = [
+    {
+      header: 'Doctor',
+      key: 'doctor',
+      render: (row: any) => (
+        <span className="font-bold text-slate-900 dark:text-white">{row.doctor?.name}</span>
+      ),
+    },
+    {
+      header: 'Patient',
+      key: 'patient',
+      render: (row: any) => (
+        <span className="font-medium text-slate-500 dark:text-slate-400">{row.patient?.name}</span>
+      ),
+    },
+    {
+      header: 'Specialty',
+      key: 'specialty',
+      render: (row: any) => (
+        <span className="text-[10px] font-black text-teal-500 uppercase tracking-widest italic">
+          {row.doctor?.doctorSpecialties?.[0]?.specialties?.title || 'General Medicine'}
+        </span>
+      ),
+    },
+    {
+      header: 'Date & Time',
+      key: 'dateTime',
+      align: 'center' as const,
+      render: (row: any) => (
+        <div>
+          <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">
+            {row.schedule?.startDateTime ? new Date(row.schedule.startDateTime).toLocaleDateString() : 'N/A'}
+          </p>
+          <p className="text-[10px] font-black text-slate-400 uppercase italic">
+            {row.schedule?.startDateTime ? new Date(row.schedule.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}
+          </p>
+        </div>
+      ),
+    },
+    {
+      header: 'Status',
+      key: 'status',
+      align: 'center' as const,
+      render: (row: any) => (
+        <span className={cn(
+          "inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic",
+          row.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-500' :
+          row.status === 'SCHEDULED' ? 'bg-blue-500/10 text-blue-500' :
+          row.status === 'INPROGRESS' ? 'bg-purple-500/10 text-purple-500' :
+          'bg-red-500/10 text-red-500'
+        )}>
+          {row.status}
+        </span>
+      ),
+    },
+    {
+      header: 'Fee',
+      key: 'fee',
+      align: 'right' as const,
+      render: (row: any) => (
+        <span className="font-black text-slate-900 dark:text-white italic">
+          ${row.doctor?.appointmentFee || 0}
+        </span>
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Heading */}
@@ -37,58 +111,30 @@ const AppointmentManagement = () => {
 
       {/* Filter Tabs */}
       <div className="flex gap-4 p-2 bg-slate-100 dark:bg-slate-900 rounded-[1.5rem] w-fit">
-        {['All Appointments', 'Upcoming', 'Completed', 'Cancelled'].map((tab, idx) => (
-          <button key={idx} className={cn(
-            "px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all",
-            idx === 0 ? "bg-white dark:bg-slate-800 text-teal-500 shadow-sm" : "text-slate-400 hover:text-slate-900 dark:hover:text-white"
-          )}>
-            {tab}
+        {tabs.map((tab) => (
+          <button
+            key={tab.value}
+            onClick={() => setActiveTab(tab.value)}
+            className={cn(
+              "px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all",
+              activeTab === tab.value
+                ? "bg-white dark:bg-slate-800 text-teal-500 shadow-sm"
+                : "text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            )}
+          >
+            {tab.label}
           </button>
         ))}
       </div>
 
       {/* Appointments Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/50">
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Doctor</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Patient</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800">Specialty</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Date & Time</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-center">Status</th>
-                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-b border-slate-100 dark:border-slate-800 text-right">Fee</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointmentsData.map((apt) => (
-                <tr key={apt.id} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 font-bold text-slate-900 dark:text-white">{apt.doctor}</td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 font-medium text-slate-500 dark:text-slate-400">{apt.patient}</td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800">
-                    <span className="text-[10px] font-black text-teal-500 uppercase tracking-widest italic">{apt.specialty}</span>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                    <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">{apt.date}</p>
-                    <p className="text-[10px] font-black text-slate-400 uppercase italic">{apt.time}</p>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-center">
-                    <span className={`inline-block px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest italic ${
-                      apt.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-500' :
-                      apt.status === 'Upcoming' ? 'bg-blue-500/10 text-blue-500' :
-                      'bg-red-500/10 text-red-500'
-                    }`}>
-                      {apt.status}
-                    </span>
-                  </td>
-                  <td className="px-8 py-6 border-b border-slate-50 dark:border-slate-800 text-right font-black text-slate-900 dark:text-white italic">{apt.fee}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <HBTable
+        columns={columns}
+        data={appointments}
+        isLoading={isLoading}
+        emptyMessage="No appointments found."
+        skeletonCount={5}
+      />
     </div>
   );
 };

@@ -7,10 +7,34 @@ import { useGetMyPrescriptionsQuery } from '@/redux/features/prescription/prescr
 import { HBTable } from '@/components/shared/HBTable';
 import { HBPagination } from '@/components/shared/HBPagination';
 import { Button } from '@/components/ui/button';
+import Cookies from 'js-cookie';
 
 const PatientPrescriptions = () => {
   const [page, setPage] = React.useState(1);
   const limit = 10;
+
+  const handleDownloadPdf = async (prescriptionId: string) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const response = await fetch(`http://localhost:5000/api/v1/prescriptions/${prescriptionId}/pdf`, {
+        headers: {
+          Authorization: token ? `${token}` : "",
+        },
+      });
+      if (!response.ok) throw new Error("Download failed");
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = `Prescription-${prescriptionId.substring(0, 8)}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };
 
   const { data: prescriptionsData, isLoading } = useGetMyPrescriptionsQuery({ 
     page, 
@@ -68,11 +92,11 @@ const PatientPrescriptions = () => {
       align: 'right' as const,
       render: (row: any) => (
         <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="sm" className="h-10 rounded-xl border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest italic hover:bg-teal-500 hover:text-white transition-all flex items-center gap-2">
+          <Button onClick={() => handleDownloadPdf(row.id)} variant="outline" size="sm" className="h-10 rounded-xl border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest italic hover:bg-teal-500 hover:text-white transition-all flex items-center gap-2">
             <Icons.scrollText className="w-4 h-4" />
             View Full
           </Button>
-          <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500">
+          <Button onClick={() => handleDownloadPdf(row.id)} variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500" title="Download PDF">
             <Icons.fileText className="w-4 h-4" />
           </Button>
         </div>
