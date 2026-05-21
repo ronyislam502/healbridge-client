@@ -7,10 +7,13 @@ import { useGetMyAppointmentsQuery } from '@/redux/features/appointment/appointm
 import { HBTable } from '@/components/shared/HBTable';
 import { HBPagination } from '@/components/shared/HBPagination';
 import { Button } from '@/components/ui/button';
+import dynamic from 'next/dynamic';
+const VideoCall = dynamic(() => import('@/components/shared/VideoCall'), { ssr: false });
 
 const PatientAppointments = () => {
   const [page, setPage] = React.useState(1);
   const limit = 10;
+  const [activeVideoCallId, setActiveVideoCallId] = React.useState<string | null>(null);
 
   const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ 
     page, 
@@ -45,10 +48,10 @@ const PatientAppointments = () => {
       render: (row: any) => (
         <div className="space-y-1">
           <p className="font-bold text-slate-900 dark:text-white text-sm">
-            {new Date(row.schedule?.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+            {new Date(row.schedule?.startDateTime).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>
           <p className="text-[10px] font-black text-teal-500 uppercase tracking-widest">
-            {new Date(row.schedule?.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {new Date(row.schedule?.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
       )
@@ -90,9 +93,16 @@ const PatientAppointments = () => {
           <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-teal-500/10 hover:text-teal-500">
             <Icons.fileText className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500">
-            <Icons.video className="w-4 h-4" />
-          </Button>
+          {row.status !== 'CANCELLED' && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setActiveVideoCallId(row.videoCallingId)}
+              className="h-10 w-10 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500"
+            >
+              <Icons.video className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       )
     }
@@ -130,6 +140,22 @@ const PatientAppointments = () => {
           </div>
         )}
       </div>
+
+      {activeVideoCallId && (
+        <div className="fixed inset-0 z-[100] bg-white dark:bg-slate-950 overflow-auto">
+          <Button 
+            variant="ghost" 
+            onClick={() => setActiveVideoCallId(null)} 
+            className="absolute top-4 left-4 z-[110] text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full h-10 w-10 p-0"
+          >
+            <Icons.arrowLeft className="w-6 h-6" />
+          </Button>
+          <VideoCall 
+            videoCallingId={activeVideoCallId} 
+            onClose={() => setActiveVideoCallId(null)} 
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarDays, Clock, UserCheck, CreditCard, Loader2 } from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { isSameDay } from "date-fns";
@@ -61,6 +61,8 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
         scheduleId: selectedSlotId,
       }).unwrap();
 
+      console.log("res", res)
+
       if (res?.success && res?.data?.paymentUrl) {
         toast.success("Appointment created successfully! Redirecting to secure payment page...", {
           duration: 3000,
@@ -74,7 +76,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
     } catch (err: any) {
       console.error("Booking error:", err);
       toast.error(
-        err?.data?.message || 
+        err?.data?.message ||
         "Failed to book appointment. Please verify you are logged in as a patient."
       );
     }
@@ -89,7 +91,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
               Book Visit
             </CardTitle>
             <div className="bg-teal-500 p-2 rounded-xl">
-              <CalendarDays className="w-6 h-6 text-white" />
+              <Icons.calendar className="w-5 h-5 text-white" />
             </div>
           </div>
         </CardHeader>
@@ -130,7 +132,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
                       onClick={() => setSelectedSlotId(docSchedule.scheduleId)}
                       className={cn(
                         "py-3 px-2 rounded-xl text-sm font-bold transition-all border",
-                        isBooked 
+                        isBooked
                           ? "bg-slate-800/30 border-slate-800 text-slate-600 cursor-not-allowed line-through"
                           : isSelected
                             ? "bg-teal-500 border-teal-500 text-slate-900 shadow-lg shadow-teal-500/20 scale-95"
@@ -157,15 +159,15 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
               <span className="text-slate-400">Consultation Fee</span>
               <span className="text-2xl font-black text-teal-400">${appointmentFee}</span>
             </div>
-            
-            <Button 
+
+            <Button
               disabled={!selectedSlotId}
               onClick={() => setIsConfirmOpen(true)}
               className="w-full h-14 bg-teal-500 hover:bg-teal-400 disabled:bg-slate-800 disabled:text-slate-600 text-slate-900 font-black text-lg rounded-2xl shadow-lg shadow-teal-500/20 transition-all active:scale-95"
             >
               {selectedSlotId ? "Confirm Appointment" : "Select a Time Slot"}
             </Button>
-            
+
             <p className="text-center text-xs text-slate-500 font-medium">
               Instant confirmation upon selection.
             </p>
@@ -177,7 +179,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
       <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-[2rem] p-6 text-white shadow-xl">
         <div className="flex items-center gap-4 mb-4">
           <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
-            <Clock className="w-6 h-6" />
+            <Icons.clock className="w-6 h-6" />
           </div>
           <div>
             <h4 className="font-bold text-lg">Quick Note</h4>
@@ -195,7 +197,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
         <DialogContent className="max-w-[450px] bg-slate-950 border-slate-800 text-white rounded-[2rem] overflow-hidden p-6 shadow-2xl">
           <DialogHeader className="space-y-3">
             <div className="mx-auto w-12 h-12 bg-teal-500/10 rounded-full flex items-center justify-center text-teal-400">
-              <UserCheck className="w-6 h-6" />
+              <Icons.userCheck className="w-6 h-6" />
             </div>
             <DialogTitle className="text-center text-2xl font-black italic tracking-wide uppercase">
               Confirm <span className="text-teal-400">Appointment</span>
@@ -211,7 +213,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
               <span className="text-xs font-black uppercase tracking-widest text-slate-400">Doctor</span>
               <span className="text-sm font-extrabold text-white text-right italic">{doctorName}</span>
             </div>
-            
+
             <div className="h-px bg-slate-800/50" />
 
             <div className="flex justify-between items-start">
@@ -223,7 +225,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
 
             <div className="flex justify-between items-start">
               <span className="text-xs font-black uppercase tracking-widest text-slate-400">Time Slot</span>
-              <span className="text-sm font-bold text-white text-right">{startTime} - {endTime}</span>
+              <span className="flex items-center text-sm font-bold text-white text-right"><Icons.clock className="w-4 h-4 mr-1.5 text-teal-500" />{startTime} - {endTime}</span>
             </div>
 
             <div className="h-px bg-slate-800/50" />
@@ -250,12 +252,12 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
             >
               {isBooking ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Icons.loader2 className="h-8 w-8 animate-spin text-teal-500" />
                   Booking...
                 </>
               ) : (
                 <>
-                  <CreditCard className="w-4 h-4" />
+                  <Icons.creditCard className="w-4 h-4" />
                   Pay & Confirm
                 </>
               )}

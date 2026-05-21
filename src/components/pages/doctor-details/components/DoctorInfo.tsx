@@ -2,16 +2,7 @@
 
 import { TDoctor } from "@/types/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Star, 
-  MapPin, 
-  Award, 
-  Stethoscope, 
-  DollarSign, 
-  GraduationCap, 
-  Building2,
-  ShieldCheck
-} from "lucide-react";
+import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
 
 interface DoctorInfoProps {
@@ -41,7 +32,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
                   {doctor.name}
                 </h1>
                 <div className="flex items-center bg-yellow-400/10 text-yellow-600 px-3 py-1 rounded-full text-sm font-bold border border-yellow-400/20">
-                  <Star className="w-4 h-4 mr-1 fill-yellow-400" />
+                  <Icons.star className="w-4 h-4 mr-1 fill-yellow-400" />
                   4.9 (120+ Reviews)
                 </div>
               </div>
@@ -52,11 +43,11 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
               
               <div className="flex flex-wrap items-center gap-4 mt-4">
                 <div className="flex items-center text-slate-500 dark:text-slate-500 text-sm font-medium">
-                  <MapPin className="w-4 h-4 mr-1.5 text-teal-500" />
+                  <Icons.mapPin className="w-4 h-4 mr-1.5 text-teal-500" />
                   {doctor.address}
                 </div>
                 <div className="flex items-center text-slate-500 dark:text-slate-500 text-sm font-medium">
-                  <Building2 className="w-4 h-4 mr-1.5 text-teal-500" />
+                  <Icons.hospital className="w-4 h-4 mr-1.5 text-teal-500" />
                   {doctor.currentWorkingPlace}
                 </div>
               </div>
@@ -68,25 +59,25 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
       {/* Highlights Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <HighlightCard 
-          icon={<Award className="w-5 h-5 text-teal-600" />}
+          icon={<Icons.award className="w-5 h-5 text-teal-600" />}
           label="Experience"
           value={`${doctor.experience} Years`}
           color="bg-teal-50 dark:bg-teal-900/10"
         />
         <HighlightCard 
-          icon={<DollarSign className="w-5 h-5 text-emerald-600" />}
+          icon={<Icons.creditCard className="w-5 h-5 text-emerald-600" />}
           label="Consultation"
           value={`$${doctor.appointmentFee}`}
           color="bg-emerald-50 dark:bg-emerald-900/10"
         />
         <HighlightCard 
-          icon={<ShieldCheck className="w-5 h-5 text-blue-600" />}
+          icon={<Icons.shieldCheck className="w-5 h-5 text-blue-600" />}
           label="Registration"
           value={doctor.registrationNumber}
           color="bg-blue-50 dark:bg-blue-900/10"
         />
         <HighlightCard 
-          icon={<Stethoscope className="w-5 h-5 text-purple-600" />}
+          icon={<Icons.stethoscope className="w-5 h-5 text-purple-600" />}
           label="Gender"
           value={doctor.gender}
           color="bg-purple-50 dark:bg-purple-900/10"
@@ -97,7 +88,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
       <div className="space-y-6">
         <section>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-teal-500" />
+            <Icons.graduationCap className="w-6 h-6 text-teal-500" />
             Specialties
           </h3>
           <div className="flex flex-wrap gap-2">

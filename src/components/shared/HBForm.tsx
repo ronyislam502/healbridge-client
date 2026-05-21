@@ -7,33 +7,34 @@ import {
   SubmitHandler, 
   useForm, 
   UseFormProps,
-  UseFormReturn
+  UseFormReturn,
+  DefaultValues
 } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-interface FormConfig {
-  defaultValues?: Record<string, unknown>;
+interface FormConfig<T extends FieldValues> {
+  defaultValues?: DefaultValues<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolver?: any;
 }
 
-interface HBFormProps extends FormConfig {
+interface HBFormProps<T extends FieldValues> extends FormConfig<T> {
   children: ReactNode;
-  onSubmit: SubmitHandler<FieldValues>;
+  onSubmit: SubmitHandler<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   methods?: any;
   className?: string;
 }
 
-const HBForm = ({ 
+const HBForm = <T extends FieldValues>({ 
   children, 
   onSubmit, 
   defaultValues, 
   resolver, 
   methods: externalMethods,
   className
-}: HBFormProps) => {
-  const formConfig: UseFormProps = {};
+}: HBFormProps<T>) => {
+  const formConfig: UseFormProps<T> = {};
 
   if (defaultValues) {
     formConfig["defaultValues"] = defaultValues;
