@@ -5,6 +5,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { IInput } from "@/types/global";
 import { cn } from "@/lib/utils";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
+import { Input } from "../ui/input";
 
 interface HBInputProps extends IInput {
   icon?: React.ReactNode;
@@ -57,7 +58,7 @@ const HBInput = ({
                 {icon}
               </div>
             )}
-            <input
+            <Input
               {...field}
               type={type}
               placeholder={placeholder}

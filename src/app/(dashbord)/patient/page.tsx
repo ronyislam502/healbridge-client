@@ -13,10 +13,14 @@ import { HBSuspense } from '@/components/shared/HBSuspense';
 import { HBTable } from '@/components/shared/HBTable';
 import { AIDoctorSuggestion } from './_components/AIDoctorSuggestion';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import CreateReviewModal from '@/components/dialogs/CreateReviewModal';
 
 const PatientDashboard = () => {
+  const [reviewModalOpen, setReviewModalOpen] = React.useState(false);
+  const [reviewAppointment, setReviewAppointment] = React.useState<any>(null);
+
   const { data: profileData } = useMyProfilQuery({});
-  const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ limit: 5 });
+  const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ limit: 5 }, { pollingInterval: 5000 });
   const { data: statsRes, isLoading: isStatsLoading } = useGetStatsQuery({});
   
   const appointments = appointmentsData?.data || [];
@@ -87,6 +91,36 @@ const PatientDashboard = () => {
         )}>
           {row.status}
         </span>
+      ),
+    },
+    {
+      header: 'Actions',
+      key: 'actions',
+      align: 'right' as const,
+      render: (row: any) => (
+        <div className="flex justify-end gap-2">
+          {row.status === 'COMPLETED' && (
+            <button
+              onClick={() => {
+                setReviewAppointment(row);
+                setReviewModalOpen(true);
+              }}
+              title="Leave a Review"
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 hover:bg-purple-500 hover:text-white transition-colors"
+            >
+              <Icons.star className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {row.payment?.receiptUrl ? (
+            <a href={row.payment.receiptUrl} target="_blank" rel="noreferrer" className="w-8 h-8 flex items-center justify-center rounded-lg bg-teal-500/10 text-teal-500 hover:bg-teal-500 hover:text-white transition-colors" title="Download Receipt">
+              <Icons.download className="w-3.5 h-3.5" />
+            </a>
+          ) : (
+            <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-300 dark:bg-slate-800 dark:text-slate-600 cursor-not-allowed">
+              <Icons.download className="w-3.5 h-3.5" />
+            </span>
+          )}
+        </div>
       ),
     },
   ];
@@ -241,6 +275,13 @@ const PatientDashboard = () => {
             </div>
         </div>
       </div>
+
+      <CreateReviewModal
+        isOpen={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+        appointmentId={reviewAppointment?.id}
+        doctorName={reviewAppointment?.doctor?.name}
+      />
     </div>
   );
 };

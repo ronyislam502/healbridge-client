@@ -10,6 +10,12 @@ interface DoctorInfoProps {
 }
 
 const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
+  const reviews = doctor.review || [];
+  const reviewCount = reviews.length;
+  const averageRating = reviewCount > 0 
+    ? (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviewCount).toFixed(1)
+    : "0.0";
+
   return (
     <div className="lg:col-span-2 space-y-8">
       {/* Main Profile Card */}
@@ -33,7 +39,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
                 </h1>
                 <div className="flex items-center bg-yellow-400/10 text-yellow-600 px-3 py-1 rounded-full text-sm font-bold border border-yellow-400/20">
                   <Icons.star className="w-4 h-4 mr-1 fill-yellow-400" />
-                  4.9 (120+ Reviews)
+                  {averageRating} ({reviewCount} {reviewCount === 1 ? 'Review' : 'Reviews'})
                 </div>
               </div>
               

@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserDropdown from "@/components/shared/UserDropdown";
 import Image from "next/image";
 import { Icons } from "@/components/shared/Icons";
 import { cn } from "@/lib/utils";
@@ -99,20 +100,23 @@ const DashboardSidebar = () => {
 
       {/* Bottom Profile / Logout */}
       <SidebarFooter className="p-6 border-t border-slate-800 bg-slate-900">
-        <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:bg-transparent">
-          <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
-            {displayUser?.avatar ? (
-              <Image src={displayUser.avatar} alt="Avatar" width={40} height={40} className="w-full h-full object-cover" />
-            ) : (
-              <Icons.userCheck className="w-5 h-5 text-teal-400" />
-            )}
-          </div>
-          <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-black text-white truncate italic">{displayUser?.name || 'User'}</p>
-            <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{displayUser?.role || 'Guest'}</p>
-          </div>
-        </div>
-
+        <UserDropdown 
+          customTrigger={
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 hover:bg-slate-800 transition-colors cursor-pointer group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:bg-transparent">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {displayUser?.avatar ? (
+                  <Image src={displayUser.avatar} alt="Avatar" width={40} height={40} className="w-full h-full object-cover" />
+                ) : (
+                  <Icons.userCheck className="w-5 h-5 text-teal-400" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+                <p className="text-sm font-black text-white truncate italic">{displayUser?.name || 'User'}</p>
+                <p className="text-[10px] font-bold text-teal-500 uppercase tracking-widest">{displayUser?.role || 'Guest'}</p>
+              </div>
+            </div>
+          }
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

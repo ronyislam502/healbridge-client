@@ -30,6 +30,7 @@ export type TDoctor= {
   updateAt: string
   doctorSpecialties: TSpecialty[]
   doctorSchedules: Schedule[]
+  review?: any[]
 }
 
 export type TPatient= {

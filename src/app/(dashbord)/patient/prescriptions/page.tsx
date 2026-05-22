@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { cn } from '@/lib/utils';
 import { useGetMyPrescriptionsQuery } from '@/redux/features/prescription/prescriptionApi';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBPagination } from '@/components/shared/HBPagination';
@@ -36,8 +35,8 @@ const PatientPrescriptions = () => {
     }
   };
 
-  const { data: prescriptionsData, isLoading } = useGetMyPrescriptionsQuery({ 
-    page, 
+  const { data: prescriptionsData, isLoading } = useGetMyPrescriptionsQuery({
+    page,
     limit,
     sortBy: 'createdAt',
     sortOrder: 'desc'
@@ -45,6 +44,8 @@ const PatientPrescriptions = () => {
 
   const prescriptions = prescriptionsData?.data || [];
   const meta = prescriptionsData?.meta;
+
+  console.log(prescriptions)
 
   const columns = [
     {
@@ -92,13 +93,18 @@ const PatientPrescriptions = () => {
       align: 'right' as const,
       render: (row: any) => (
         <div className="flex items-center justify-end gap-2">
-          <Button onClick={() => handleDownloadPdf(row.id)} variant="outline" size="sm" className="h-10 rounded-xl border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest italic hover:bg-teal-500 hover:text-white transition-all flex items-center gap-2">
-            <Icons.scrollText className="w-4 h-4" />
-            View Full
-          </Button>
-          <Button onClick={() => handleDownloadPdf(row.id)} variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500" title="Download PDF">
-            <Icons.fileText className="w-4 h-4" />
-          </Button>
+          {row.pdfUrl ? (
+            <>
+              <Button asChild variant="outline" size="sm" className="h-10 rounded-xl border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest italic hover:bg-teal-500 hover:text-white transition-all">
+                <a href={row.pdfUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                  <Icons.scrollText className="w-4 h-4" />
+                  View Full
+                </a>
+              </Button>
+            </>
+          ) : (
+            <span className="text-xs text-slate-400 italic font-medium">Processing PDF...</span>
+          )}
         </div>
       )
     }
@@ -118,9 +124,9 @@ const PatientPrescriptions = () => {
 
       {/* Main Table */}
       <div className="space-y-8">
-        <HBTable 
-          columns={columns} 
-          data={prescriptions} 
+        <HBTable
+          columns={columns}
+          data={prescriptions}
           isLoading={isLoading}
           emptyMessage="No prescriptions found in your record."
           skeletonCount={5}

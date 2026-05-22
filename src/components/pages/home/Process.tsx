@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 
 const steps = [
@@ -48,11 +47,11 @@ const Process = () => {
                   <step.icon className="w-8 h-8 text-white" />
                 </div>
               </div>
-              
+
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 {step.title}
               </h3>
-              
+
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm">
                 {step.description}
               </p>

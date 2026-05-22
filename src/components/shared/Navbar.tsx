@@ -8,40 +8,11 @@ import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import { Icons } from '@/components/shared/Icons';
 import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { logout, selectCurrentUser, TUser } from '@/redux/features/auth/authSlice';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { useMyProfilQuery } from '@/redux/features/user/userApi';
+import UserDropdown from './UserDropdown';
 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const loggedUser = useAppSelector((state) => state?.auth?.user) as TUser;
-  const { data: userData } = useMyProfilQuery({}, { skip: !loggedUser || !mounted });
-
-  console.log("Navbar userData:", userData);
-
-  const profile = userData?.data;
-
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-
-  const handleLogout = () => {
-    dispatch(logout());
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    router.refresh();
-  };
-
 
   useEffect(() => {
     // Automatically close mobile menu when switching to desktop mode
@@ -55,25 +26,25 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Doctors", href: "/doctors" },
-  { label: "Pharmacy", href: "/pharmacy" },
-  { label: "Contact", href: "/contact" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
-];
-    return (
-        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Doctors", href: "/doctors" },
+    { label: "Pharmacy", href: "/pharmacy" },
+    { label: "Contact", href: "/contact" },
+    { label: "Blog", href: "/blog" },
+    { label: "About", href: "/about" },
+  ];
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
       <div className="container mx-auto px-4">
         <div className="flex h-24 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <Image 
+              <Image
                 src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-                alt='HealBridge logo' 
-                width={150} 
-                height={120} 
+                alt='HealBridge logo'
+                width={150}
+                height={120}
                 className="h-auto w-auto"
               />
             </Link>
@@ -106,48 +77,7 @@ const navItems = [
             </div>
 
             <div className="hidden sm:flex items-center gap-3 border-l pl-4 ml-2">
-              {mounted && (
-                loggedUser ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                        <Avatar className="h-10 w-10 border border-blue-100">
-                          <AvatarImage src={profile?.avatar || ""} alt={profile?.name || "User"} />
-                          <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
-                            {(profile?.name || loggedUser?.name)?.charAt(0).toUpperCase() || "U"}
-                          </AvatarFallback>
-                        </Avatar>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56" align="end" forceMount>
-                      <DropdownMenuLabel className="font-normal">
-                        <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">{profile?.name || loggedUser?.name}</p>
-                          <p className="text-xs leading-none text-muted-foreground">{profile?.email || loggedUser?.email}</p>
-                        </div>
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link href={`/${loggedUser?.role?.toLowerCase()}`} className="cursor-pointer">
-                          <Icons.layoutDashboard className="mr-2 h-4 w-4" />
-                          <span>Dashboard</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600 cursor-pointer">
-                        <Icons.logOut className="mr-2 h-4 w-4" />
-                        <span>Log out</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <>
-                    <Button variant="ghost" asChild>
-                      <Link href="/login">Login</Link>
-                    </Button>
-                  </>
-                )
-              )}
+              <UserDropdown />
             </div>
 
 
@@ -178,29 +108,7 @@ const navItems = [
                   ))}
                   <hr />
                   <div className="flex flex-col gap-2">
-                    {mounted && (
-                      loggedUser ? (
-                        <>
-                          <Button asChild variant="outline" className="w-full justify-start">
-                            <Link href={`/${loggedUser?.role?.toLowerCase()}`}>
-                              <Icons.layoutDashboard className="mr-2 h-4 w-4" />
-                              Dashboard
-                            </Link>
-                          </Button>
-                          <Button onClick={handleLogout} variant="destructive" className="w-full justify-start">
-                            <Icons.logOut className="mr-2 h-4 w-4" />
-                            Logout
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button variant="ghost" asChild className="w-full">
-                            <Link href="/login">Login</Link>
-                          </Button>
-                        </>
-                      )
-                    )}
-
+                    <UserDropdown isMobile />
                   </div>
                 </div>
               </SheetContent>
@@ -209,7 +117,7 @@ const navItems = [
         </div>
       </div>
     </header>
-    );
+  );
 };
 
 export default Navbar;

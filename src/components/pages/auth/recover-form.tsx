@@ -16,7 +16,7 @@ import { useForgotPasswordMutation } from '@/redux/features/auth/authApi';
 import { TError } from '@/types/global';
 
 export const RecoverForm = () => {
-    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
   const onSubmit = async (data: FieldValues) => {
     console.log("data", data)
@@ -39,22 +39,22 @@ export const RecoverForm = () => {
   return (
     <Card className="w-full max-w-md border-none bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-900/80">
       <CardHeader className="space-y-1 text-center pt-8">
-        <Image 
-            src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-            alt='HealBridge logo' 
-            width={150} 
-            height={120} 
-            className="mx-auto h-auto w-auto rounded-lg mb-4"
-            />
+        <Image
+          src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+          alt='HealBridge logo'
+          width={150}
+          height={120}
+          className="mx-auto h-auto w-auto rounded-lg mb-4"
+        />
         <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-          Reset Password
+          Forget Password
         </CardTitle>
         <CardDescription className="text-slate-500 dark:text-slate-400">
           Enter your email and we&apos;ll send you a link to get back into your account
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <HBForm 
+        <HBForm
           resolver={zodResolver(recoverSchema)}
           onSubmit={onSubmit}
           defaultValues={{ email: '' }}
@@ -69,7 +69,7 @@ export const RecoverForm = () => {
 
             required
           />
-          
+
           <Button
             type="submit"
             className="w-full bg-teal-600 hover:bg-teal-700 text-white transition-all duration-200"
@@ -88,8 +88,8 @@ export const RecoverForm = () => {
         </HBForm>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4 pb-8">
-        <Link 
-          href="/login" 
+        <Link
+          href="/login"
           className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-teal-600 transition-colors dark:text-slate-400 dark:hover:text-teal-400"
         >
           <Icons.arrowLeft className="h-4 w-4" />

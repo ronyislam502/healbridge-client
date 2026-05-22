@@ -103,9 +103,9 @@ const DoctorManagement = () => {
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
-          { label: 'Total Doctors', value: '1,240', color: 'text-blue-500', bg: 'bg-blue-500/10' },
-          { label: 'Pending Verifications', value: '42', color: 'text-orange-500', bg: 'bg-orange-500/10' },
-          { label: 'Active This Month', value: '+128', color: 'text-teal-500', bg: 'bg-teal-500/10' },
+          { label: 'Total Doctors', value: data?.meta?.total || 0, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+          { label: 'Total Specialties', value: specialtiesData?.data?.length || 0, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+          { label: 'Active Doctors', value: doctors.filter((d: any) => !d.isDeleted).length || 0, color: 'text-teal-500', bg: 'bg-teal-500/10' },
         ].map((stat, idx) => (
           <div key={idx} className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-lg">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">{stat.label}</p>

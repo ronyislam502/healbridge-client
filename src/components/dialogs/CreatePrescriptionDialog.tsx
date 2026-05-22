@@ -46,11 +46,11 @@ interface CreatePrescriptionDialogProps {
   appointmentId: string | null;
 }
 
-export function CreatePrescriptionDialog({
+const CreatePrescriptionDialog = ({
   open,
   onOpenChange,
   appointmentId,
-}: CreatePrescriptionDialogProps) {
+}: CreatePrescriptionDialogProps) => {
   const [createPrescription, { isLoading }] = useCreatePrescriptionMutation();
 
   const methods = useForm<PrescriptionFormValues>({
@@ -232,3 +232,6 @@ export function CreatePrescriptionDialog({
     </Dialog>
   );
 }
+
+
+export default CreatePrescriptionDialog;

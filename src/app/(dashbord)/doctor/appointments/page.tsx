@@ -7,8 +7,8 @@ import { useGetMyAppointmentsQuery } from '@/redux/features/appointment/appointm
 import { HBTable } from '@/components/shared/HBTable';
 import { HBPagination } from '@/components/shared/HBPagination';
 import { Button } from '@/components/ui/button';
-import { CreatePrescriptionDialog } from '@/components/dialogs/CreatePrescriptionDialog';
 import dynamic from 'next/dynamic';
+import CreatePrescriptionDialog from '@/components/dialogs/CreatePrescriptionDialog';
 const VideoCall = dynamic(() => import('@/components/shared/VideoCall'), { ssr: false });
 
 const DoctorAppointments = () => {
@@ -18,8 +18,8 @@ const DoctorAppointments = () => {
   const [selectedAppointmentId, setSelectedAppointmentId] = React.useState<string | null>(null);
   const [activeVideoCallId, setActiveVideoCallId] = React.useState<string | null>(null);
 
-  const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({ 
-    page, 
+  const { data: appointmentsData, isLoading } = useGetMyAppointmentsQuery({
+    page,
     limit,
     sortBy: 'createdAt',
     sortOrder: 'desc'
@@ -66,26 +66,26 @@ const DoctorAppointments = () => {
       render: (row: any) => (
         <span className={cn(
           "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
-          row.status === 'COMPLETED' ? 'bg-teal-500/10 text-teal-500' : 
-          row.status === 'CANCELLED' ? 'bg-red-500/10 text-red-500' : 
-          'bg-orange-500/10 text-orange-500'
+          row.status === 'COMPLETED' ? 'bg-teal-500/10 text-teal-500' :
+            row.status === 'CANCELLED' ? 'bg-red-500/10 text-red-500' :
+              'bg-orange-500/10 text-orange-500'
         )}>
           {row.status}
         </span>
       )
     },
     {
-        header: 'Payment Status',
-        key: 'payment',
-        align: 'center' as const,
-        render: (row: any) => (
-          <span className={cn(
-            "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
-            row.paymentStatus === 'PAID' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-500/10 text-slate-500'
-          )}>
-            {row.paymentStatus}
-          </span>
-        )
+      header: 'Payment Status',
+      key: 'payment',
+      align: 'center' as const,
+      render: (row: any) => (
+        <span className={cn(
+          "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
+          row.paymentStatus === 'PAID' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-500/10 text-slate-500'
+        )}>
+          {row.paymentStatus}
+        </span>
+      )
     },
     {
       header: 'Actions',
@@ -94,9 +94,9 @@ const DoctorAppointments = () => {
       render: (row: any) => (
         <div className="flex items-center justify-end gap-2">
           {row.status === 'COMPLETED' && row.paymentStatus === 'PAID' && (
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => {
                 setSelectedAppointmentId(row.id);
                 setPrescriptionDialogOpen(true);
@@ -108,9 +108,9 @@ const DoctorAppointments = () => {
             </Button>
           )}
           {row.status !== 'CANCELLED' && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setActiveVideoCallId(row.videoCallingId)}
               className="h-9 w-9 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-500"
             >
@@ -136,9 +136,9 @@ const DoctorAppointments = () => {
 
       {/* Main Table */}
       <div className="space-y-8">
-        <HBTable 
-          columns={columns} 
-          data={appointments} 
+        <HBTable
+          columns={columns}
+          data={appointments}
           isLoading={isLoading}
           emptyMessage="No patient appointments found."
           skeletonCount={5}
@@ -154,8 +154,8 @@ const DoctorAppointments = () => {
           </div>
         )}
       </div>
-      
-      <CreatePrescriptionDialog 
+
+      <CreatePrescriptionDialog
         open={prescriptionDialogOpen}
         onOpenChange={setPrescriptionDialogOpen}
         appointmentId={selectedAppointmentId}
@@ -163,16 +163,16 @@ const DoctorAppointments = () => {
 
       {activeVideoCallId && (
         <div className="fixed inset-0 z-[100] bg-white dark:bg-slate-950 overflow-auto">
-          <Button 
-            variant="ghost" 
-            onClick={() => setActiveVideoCallId(null)} 
+          <Button
+            variant="ghost"
+            onClick={() => setActiveVideoCallId(null)}
             className="absolute top-4 left-4 z-[110] text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full h-10 w-10 p-0"
           >
             <Icons.arrowLeft className="w-6 h-6" />
           </Button>
-          <VideoCall 
-            videoCallingId={activeVideoCallId} 
-            onClose={() => setActiveVideoCallId(null)} 
+          <VideoCall
+            videoCallingId={activeVideoCallId}
+            onClose={() => setActiveVideoCallId(null)}
           />
         </div>
       )}

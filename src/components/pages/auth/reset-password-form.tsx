@@ -19,7 +19,7 @@ import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
 import { useEffect } from "react";
 
 const ResetPasswordForm = () => {
-    const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
   const router = useRouter();
@@ -68,13 +68,13 @@ const ResetPasswordForm = () => {
   return (
     <div className="w-full max-w-md space-y-8 p-10 bg-slate-900/60 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-2xl relative z-10">
       <div className="text-center space-y-3">
-        <Image 
-            src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-            alt='HealBridge logo' 
-            width={150} 
-            height={120} 
-            className="mx-auto h-auto w-auto rounded-lg mb-4"
-         />
+        <Image
+          src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+          alt='HealBridge logo'
+          width={150}
+          height={120}
+          className="mx-auto h-auto w-auto rounded-lg mb-4"
+        />
         <h1 className="text-4xl font-black text-white tracking-tight italic">
           Set New <span className="text-teal-400">Password</span>
         </h1>

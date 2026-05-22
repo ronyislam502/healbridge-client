@@ -40,4 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-git remote add origin https://github.com/ronyislam502/healbridge-client.git
+# git remote add origin https://github.com/ronyislam502/healbridge-client.git
