@@ -11,6 +11,7 @@ import { UpdateProfileModal } from './_components/UpdateProfileModal';
 import { UpdateHealthDataModal } from './_components/UpdateHealthDataModal';
 import { CreateHealthDataModal } from './_components/CreateHealthDataModal';
 import { MedicalReportsGallery } from './_components/MedicalReportsGallery';
+import { ChangePasswordModal } from '@/components/shared/ChangePasswordModal';
 
 const PatientProfile = () => {
   const { data, isLoading } = useMyProfilQuery({});
@@ -42,6 +43,7 @@ const PatientProfile = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
+          <ChangePasswordModal />
           <UpdateProfileModal profileData={profileData} />
           {profileData?.patientHealthData ? (
             <UpdateHealthDataModal profileData={profileData} />

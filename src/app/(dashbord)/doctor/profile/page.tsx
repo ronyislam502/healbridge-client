@@ -15,6 +15,7 @@ import { useUpdateDoctorSpecialtiesMutation } from '@/redux/features/doctor/doct
 import { HBProfileSkeleton } from '@/components/shared/HBSkeletons';
 import { toast } from 'sonner';
 import { HBModal } from '@/components/shared/HBModal';
+import { ChangePasswordModal } from '@/components/shared/ChangePasswordModal';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -163,8 +164,10 @@ const DoctorProfile = () => {
           <p className="text-slate-500 dark:text-slate-400 font-medium">View and manage your professional medical presence.</p>
         </div>
 
-        <HBModal
-          title="Update Profile"
+        <div className="flex flex-wrap items-center gap-4">
+          <ChangePasswordModal />
+          <HBModal
+            title="Update Profile"
           description="Update your professional credentials and availability settings."
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
@@ -274,6 +277,7 @@ const DoctorProfile = () => {
             </Button>
           </HBForm>
         </HBModal>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

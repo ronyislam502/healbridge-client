@@ -6,6 +6,7 @@ import { HBInput } from '@/components/shared/HBInput';
 import { HBForm } from '@/components/shared/HBForm';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ChangePasswordModal } from '@/components/shared/ChangePasswordModal';
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = React.useState('profile');
@@ -20,11 +21,16 @@ const SettingsPage = () => {
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Heading */}
-      <div>
-        <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic">
-          System <span className="text-teal-500">Settings</span>
-        </h2>
-        <p className="text-slate-500 dark:text-slate-400 font-medium">Configure platform preferences and manage your administrative account.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div>
+          <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic">
+            System <span className="text-teal-500">Settings</span>
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">Configure platform preferences and manage your administrative account.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <ChangePasswordModal />
+        </div>
       </div>
 
       {/* Tab Navigation */}
