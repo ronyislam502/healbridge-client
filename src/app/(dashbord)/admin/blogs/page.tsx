@@ -187,13 +187,16 @@ const AdminBlogsPage = () => {
             key: "title",
             render: (row: any) => (
               <div className="flex items-center gap-4">
-                {row.coverImage && (
-                  <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-slate-200">
-                    <Image src={row.coverImage} alt={row.title} fill className="object-cover" />
-                  </div>
-                )}
+                <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shrink-0">
+                  <Image
+                    src={row.coverImage || 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop'}
+                    alt={row.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div>
-                  <span className="text-base font-black text-slate-900 dark:text-white block">{row.title}</span>
+                  <span className="text-base font-black text-slate-900 dark:text-white block line-clamp-1">{row.title}</span>
                   <span className="text-[10px] font-bold text-slate-400 uppercase">
                     By {row.author?.name || 'Unknown Author'}
                   </span>

@@ -15,7 +15,7 @@ interface Column<T> {
   key: keyof T | string;
   className?: string;
   align?: "left" | "center" | "right";
-  render?: (row: T) => React.ReactNode;
+  render?: (row: T, index?: number) => React.ReactNode;
 }
 
 interface HBTableProps<T> {
@@ -27,6 +27,7 @@ interface HBTableProps<T> {
   className?: string;
   rowClassName?: string;
   skeletonCount?: number;
+  showIndex?: boolean;
 }
 
 const HBTable = <T extends object>({
@@ -38,6 +39,7 @@ const HBTable = <T extends object>({
   className,
   rowClassName,
   skeletonCount = 5,
+  showIndex = true,
 }: HBTableProps<T>) => {
   const [mounted, setMounted] = React.useState(false);
 
@@ -48,7 +50,7 @@ const HBTable = <T extends object>({
   if (!mounted) return null;
 
   if (isLoading) {
-    return <HBTableSkeleton rows={skeletonCount} cols={columns.length} className={className} />;
+    return <HBTableSkeleton rows={skeletonCount} cols={columns.length + (showIndex ? 1 : 0)} className={className} />;
   }
 
   return (
@@ -57,6 +59,11 @@ const HBTable = <T extends object>({
         <Table className="w-full text-left border-collapse">
           <TableHeader className="bg-slate-50 dark:bg-slate-800/50">
             <TableRow className="hover:bg-transparent border-b border-slate-100 dark:border-slate-800">
+              {showIndex && (
+                <TableHead className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic h-auto w-16">
+                  SL
+                </TableHead>
+              )}
               {columns.map((col, idx) => (
                 <TableHead
                   key={idx}
@@ -82,6 +89,11 @@ const HBTable = <T extends object>({
                     rowClassName
                   )}
                 >
+                  {showIndex && (
+                    <TableCell className="px-8 py-6 text-sm font-bold text-slate-600 dark:text-slate-400 w-16">
+                      {(rowIdx + 1).toString().padStart(2, '0')}
+                    </TableCell>
+                  )}
                   {columns.map((col, colIdx) => (
                     <TableCell
                       key={colIdx}
@@ -91,7 +103,7 @@ const HBTable = <T extends object>({
                         col.align === "right" && "text-right"
                       )}
                     >
-                      {col.render ? col.render(row) : (row[col.key as keyof T] as React.ReactNode)}
+                      {col.render ? col.render(row, rowIdx) : (row[col.key as keyof T] as React.ReactNode)}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -99,7 +111,7 @@ const HBTable = <T extends object>({
             ) : (
               <TableRow className="hover:bg-transparent">
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + (showIndex ? 1 : 0)}
                   className="px-8 py-20 text-center"
                 >
                   <p className="text-sm font-black text-slate-400 uppercase tracking-widest italic">
