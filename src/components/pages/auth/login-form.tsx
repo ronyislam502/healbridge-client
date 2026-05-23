@@ -7,8 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Icons } from '@/components/shared/Icons';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBForm } from '@/components/shared/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBForm } from '@/components/form/HBForm';
 import { loginSchema, patientRegisterSchema } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -21,14 +21,14 @@ import { verifyToken } from '../../utilities/verifyToken';
 import { setUser, TUser } from '@/redux/features/auth/authSlice';
 import Cookies from "js-cookie";
 import Image from 'next/image';
-import { HBSelect } from '@/components/shared/HBSelect';
+import { HBSelect } from '@/components/form/HBSelect';
 
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
-  const [signIn, {isLoading: isLoginLoading}] = useLogInMutation();
+  const [signIn, { isLoading: isLoginLoading }] = useLogInMutation();
   const [signUp, { isLoading: isRegisterLoading }] = useSignUpMutation();
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
@@ -40,11 +40,11 @@ export const LoginForm = () => {
         email: data.email,
         password: data.password
       };
-      
+
       const res = await signIn(authData).unwrap();
 
       console.log("res", res)
-      
+
       const user = verifyToken(res.data.accessToken) as TUser;
       dispatch(setUser({ user: user, token: res.data.accessToken }));
 
@@ -62,12 +62,12 @@ export const LoginForm = () => {
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log('file', file)
-      if (file) {
-        setSelectedImage(file);
-        const url = URL.createObjectURL(file);
-        setPreview(url);
-      }
-    };
+    if (file) {
+      setSelectedImage(file);
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+    }
+  };
 
   const onRegisterSubmit = async (data: FieldValues) => {
     try {
@@ -80,21 +80,21 @@ export const LoginForm = () => {
           address: data.address
         }
       };
-     
+
       console.log(registerData)
       const formData = new FormData();
       formData.append("data", JSON.stringify(registerData));
-      
+
       if (selectedImage) {
         formData.append("avatar", selectedImage);
       }
-      
+
       const res = await signUp(formData).unwrap();
 
-      
+
       if (res?.success) {
         toast.success(res?.message || "Registration successful! Please login.");
-         router.push("/login");
+        router.push("/login");
       }
     } catch (err: any) {
       toast.error(err?.data?.message || "Registration failed. Please try again.");
@@ -106,13 +106,13 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md border-none bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-900/80 overflow-hidden">
       <Tabs defaultValue="login" className="w-full">
         <TabsList className="grid w-full grid-cols-2 rounded-none bg-slate-100/50 dark:bg-slate-800/50 h-14">
-          <TabsTrigger 
-            value="login" 
+          <TabsTrigger
+            value="login"
             className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-teal-600 dark:data-[state=active]:text-teal-400 font-semibold transition-all h-full"
           >
             Sign In
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="register"
             className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-teal-600 dark:data-[state=active]:text-teal-400 font-semibold transition-all h-full"
           >
@@ -122,13 +122,13 @@ export const LoginForm = () => {
 
         <TabsContent value="login" className="mt-0">
           <CardHeader className="text-center">
-              <Image 
-                  src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-                  alt='HealBridge logo' 
-                  width={150} 
-                  height={120} 
-                  className="mx-auto h-auto w-auto rounded-lg mb-4"
-              />
+            <Image
+              src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+              alt='HealBridge logo'
+              width={150}
+              height={120}
+              className="mx-auto h-auto w-auto rounded-lg mb-4"
+            />
 
             <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Welcome Back
@@ -138,7 +138,7 @@ export const LoginForm = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-0">
-            <HBForm 
+            <HBForm
               resolver={zodResolver(loginSchema)}
               onSubmit={onLoginSubmit}
               // defaultValues={{ email: '', password: '', remember: false }}
@@ -146,13 +146,13 @@ export const LoginForm = () => {
             >
               <HBInput label="Email" name="email" type="email" placeholder="name@example.com" icon={<Icons.mail className="h-4 w-4" />} required />
 
-              <HBInput 
-                label="Password" 
-                name="password" 
-                type={showPassword ? "text" : "password"} 
-                placeholder="••••••••" 
-                icon={<Icons.lock className="h-4 w-4" />} 
-                required 
+              <HBInput
+                label="Password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                icon={<Icons.lock className="h-4 w-4" />}
+                required
                 suffix={
                   <button
                     type="button"
@@ -186,13 +186,13 @@ export const LoginForm = () => {
 
         <TabsContent value="register" className="mt-0">
           <CardHeader className="text-center">
-              <Image 
-                  src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
-                  alt='HealBridge logo' 
-                  width={150} 
-                  height={120} 
-                  className="mx-auto h-auto w-auto rounded-lg mb-4"
-              />
+            <Image
+              src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png"
+              alt='HealBridge logo'
+              width={150}
+              height={120}
+              className="mx-auto h-auto w-auto rounded-lg mb-4"
+            />
 
             <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Get Started
@@ -202,7 +202,7 @@ export const LoginForm = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-0">
-            <HBForm 
+            <HBForm
               resolver={zodResolver(patientRegisterSchema)}
               onSubmit={onRegisterSubmit}
               // defaultValues={{ name: '', email: '', password: '', phone: '', address: '' }}
@@ -217,24 +217,24 @@ export const LoginForm = () => {
                 <HBInput label="Phone Number" name="phone" placeholder="+1 234 567 890" icon={<Icons.phone className="h-4 w-4" />} required containerClassName="flex-1" />
                 <HBInput label="Address" name="address" placeholder="123 Street, City" icon={<Icons.mapPin className="h-4 w-4" />} required containerClassName="flex-1" />
               </div>
-            <div className="grid grid-cols-2 gap-4">
-            <HBSelect
-              label="Gender"
-              name="gender"
-              placeholder="Select"
-              options={[
-                { label: "Male", value: "MALE" },
-                { label: "Female", value: "FEMALE" }
-              ]}
-              className="h-12 rounded-xl focus:border-blue-600"
+              <div className="grid grid-cols-2 gap-4">
+                <HBSelect
+                  label="Gender"
+                  name="gender"
+                  placeholder="Select"
+                  options={[
+                    { label: "Male", value: "MALE" },
+                    { label: "Female", value: "FEMALE" }
+                  ]}
+                  className="h-12 rounded-xl focus:border-blue-600"
                 />
-                <HBInput 
-                  label="Password" 
-                  name="password" 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="••••••••" 
-                  icon={<Icons.lock className="h-4 w-4" />} 
-                  required 
+                <HBInput
+                  label="Password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  icon={<Icons.lock className="h-4 w-4" />}
+                  required
                   containerClassName="flex-1"
                   suffix={
                     <button
@@ -246,19 +246,19 @@ export const LoginForm = () => {
                     </button>
                   }
                 />
-          </div>
-              
-          <div className="flex flex-col items-center gap-3">
-            <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
-             {preview ? (
-                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                            ) : (
-                <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
-                            )}
-                <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+              </div>
+
+              <div className="flex flex-col items-center gap-3">
+                <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+                  {preview ? (
+                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                  )}
+                  <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profile Photo</span>
-            </div>
+              </div>
               <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white" disabled={isRegisterLoading}>
                 {isRegisterLoading ? <><Icons.loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...</> : 'Create Account'}
               </Button>

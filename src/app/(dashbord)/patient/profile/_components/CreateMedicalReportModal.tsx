@@ -4,8 +4,8 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/Icons';
 import { HBModal } from '@/components/shared/HBModal';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useCreateMedicalReportMutation } from '@/redux/features/patient/patientApi';
@@ -76,21 +76,21 @@ export const CreateMedicalReportModal = ({ profileData }: CreateMedicalReportMod
     >
       <HBForm onSubmit={onSubmit} className="space-y-6">
         <div className="space-y-4">
-          <HBInput 
-            name="reportName" 
-            label="Report Label / Name" 
-            placeholder="e.g. Blood Test - May 2026" 
-            icon={<Icons.fileText className="w-4 h-4" />} 
+          <HBInput
+            name="reportName"
+            label="Report Label / Name"
+            placeholder="e.g. Blood Test - May 2026"
+            icon={<Icons.fileText className="w-4 h-4" />}
           />
-          
-          <div 
+
+          <div
             className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center hover:border-teal-500 hover:bg-teal-50/30 dark:hover:bg-slate-800/30 transition-all cursor-pointer relative group"
           >
             {preview ? (
               <div className="relative w-full aspect-[2/1] rounded-xl overflow-hidden border border-slate-200">
                 <img src={preview} alt="Report Preview" className="w-full h-full object-cover" />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={removeFile}
                   className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors"
                 >
@@ -102,8 +102,8 @@ export const CreateMedicalReportModal = ({ profileData }: CreateMedicalReportMod
                 <Icons.fileText className="w-12 h-12 text-teal-500 animate-bounce" />
                 <p className="text-sm font-bold text-slate-800 dark:text-slate-200">{selectedFile.name}</p>
                 <p className="text-[10px] font-black text-slate-400 uppercase">{(selectedFile.size / 1024).toFixed(1)} KB</p>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={removeFile}
                   className="mt-2 text-xs font-black text-red-500 uppercase tracking-widest hover:underline"
                 >
@@ -115,19 +115,19 @@ export const CreateMedicalReportModal = ({ profileData }: CreateMedicalReportMod
                 <Icons.cloudUpload className="w-12 h-12 text-slate-300 group-hover:text-teal-500 mb-4 transition-colors" />
                 <p className="text-sm font-bold text-slate-500 group-hover:text-teal-600">Click to upload medical report</p>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Accepts images & PDFs</p>
-                <input 
-                  type="file" 
-                  accept="image/*,application/pdf" 
-                  onChange={handleFileChange} 
-                  className="absolute inset-0 opacity-0 cursor-pointer" 
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </>
             )}
           </div>
         </div>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={isUploading || !selectedFile}
           className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest shadow-lg shadow-teal-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
         >

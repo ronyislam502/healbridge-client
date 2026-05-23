@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { HBModal } from "@/components/shared/HBModal";
-import { HBForm } from "@/components/shared/HBForm";
-import { HBInput } from "@/components/shared/HBInput";
+import { HBForm } from "@/components/form/HBForm";
+import { HBInput } from "@/components/form/HBInput";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";

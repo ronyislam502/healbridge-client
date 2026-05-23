@@ -1,6 +1,7 @@
 import Hero from '@/components/pages/home/Hero';
 import Specialties from '@/components/pages/home/Specialties';
 import Doctors from '@/components/pages/home/Doctors';
+import TopRatedDoctors from '@/components/pages/home/TopRatedDoctors';
 import WhyChooseUs from '@/components/pages/home/WhyChooseUs';
 import Stats from '@/components/pages/home/Stats';
 import Testimonials from '@/components/pages/home/Testimonials';
@@ -20,6 +21,7 @@ const Home = () => {
       <WhyChooseUs />
       <AiSuggestion />
       <Doctors />
+      <TopRatedDoctors />
       <Testimonials />
       <HealthApp />
     </main>

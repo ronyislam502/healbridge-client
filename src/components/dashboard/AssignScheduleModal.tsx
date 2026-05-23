@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { HBModal } from "@/components/shared/HBModal";
-import { HBForm } from "@/components/shared/HBForm";
-import { HBSelect } from "@/components/shared/HBSelect";
+import { HBForm } from "@/components/form/HBForm";
+import { HBSelect } from "@/components/form/HBSelect";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -59,13 +59,13 @@ const AssignScheduleModal = ({ trigger, scheduleId }: AssignScheduleModalProps) 
           />
 
           <div className="p-6 rounded-2xl bg-teal-500/5 border border-dashed border-teal-500/20 flex flex-col items-center justify-center text-center">
-             <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-teal-500 mb-3 shadow-md">
-                <Icons.userCheck className="w-6 h-6" />
-             </div>
-             <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest italic">
-                Assignment Confirmation
-             </p>
-             <p className="text-[10px] font-medium text-slate-500 mt-1">Once assigned, the doctor will be able to manage this slot in their dashboard.</p>
+            <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-teal-500 mb-3 shadow-md">
+              <Icons.userCheck className="w-6 h-6" />
+            </div>
+            <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest italic">
+              Assignment Confirmation
+            </p>
+            <p className="text-[10px] font-medium text-slate-500 mt-1">Once assigned, the doctor will be able to manage this slot in their dashboard.</p>
           </div>
         </div>
 

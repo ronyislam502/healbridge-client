@@ -9,9 +9,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBTextarea } from '@/components/shared/HBTextarea';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBTextarea } from '@/components/form/HBTextarea';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/shared/Icons';

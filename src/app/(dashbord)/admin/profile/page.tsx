@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
 import { Button } from '@/components/ui/button';
 import { FieldValues } from 'react-hook-form';
 import Image from 'next/image';
@@ -21,23 +21,23 @@ const AdminProfile = () => {
 
   const profileData = data?.data;
 
-   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        console.log('file', file)
-          if (file) {
-            setSelectedImage(file);
-            const url = URL.createObjectURL(file);
-            setPreview(url);
-          }
-        };
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    console.log('file', file)
+    if (file) {
+      setSelectedImage(file);
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+    }
+  };
 
   const onSubmit = async (values: FieldValues) => {
     try {
       const formData = new FormData();
       const { profilePhoto, ...dataValues } = values;
       formData.append('data', JSON.stringify(dataValues));
-      
-       if (selectedImage) {
+
+      if (selectedImage) {
         formData.append("avatar", selectedImage);
       }
 
@@ -85,8 +85,8 @@ const AdminProfile = () => {
             </Button>
           }
         >
-          <HBForm 
-            onSubmit={onSubmit} 
+          <HBForm
+            onSubmit={onSubmit}
             className="space-y-8"
             defaultValues={{
               name: profileData?.name,
@@ -96,22 +96,22 @@ const AdminProfile = () => {
           >
             <div className="flex flex-col items-center">
               <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
-                              {preview ? (
-                                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                                    ) : (
-                                  <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
-                                  )}
-                                  <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
-                            </div>
+                {preview ? (
+                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                )}
+                <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+              </div>
             </div>
             <div className="grid grid-cols-1 gap-4">
               <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />
               <HBInput name="email" label="Email" disabled icon={<Icons.mail className="w-4 h-4" />} />
               <HBInput name="phone" label="Phone Number" icon={<Icons.phone className="w-4 h-4" />} />
             </div>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               disabled={isUpdating}
               className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
             >
@@ -125,69 +125,69 @@ const AdminProfile = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Left: Admin Identity */}
         <div className="space-y-8">
-           <div className="bg-white dark:bg-slate-900 rounded-[3rem] p-10 border border-slate-100 dark:border-slate-800 shadow-2xl relative overflow-hidden text-center">
-              <div className="relative z-10 space-y-6 flex flex-col items-center">
-                 <div className="relative w-40 h-40 rounded-[3rem] border-8 border-slate-50 dark:border-slate-800 shadow-2xl overflow-hidden rotate-3 hover:rotate-0 transition-transform duration-500">
-                    <Image 
-                      src={profileData?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop'} 
-                      alt="Avatar" 
-                      fill 
-                      className="object-cover"
-                    />
-                 </div>
-                 <div>
-                    <h3 className="text-3xl font-black text-slate-900 dark:text-white italic">{profileData?.name}</h3>
-                    <p className="text-teal-500 font-black uppercase tracking-widest text-[10px] italic mt-2 bg-teal-500/10 px-4 py-1 rounded-full border border-teal-500/20 inline-block">
-                       System {profileData?.role}
-                    </p>
-                 </div>
+          <div className="bg-white dark:bg-slate-900 rounded-[3rem] p-10 border border-slate-100 dark:border-slate-800 shadow-2xl relative overflow-hidden text-center">
+            <div className="relative z-10 space-y-6 flex flex-col items-center">
+              <div className="relative w-40 h-40 rounded-[3rem] border-8 border-slate-50 dark:border-slate-800 shadow-2xl overflow-hidden rotate-3 hover:rotate-0 transition-transform duration-500">
+                <Image
+                  src={profileData?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop'}
+                  alt="Avatar"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <Icons.shieldCheck className="absolute -bottom-10 -right-10 w-40 h-40 text-teal-500/5 rotate-12" />
-           </div>
+              <div>
+                <h3 className="text-3xl font-black text-slate-900 dark:text-white italic">{profileData?.name}</h3>
+                <p className="text-teal-500 font-black uppercase tracking-widest text-[10px] italic mt-2 bg-teal-500/10 px-4 py-1 rounded-full border border-teal-500/20 inline-block">
+                  System {profileData?.role}
+                </p>
+              </div>
+            </div>
+            <Icons.shieldCheck className="absolute -bottom-10 -right-10 w-40 h-40 text-teal-500/5 rotate-12" />
+          </div>
 
-           <div className="bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
-              <div className="relative z-10 flex items-center gap-6">
-                 <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
-                    <Icons.lock className="w-8 h-8" />
-                 </div>
-                 <div>
-                    <p className="text-[10px] font-black text-emerald-400/70 uppercase tracking-widest italic mb-1">Security Status</p>
-                    <p className="text-xl font-black italic uppercase tracking-wider">Active & Secure</p>
-                 </div>
+          <div className="bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
+            <div className="relative z-10 flex items-center gap-6">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                <Icons.lock className="w-8 h-8" />
               </div>
-              <Icons.shieldCheck className="absolute -bottom-10 -right-10 w-40 h-40 text-white/5 rotate-12" />
-           </div>
+              <div>
+                <p className="text-[10px] font-black text-emerald-400/70 uppercase tracking-widest italic mb-1">Security Status</p>
+                <p className="text-xl font-black italic uppercase tracking-wider">Active & Secure</p>
+              </div>
+            </div>
+            <Icons.shieldCheck className="absolute -bottom-10 -right-10 w-40 h-40 text-white/5 rotate-12" />
+          </div>
         </div>
 
         {/* Right: Info Display */}
         <div className="lg:col-span-2">
-           <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl p-10 lg:p-14 h-full relative overflow-hidden">
-              <div className="relative z-10 space-y-12">
-                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500">
-                       <Icons.userCircle className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Account Information</h3>
-                 </div>
-
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
-                    {infoItems.map((item, index) => (
-                       <div key={index} className="space-y-3 group">
-                          <div className="flex items-center gap-3">
-                             <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors duration-300">
-                                {item.icon}
-                             </div>
-                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{item.label}</p>
-                          </div>
-                          <p className="text-lg font-black text-slate-900 dark:text-white italic pl-11">
-                             {item.value || 'N/A'}
-                          </p>
-                       </div>
-                    ))}
-                 </div>
+          <div className="bg-white dark:bg-slate-900 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl p-10 lg:p-14 h-full relative overflow-hidden">
+            <div className="relative z-10 space-y-12">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500">
+                  <Icons.userCircle className="w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Account Information</h3>
               </div>
-              <Icons.settings className="absolute -bottom-20 -right-20 w-80 h-80 text-slate-500/5 rotate-12" />
-           </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
+                {infoItems.map((item, index) => (
+                  <div key={index} className="space-y-3 group">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors duration-300">
+                        {item.icon}
+                      </div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{item.label}</p>
+                    </div>
+                    <p className="text-lg font-black text-slate-900 dark:text-white italic pl-11">
+                      {item.value || 'N/A'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Icons.settings className="absolute -bottom-20 -right-20 w-80 h-80 text-slate-500/5 rotate-12" />
+          </div>
         </div>
       </div>
     </div>

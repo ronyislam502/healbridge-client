@@ -35,6 +35,7 @@ const UserDropdown = ({ customTrigger, isMobile }: UserDropdownProps = {}) => {
     dispatch(logout());
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
+    router.push('/login');
     router.refresh();
   };
 

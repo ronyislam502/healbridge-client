@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBSelect } from '@/components/shared/HBSelect';
-import { HBTextarea } from '@/components/shared/HBTextarea';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBSelect } from '@/components/form/HBSelect';
+import { HBTextarea } from '@/components/form/HBTextarea';
 import { Button } from '@/components/ui/button';
 import { HBModal } from '@/components/shared/HBModal';
 import { FieldValues } from 'react-hook-form';
@@ -72,8 +72,8 @@ export const UpdateProfileModal = ({ profileData }: UpdateProfileModalProps) => 
         </Button>
       }
     >
-      <HBForm 
-        onSubmit={onProfileSubmit} 
+      <HBForm
+        onSubmit={onProfileSubmit}
         className="space-y-6"
         defaultValues={{
           name: profileData?.name,
@@ -102,8 +102,8 @@ export const UpdateProfileModal = ({ profileData }: UpdateProfileModalProps) => 
           <HBSelect name="gender" label="Gender" options={genderOptions} />
         </div>
         <HBTextarea name="address" label="Address" icon={<Icons.mapPin className="w-4 h-4" />} />
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={isUpdating}
           className="w-full h-14 rounded-2xl bg-slate-900 text-white font-black uppercase tracking-widest transition-all"
         >

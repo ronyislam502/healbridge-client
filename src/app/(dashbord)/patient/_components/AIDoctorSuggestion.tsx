@@ -7,8 +7,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useGetAIDoctorSuggestionMutation } from '@/redux/features/doctor/doctorApi';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBTextarea } from '@/components/shared/HBTextarea';
+import { HBForm } from '@/components/form/HBForm';
+import { HBTextarea } from '@/components/form/HBTextarea';
 import { FieldValues } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { HBModal } from "@/components/shared/HBModal";
-import { HBForm } from "@/components/shared/HBForm";
-import { HBInput } from "@/components/shared/HBInput";
+import { HBForm } from "@/components/form/HBForm";
+import { HBInput } from "@/components/form/HBInput";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
   const [open, setOpen] = React.useState(false);
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(defaultValues?.image || null);
-  
+
   const [createSpecialty, { isLoading: isCreating }] = useCreateSpecialtyMutation();
   const [updateSpecialty, { isLoading: isUpdating }] = useUpdateSpecialtyMutation();
 
@@ -65,8 +65,8 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
       open={open}
       onOpenChange={setOpen}
       title={mode === 'add' ? "Add New Specialty" : "Update Specialty"}
-      description={mode === 'add' 
-        ? "Create a new medical category for the platform." 
+      description={mode === 'add'
+        ? "Create a new medical category for the platform."
         : `Update the details for ${defaultValues?.title || 'this specialty'}.`
       }
       trigger={trigger}
@@ -80,14 +80,14 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
             icon={<Icons.activity className="w-4 h-4 text-teal-500" />}
             required
           />
-          
+
           <div className="space-y-4">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic ml-1 block">Icon Representation</label>
-            
+
             <label className="relative cursor-pointer group block">
-              <input 
-                type="file" 
-                className="hidden" 
+              <input
+                type="file"
+                className="hidden"
                 accept="image/*"
                 onChange={handleFileChange}
               />

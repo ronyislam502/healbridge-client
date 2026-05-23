@@ -53,7 +53,7 @@ const BlogCard = ({ post }: BlogCardProps) => {
         </div>
 
         <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors group-hover:text-primary">
-          <Link href={`/blog/${post.id}`}>
+          <Link href={`/blogs/${post.id}`}>
             {post.title}
           </Link>
         </h3>
@@ -78,7 +78,7 @@ const BlogCard = ({ post }: BlogCardProps) => {
             </div>
           </div>
           <Link 
-            href={`/blog/${post.id}`}
+            href={`/blogs/${post.id}`}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition-all hover:bg-primary hover:text-white"
           >
             <Icons.chevronRight className="h-5 w-5" />

@@ -31,7 +31,7 @@ const Navbar = () => {
     { label: "Doctors", href: "/doctors" },
     { label: "Pharmacy", href: "/pharmacy" },
     { label: "Contact", href: "/contact" },
-    { label: "Blog", href: "/blog" },
+    { label: "Blogs", href: "/blogs" },
     { label: "About", href: "/about" },
   ];
   return (

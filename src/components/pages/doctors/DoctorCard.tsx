@@ -21,6 +21,12 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
   // Safe specialty extraction
   const specialty = doctor.doctorSpecialties?.[0]?.title || "Specialist";
 
+  // Calculate average rating dynamically
+  const reviews = doctor.review || [];
+  const averageRating = reviews.length > 0
+    ? (reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : "4.9";
+
   return (
     <Card className={cn(
       "bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col h-full ring-0",
@@ -41,7 +47,7 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
         <div className="absolute top-4 left-4 flex flex-col gap-1.5">
           <div className="flex items-center gap-1 bg-orange-500 text-white px-2 py-1 rounded-lg text-[10px] font-black shadow-lg shadow-orange-500/20">
             <Icons.star className="w-3 h-3 fill-current" />
-            4.9
+            {averageRating}
           </div>
           <div className="bg-white/90 backdrop-blur-md text-slate-900 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-md">
             {doctor.experience}+ Yrs

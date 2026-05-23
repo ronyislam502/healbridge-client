@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
 import { Button } from '@/components/ui/button';
 import { HBModal } from '@/components/shared/HBModal';
 import { FieldValues } from 'react-hook-form';
@@ -27,7 +27,7 @@ export const ChangePasswordModal = () => {
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
       }).unwrap();
-      
+
       if (res?.success) {
         toast.success('Password changed successfully!');
         setIsOpen(false);
@@ -50,27 +50,27 @@ export const ChangePasswordModal = () => {
         </Button>
       }
     >
-      <HBForm 
-        onSubmit={onSubmit} 
+      <HBForm
+        onSubmit={onSubmit}
         resolver={zodResolver(changePasswordSchema)}
         className="space-y-6"
       >
         <div className="space-y-4">
-          <HBInput 
-            name="oldPassword" 
-            label="Old Password" 
+          <HBInput
+            name="oldPassword"
+            label="Old Password"
             type="password"
-            icon={<Icons.lock className="w-4 h-4" />} 
+            icon={<Icons.lock className="w-4 h-4" />}
           />
-          <HBInput 
-            name="newPassword" 
-            label="New Password" 
+          <HBInput
+            name="newPassword"
+            label="New Password"
             type="password"
-            icon={<Icons.lock className="w-4 h-4" />} 
+            icon={<Icons.lock className="w-4 h-4" />}
           />
         </div>
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={isLoading}
           className="w-full h-14 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
         >

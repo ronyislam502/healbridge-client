@@ -9,9 +9,9 @@ import { useGetAllDoctorsQuery, useCreateDoctorMutation } from '@/redux/features
 import { useGetAllSpecialtiesQuery } from '@/redux/features/specialties/specialtiesApi';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBModal } from '@/components/shared/HBModal';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBSelect } from '@/components/shared/HBSelect';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBSelect } from '@/components/form/HBSelect';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 
@@ -28,7 +28,7 @@ const DoctorManagement = () => {
     try {
       const formData = new FormData();
       const { profilePhoto, password, ...doctorData } = values;
-      
+
       const payload = {
         ...doctorData,
         experience: Number(doctorData.experience),
@@ -37,7 +37,7 @@ const DoctorManagement = () => {
 
       formData.append('data', JSON.stringify(payload));
       formData.append('password', password);
-      
+
       if (profilePhoto && profilePhoto[0]) {
         formData.append('image', profilePhoto[0]);
       }
@@ -76,26 +76,26 @@ const DoctorManagement = () => {
           }
         >
           <HBForm onSubmit={onSubmit} className="space-y-6">
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />
-                <HBInput name="email" label="Email Address" type="email" icon={<Icons.mail className="w-4 h-4" />} />
-                <HBInput name="password" label="Password" type="password" icon={<Icons.lock className="w-4 h-4" />} />
-                <HBInput name="phone" label="Contact Number" icon={<Icons.phone className="w-4 h-4" />} />
-                <HBInput name="registrationNumber" label="Registration ID" icon={<Icons.shieldCheck className="w-4 h-4" />} />
-                <HBInput name="designation" label="Designation" icon={<Icons.award className="w-4 h-4" />} />
-                <HBInput name="qualification" label="Qualification" icon={<Icons.graduationCap className="w-4 h-4" />} />
-                <HBInput name="currentWorkingPlace" label="Current Workplace" icon={<Icons.mapPin className="w-4 h-4" />} />
-                <HBInput name="experience" label="Experience (Years)" type="number" icon={<Icons.activity className="w-4 h-4" />} />
-                <HBInput name="appointmentFee" label="Consultation Fee ($)" type="number" icon={<Icons.creditCard className="w-4 h-4" />} />
-                <HBSelect name="gender" label="Gender" options={[{ key: 'MALE', label: 'Male' }, { key: 'FEMALE', label: 'Female' }]} />
-             </div>
-             <Button 
-               type="submit" 
-               disabled={isCreating}
-               className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest transition-all"
-             >
-               {isCreating ? <Icons.loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Registration'}
-             </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <HBInput name="name" label="Full Name" icon={<Icons.userCheck className="w-4 h-4" />} />
+              <HBInput name="email" label="Email Address" type="email" icon={<Icons.mail className="w-4 h-4" />} />
+              <HBInput name="password" label="Password" type="password" icon={<Icons.lock className="w-4 h-4" />} />
+              <HBInput name="phone" label="Contact Number" icon={<Icons.phone className="w-4 h-4" />} />
+              <HBInput name="registrationNumber" label="Registration ID" icon={<Icons.shieldCheck className="w-4 h-4" />} />
+              <HBInput name="designation" label="Designation" icon={<Icons.award className="w-4 h-4" />} />
+              <HBInput name="qualification" label="Qualification" icon={<Icons.graduationCap className="w-4 h-4" />} />
+              <HBInput name="currentWorkingPlace" label="Current Workplace" icon={<Icons.mapPin className="w-4 h-4" />} />
+              <HBInput name="experience" label="Experience (Years)" type="number" icon={<Icons.activity className="w-4 h-4" />} />
+              <HBInput name="appointmentFee" label="Consultation Fee ($)" type="number" icon={<Icons.creditCard className="w-4 h-4" />} />
+              <HBSelect name="gender" label="Gender" options={[{ key: 'MALE', label: 'Male' }, { key: 'FEMALE', label: 'Female' }]} />
+            </div>
+            <Button
+              type="submit"
+              disabled={isCreating}
+              className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest transition-all"
+            >
+              {isCreating ? <Icons.loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Registration'}
+            </Button>
           </HBForm>
         </HBModal>
       </div>
@@ -115,7 +115,7 @@ const DoctorManagement = () => {
       </div>
 
       {/* Doctors Table */}
-      <HBTable 
+      <HBTable
         isLoading={isLoading}
         loadingMessage="Synchronizing Medical Experts..."
         data={doctors}

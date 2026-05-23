@@ -7,9 +7,9 @@ import { cn } from '@/lib/utils';
 import { useAllUsersQuery, useCreateAdminMutation } from '@/redux/features/user/userApi';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBModal } from '@/components/shared/HBModal';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBSelect } from '@/components/shared/HBSelect';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBSelect } from '@/components/form/HBSelect';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 
@@ -24,10 +24,10 @@ const AdminManagement = () => {
     try {
       const formData = new FormData();
       const { profilePhoto, password, ...adminData } = values;
-      
+
       formData.append('data', JSON.stringify(adminData));
       formData.append('password', password);
-      
+
       if (profilePhoto && profilePhoto[0]) {
         formData.append('image', profilePhoto[0]);
       }
@@ -80,13 +80,13 @@ const AdminManagement = () => {
       )
     },
     {
-        header: 'Created At',
-        key: 'createdAt',
-        render: (row: any) => (
-          <span className="text-sm font-bold text-slate-500 italic">
-            {new Date(row.createdAt).toLocaleDateString()}
-          </span>
-        )
+      header: 'Created At',
+      key: 'createdAt',
+      render: (row: any) => (
+        <span className="text-sm font-bold text-slate-500 italic">
+          {new Date(row.createdAt).toLocaleDateString()}
+        </span>
+      )
     },
     {
       header: 'Actions',
@@ -136,8 +136,8 @@ const AdminManagement = () => {
               <HBInput name="password" label="Password" type="password" icon={<Icons.lock className="w-4 h-4" />} />
               <HBInput name="phone" label="Contact Number" icon={<Icons.phone className="w-4 h-4" />} />
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="w-full h-14 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black uppercase tracking-widest transition-all"
             >
@@ -147,9 +147,9 @@ const AdminManagement = () => {
         </HBModal>
       </div>
 
-      <HBTable 
-        columns={columns} 
-        data={admins} 
+      <HBTable
+        columns={columns}
+        data={admins}
         isLoading={isLoading}
         emptyMessage="No administrators found in the system."
       />

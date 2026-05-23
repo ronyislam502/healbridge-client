@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBForm } from '@/components/shared/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBForm } from '@/components/form/HBForm';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ChangePasswordModal } from '@/components/shared/ChangePasswordModal';
@@ -70,7 +70,7 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            <HBForm onSubmit={() => {}}>
+            <HBForm onSubmit={() => { }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <HBInput
                   label="Full Name"
@@ -113,7 +113,7 @@ const SettingsPage = () => {
         {activeTab !== 'profile' && (
           <div className="py-20 text-center space-y-6">
             <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-[1.5rem] flex items-center justify-center mx-auto border border-slate-100 dark:border-slate-800">
-               <Icons.shieldCheck className="w-10 h-10 text-slate-400 animate-pulse" />
+              <Icons.shieldCheck className="w-10 h-10 text-slate-400 animate-pulse" />
             </div>
             <div className="max-w-md mx-auto">
               <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">Module Loading</h3>
@@ -126,26 +126,26 @@ const SettingsPage = () => {
       {/* Secondary Settings Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl group overflow-hidden relative">
-           <div className="relative z-10">
-             <h4 className="text-xl font-black italic uppercase tracking-widest mb-4">Account Security</h4>
-             <p className="text-slate-400 font-medium mb-8">Two-factor authentication is currently <span className="text-teal-400">Enabled</span>. Your account is protected.</p>
-             <button className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-white hover:text-teal-400 transition-colors">
-               <Icons.lock className="w-4 h-4" />
-               Manage 2FA Settings
-             </button>
-           </div>
-           <Icons.shieldCheck className="absolute -bottom-8 -right-8 w-40 h-40 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-700" />
+          <div className="relative z-10">
+            <h4 className="text-xl font-black italic uppercase tracking-widest mb-4">Account Security</h4>
+            <p className="text-slate-400 font-medium mb-8">Two-factor authentication is currently <span className="text-teal-400">Enabled</span>. Your account is protected.</p>
+            <button className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-white hover:text-teal-400 transition-colors">
+              <Icons.lock className="w-4 h-4" />
+              Manage 2FA Settings
+            </button>
+          </div>
+          <Icons.shieldCheck className="absolute -bottom-8 -right-8 w-40 h-40 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-700" />
         </div>
 
         <div className="bg-teal-500 rounded-[2.5rem] p-10 text-white shadow-2xl group overflow-hidden relative">
-           <div className="relative z-10">
-             <h4 className="text-xl font-black italic uppercase tracking-widest mb-4">System Updates</h4>
-             <p className="text-teal-100 font-medium mb-8">V1.4.2 is now available. Review the new features and security patches.</p>
-             <button className="px-8 py-3 bg-white text-teal-600 rounded-xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform">
-               Update Now
-             </button>
-           </div>
-           <Icons.activity className="absolute -bottom-8 -right-8 w-40 h-40 text-white/10 rotate-12 group-hover:scale-110 transition-transform duration-700" />
+          <div className="relative z-10">
+            <h4 className="text-xl font-black italic uppercase tracking-widest mb-4">System Updates</h4>
+            <p className="text-teal-100 font-medium mb-8">V1.4.2 is now available. Review the new features and security patches.</p>
+            <button className="px-8 py-3 bg-white text-teal-600 rounded-xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+              Update Now
+            </button>
+          </div>
+          <Icons.activity className="absolute -bottom-8 -right-8 w-40 h-40 text-white/10 rotate-12 group-hover:scale-110 transition-transform duration-700" />
         </div>
       </div>
     </div>

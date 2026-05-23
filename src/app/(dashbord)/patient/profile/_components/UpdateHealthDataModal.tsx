@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBSelect } from '@/components/shared/HBSelect';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBSelect } from '@/components/form/HBSelect';
 import { Button } from '@/components/ui/button';
 import { HBModal } from '@/components/shared/HBModal';
 import { FieldValues } from 'react-hook-form';
@@ -96,8 +96,8 @@ export const UpdateHealthDataModal = ({ profileData }: UpdateHealthDataModalProp
         </Button>
       }
     >
-      <HBForm 
-        onSubmit={onSubmit} 
+      <HBForm
+        onSubmit={onSubmit}
         className="space-y-6"
         defaultValues={defaultValues}
       >
@@ -121,8 +121,8 @@ export const UpdateHealthDataModal = ({ profileData }: UpdateHealthDataModalProp
           <HBInput name="immunizationStatus" label="Immunization Status" placeholder="e.g. Fully vaccinated" icon={<Icons.shieldCheck className="w-4 h-4" />} />
         </div>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={isUpdating}
           className="w-full h-14 rounded-2xl bg-slate-900 text-white font-black uppercase tracking-widest transition-all"
         >

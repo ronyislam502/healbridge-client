@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBForm } from '@/components/shared/HBForm';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBSelect } from '@/components/shared/HBSelect';
+import { HBForm } from '@/components/form/HBForm';
+import { HBInput } from '@/components/form/HBInput';
+import { HBSelect } from '@/components/form/HBSelect';
 import { Button } from '@/components/ui/button';
 import { HBModal } from '@/components/shared/HBModal';
 import { FieldValues } from 'react-hook-form';

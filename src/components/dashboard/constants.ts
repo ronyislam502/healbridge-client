@@ -9,6 +9,8 @@ export const adminLinks = [
   { label: 'Specialties', href: '/admin/specialties', icon: Icons.microscope },
   { label: 'Reviews', href: '/admin/reviews', icon: Icons.star },
   { label: 'Payments', href: '/admin/payments', icon: Icons.creditCard },
+  { label: 'Blogs', href: '/admin/blogs', icon: Icons.scrollText },
+  { label: 'Contacts', href: '/admin/contacts', icon: Icons.mail },
   { label: 'Settings', href: '/admin/settings', icon: Icons.shieldCheck },
 ];
 

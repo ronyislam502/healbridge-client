@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
-import { HBSelect } from '@/components/shared/HBSelect';
-import { HBInput } from '@/components/shared/HBInput';
-import { HBForm } from '@/components/shared/HBForm';
+import { HBSelect } from '@/components/form/HBSelect';
+import { HBInput } from '@/components/form/HBInput';
+import { HBForm } from '@/components/form/HBForm';
 import { sortOptions, availabilityFilters } from '../constants';
 
 interface DoctorFiltersProps {
@@ -60,7 +60,7 @@ const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFi
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-6">
-              <button 
+              <button
                 type="button"
                 onClick={onReset}
                 className="h-14 rounded-2xl border border-slate-700 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2"
@@ -68,8 +68,8 @@ const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFi
                 <Icons.activity className="w-3.5 h-3.5 rotate-180" />
                 Reset
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="h-14 rounded-2xl bg-teal-500 text-white font-black text-sm uppercase tracking-widest shadow-lg shadow-teal-500/20 hover:bg-teal-600 transition-all active:scale-95"
               >
                 Apply

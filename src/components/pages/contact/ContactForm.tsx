@@ -2,26 +2,27 @@
 
 import * as React from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
-import { HBForm } from "@/components/shared/HBForm";
-import { HBInput } from "@/components/shared/HBInput";
-import { HBTextarea } from "@/components/shared/HBTextarea";
+import { HBForm } from "@/components/form/HBForm";
+import { HBInput } from "@/components/form/HBInput";
+import { HBTextarea } from "@/components/form/HBTextarea";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useCreateContactMutation } from "@/redux/features/contact/contactApi";
 
 const ContactForm = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [createContact, { isLoading }] = useCreateContactMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Contact Form Data:", data);
-      toast.success("Message sent successfully! We'll get back to you soon.");
-    } catch (error) {
-      toast.error("Failed to send message. Please try again.");
-    } finally {
-      setIsLoading(false);
+      const res = await createContact(data).unwrap();
+      if (res?.success) {
+        toast.success("Message sent successfully! We'll get back to you soon.");
+      } else {
+        toast.error("Failed to send message.");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to send message. Please try again.");
     }
   };
 
@@ -36,7 +37,7 @@ const ContactForm = () => {
         </p>
       </div>
 
-      <HBForm onSubmit={onSubmit}>
+      <HBForm onSubmit={onSubmit} defaultValues={{ name: "", email: "", subject: "", message: "" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <HBInput
             label="Full Name"
@@ -54,7 +55,7 @@ const ContactForm = () => {
             required
           />
         </div>
-        
+
         <div className="mb-6">
           <HBInput
             label="Subject"
