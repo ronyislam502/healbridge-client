@@ -3,16 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { Icons } from "@/components/shared/Icons";
-import { useGetAllDoctorsQuery } from "@/redux/features/doctor/doctorApi";
+import { useGetTopRatedDoctorsQuery } from "@/redux/features/doctor/doctorApi";
 import { TDoctor } from "@/types/user";
 import DoctorCard from "../doctors/DoctorCard";
 
 const TopRatedDoctors = () => {
-  const { data: doctorsData, isLoading } = useGetAllDoctorsQuery({
-    sort: "rating",
-    limit: 4,
-  });
-  const doctors = doctorsData?.data || [];
+  const { data: doctorsData, isLoading } = useGetTopRatedDoctorsQuery(4);
+  const doctors = doctorsData || [];
 
   if (isLoading) {
     return (
@@ -58,7 +55,7 @@ const TopRatedDoctors = () => {
           </Link>
         </div>
 
-        {doctors.length === 0 ? (
+        {!doctors || doctors.length === 0 ? (
           <div className="py-20 text-center bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
             <Icons.activity className="w-16 h-16 text-slate-300 mx-auto mb-6 animate-pulse" />
             <p className="text-slate-500 font-black uppercase tracking-[0.2em] italic">

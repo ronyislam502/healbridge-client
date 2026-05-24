@@ -16,6 +16,7 @@ const UserManagement = () => {
   const { data, isLoading } = useAllUsersQuery({ page, limit });
   const [updateStatus, { isLoading: isUpdating }] = useUpdateUserStatusMutation();
   const users = data?.data || [];
+  console.log("users", users)
   const meta = data?.meta;
 
   const handleToggleStatus = async (id: string, currentStatus: string) => {
@@ -39,7 +40,7 @@ const UserManagement = () => {
           <div className={cn(
             "w-10 h-10 rounded-xl flex items-center justify-center text-white",
             row.role === 'ADMIN' || row.role === 'SUPER_ADMIN' ? 'bg-slate-900' :
-            row.role === 'DOCTOR' ? 'bg-teal-500' : 'bg-blue-500'
+              row.role === 'DOCTOR' ? 'bg-teal-500' : 'bg-blue-500'
           )}>
             <Icons.users className="w-5 h-5" />
           </div>
@@ -56,9 +57,9 @@ const UserManagement = () => {
       render: (row: any) => (
         <span className={cn(
           "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
-          row.role === 'SUPER_ADMIN' ? 'bg-purple-500/10 text-purple-500' : 
-          row.role === 'ADMIN' ? 'bg-slate-500/10 text-slate-500' :
-          row.role === 'DOCTOR' ? 'bg-teal-500/10 text-teal-500' : 'bg-blue-500/10 text-blue-500'
+          row.role === 'SUPER_ADMIN' ? 'bg-purple-500/10 text-purple-500' :
+            row.role === 'ADMIN' ? 'bg-slate-500/10 text-slate-500' :
+              row.role === 'DOCTOR' ? 'bg-teal-500/10 text-teal-500' : 'bg-blue-500/10 text-blue-500'
         )}>
           {row.role}
         </span>
@@ -78,13 +79,13 @@ const UserManagement = () => {
       )
     },
     {
-        header: 'Registered',
-        key: 'createdAt',
-        render: (row: any) => (
-          <span className="text-sm font-bold text-slate-500 italic">
-            {new Date(row.createdAt).toLocaleDateString()}
-          </span>
-        )
+      header: 'Registered',
+      key: 'createdAt',
+      render: (row: any) => (
+        <span className="text-sm font-bold text-slate-500 italic">
+          {new Date(row.createdAt).toLocaleDateString()}
+        </span>
+      )
     },
     {
       header: 'Actions',
@@ -92,12 +93,12 @@ const UserManagement = () => {
       align: 'right' as const,
       render: (row: any) => (
         <div className="flex items-center justify-end gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className={cn(
-                "h-10 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all",
-                row.status === 'ACTIVE' ? "hover:bg-red-500 hover:text-white border-red-500/20" : "hover:bg-emerald-500 hover:text-white border-emerald-500/20"
+              "h-10 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest italic transition-all",
+              row.status === 'ACTIVE' ? "hover:bg-red-500 hover:text-white border-red-500/20" : "hover:bg-emerald-500 hover:text-white border-emerald-500/20"
             )}
             onClick={() => handleToggleStatus(row.id, row.status)}
             disabled={isUpdating}
@@ -125,9 +126,9 @@ const UserManagement = () => {
       </div>
 
       <div className="space-y-8">
-        <HBTable 
-          columns={columns} 
-          data={users} 
+        <HBTable
+          columns={columns}
+          data={users}
           isLoading={isLoading}
           emptyMessage="No users found in the system record."
         />

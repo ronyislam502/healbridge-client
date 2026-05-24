@@ -65,6 +65,14 @@ const doctorApi = baseApi.injectEndpoints({
       transformResponse: (response: TResponseRedux<TDoctor>) => response.data,
       providesTags: ["user"],
     }),
+    getTopRatedDoctors: builder.query({
+      query: (limit?: number) => ({
+        url: `/doctors/top-rated${limit ? `?limit=${limit}` : ''}`,
+        method: "GET",
+      }),
+      transformResponse: (response: TResponseRedux<TDoctor[]>) => response.data,
+      providesTags: ["user"],
+    }),
     updateDoctor: builder.mutation({
       query: ({ id, data }) => ({
         url: `/doctors/update/${id}`,
@@ -102,6 +110,7 @@ export const {
   useCreateDoctorMutation,
   useGetAllDoctorsQuery,
   useGetSingleDoctorQuery,
+  useGetTopRatedDoctorsQuery,
   useUpdateDoctorMutation,
   useUpdateDoctorSpecialtiesMutation,
   useDeleteDoctorMutation,
