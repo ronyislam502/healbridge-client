@@ -16,8 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HealBridge - Find Best Doctors",
+  title: "HealBridge",
   description: "Book appointments with top-rated doctors.",
+  icons: {
+    icon: "https://res.cloudinary.com/dkk9lvbtf/image/upload/v1778161565/1778077513978_solqyp.png",
+
+  },
 };
 
 export default function RootLayout({
