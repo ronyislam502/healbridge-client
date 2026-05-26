@@ -1,5 +1,7 @@
 'use client';
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+
 import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { cn } from '@/lib/utils';
@@ -16,7 +18,7 @@ const DoctorPrescriptions = () => {
   const handleDownloadPdf = async (prescriptionId: string) => {
     try {
       const token = Cookies.get("accessToken");
-      const response = await fetch(`http://localhost:5000/api/v1/prescriptions/${prescriptionId}/pdf`, {
+      const response = await fetch(`${BACKEND_URL}/api/v1/prescriptions/${prescriptionId}/pdf`, {
         headers: {
           Authorization: token ? `${token}` : "",
         },

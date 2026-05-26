@@ -37,10 +37,30 @@ const AdminDashboard = () => {
   const statsData = statsRes?.data;
   const appointments = appointmentsRes?.data || [];
 
-  const monthlyData = statsData?.barChartData?.map((item: any) => ({
-    name: new Date(item.month).toLocaleDateString([], { month: 'short', year: '2-digit' }),
-    Count: Number(item.count),
-  })) || [];
+  const rawBarChartData = statsData?.barChartData || [];
+  const dataMap: Record<string, number> = {};
+  
+  rawBarChartData.forEach((item: any) => {
+    try {
+      const dateKey = new Date(item.month).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      dataMap[dateKey] = Number(item.count) || 0;
+    } catch (e) {
+      // safe fallback
+    }
+  });
+
+  const monthlyData = [];
+  const currentDate = new Date();
+  
+  // Create 6 consecutive months ending at current month
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+    const name = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    monthlyData.push({
+      name,
+      Count: dataMap[name] !== undefined ? dataMap[name] : 0,
+    });
+  }
 
   const statusData = statsData?.pieCharData?.map((item: any) => ({
     name: item.status.charAt(0) + item.status.slice(1).toLowerCase(),

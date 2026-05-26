@@ -1,6 +1,7 @@
 'use client';
 
 import { Icons } from '@/components/shared/Icons';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useGetAllPatientsQuery } from '@/redux/features/patient/patientApi';
 import { HBTable } from '@/components/shared/HBTable';
@@ -42,8 +43,19 @@ const PatientManagement = () => {
             key: "name",
             render: (row) => (
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500 font-black italic border border-teal-500/20">
-                  {row.name.charAt(0)}
+                <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0">
+                  {row.avatar ? (
+                    <Image
+                      src={row.avatar}
+                      alt={row.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-teal-500/10 flex items-center justify-center text-teal-500 font-black italic border border-teal-500/20">
+                      {row.name.charAt(0)}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <span className="text-base font-black text-slate-900 dark:text-white italic block">{row.name}</span>

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Icons } from "@/components/shared/Icons";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { HBTable } from "@/components/shared/HBTable";
 
@@ -17,8 +18,17 @@ const RecentAppointments = ({ data, isLoading }: RecentAppointmentsProps) => {
       key: 'doctor',
       render: (row: any) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-500">
-            <Icons.userCheck className="w-5 h-5" />
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-teal-500/10 flex items-center justify-center text-teal-500 shrink-0">
+            {row.doctor?.avatar ? (
+              <Image
+                src={row.doctor.avatar}
+                alt={row.doctor.name || "Doctor"}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <Icons.userCheck className="w-5 h-5" />
+            )}
           </div>
           <span className="font-bold text-slate-900 dark:text-white">{row.doctor?.name}</span>
         </div>
@@ -28,9 +38,25 @@ const RecentAppointments = ({ data, isLoading }: RecentAppointmentsProps) => {
       header: 'Patient',
       key: 'patient',
       render: (row: any) => (
-        <span className="font-medium text-slate-500 dark:text-slate-400">
-          {row.patient?.name}
-        </span>
+        <div className="flex items-center gap-3">
+          <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-teal-500/10 flex items-center justify-center text-teal-500 shrink-0">
+            {row.patient?.avatar ? (
+              <Image
+                src={row.patient.avatar}
+                alt={row.patient.name || "Patient"}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="text-xs font-black italic text-teal-500">
+                {row.patient?.name?.charAt(0) || "P"}
+              </div>
+            )}
+          </div>
+          <span className="font-medium text-slate-500 dark:text-slate-400">
+            {row.patient?.name}
+          </span>
+        </div>
       ),
     },
     {
@@ -88,6 +114,8 @@ const RecentAppointments = ({ data, isLoading }: RecentAppointmentsProps) => {
         isLoading={isLoading}
         emptyMessage="No recent appointments in system."
         skeletonCount={4}
+        showIndex={false}
+        className="no-scrollbar"
       />
     </div>
   );

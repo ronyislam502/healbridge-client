@@ -47,7 +47,7 @@ const NotificationBell = () => {
     if (!user?.email) return;
 
     // Connect to port 5000 (backend address)
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io(process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000');
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
