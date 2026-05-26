@@ -79,7 +79,7 @@ const UserDropdown = ({ customTrigger, isMobile }: UserDropdownProps = {}) => {
         {customTrigger ? customTrigger : (
           <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
             <Avatar className="h-10 w-10 border border-blue-100">
-              <AvatarImage src={profile?.avatar || ""} alt={profile?.name || "User"} />
+              <AvatarImage src={profile?.avatar || undefined} alt={profile?.name || "User"} />
               <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
                 {(profile?.name || loggedUser?.name)?.charAt(0).toUpperCase() || "U"}
               </AvatarFallback>

@@ -12,9 +12,9 @@ import { HBForm } from '@/components/form/HBForm';
 import { loginSchema, patientRegisterSchema } from '@/lib/validations/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { FieldValues } from 'react-hook-form';
+import { useForm, FieldValues } from 'react-hook-form';
 import { useAppDispatch } from '@/redux/hooks';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useLogInMutation } from '@/redux/features/auth/authApi';
 import { useSignUpMutation } from '@/redux/features/user/userApi';
 import { verifyToken } from '../../utilities/verifyToken';
@@ -28,11 +28,29 @@ export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = React.useState("login");
+
+  // Sync activeTab with url search parameter if present
+  React.useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "register" || tab === "login") {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
   const [signIn, { isLoading: isLoginLoading }] = useLogInMutation();
   const [signUp, { isLoading: isRegisterLoading }] = useSignUpMutation();
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
 
+  const loginMethods = useForm({
+    resolver: zodResolver(loginSchema)
+  });
+
+  const registerMethods = useForm({
+    resolver: zodResolver(patientRegisterSchema)
+  });
 
   const onLoginSubmit = async (data: FieldValues) => {
     try {
@@ -52,6 +70,7 @@ export const LoginForm = () => {
         Cookies.set("accessToken", res.data.accessToken);
         // refreshToken is usually handled by http-only cookies from server
         toast.success(res?.message || "Login successful");
+        loginMethods.reset();
         router.push("/");
       }
     } catch (err: any) {
@@ -77,7 +96,8 @@ export const LoginForm = () => {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          address: data.address
+          address: data.address,
+          gender: data.gender
         }
       };
 
@@ -91,20 +111,25 @@ export const LoginForm = () => {
 
       const res = await signUp(formData).unwrap();
 
-
       if (res?.success) {
         toast.success(res?.message || "Registration successful! Please login.");
-        router.push("/login");
+        registerMethods.reset();
+        setSelectedImage(null);
+        setPreview(null);
+        setActiveTab("login");
+        router.push("/login?tab=login");
       }
     } catch (err: any) {
       toast.error(err?.data?.message || "Registration failed. Please try again.");
     }
   };
 
-
   return (
     <Card className="w-full max-w-md border-none bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-900/80 overflow-hidden">
-      <Tabs defaultValue="login" className="w-full">
+      <Tabs value={activeTab} onValueChange={(val) => {
+        setActiveTab(val);
+        router.push(`/login?tab=${val}`);
+      }} className="w-full">
         <TabsList className="grid w-full grid-cols-2 rounded-none bg-slate-100/50 dark:bg-slate-800/50 h-14">
           <TabsTrigger
             value="login"
@@ -116,7 +141,7 @@ export const LoginForm = () => {
             value="register"
             className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-teal-600 dark:data-[state=active]:text-teal-400 font-semibold transition-all h-full"
           >
-            Create Account
+            Sign Up
           </TabsTrigger>
         </TabsList>
 
@@ -139,9 +164,8 @@ export const LoginForm = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <HBForm
-              resolver={zodResolver(loginSchema)}
+              methods={loginMethods}
               onSubmit={onLoginSubmit}
-              // defaultValues={{ email: '', password: '', remember: false }}
               className="space-y-4"
             >
               <HBInput label="Email" name="email" type="email" placeholder="name@example.com" icon={<Icons.mail className="h-4 w-4" />} required />
@@ -203,9 +227,8 @@ export const LoginForm = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <HBForm
-              resolver={zodResolver(patientRegisterSchema)}
+              methods={registerMethods}
               onSubmit={onRegisterSubmit}
-              // defaultValues={{ name: '', email: '', password: '', phone: '', address: '' }}
               className="space-y-4"
             >
               <div className='flex gap-2'>
@@ -260,25 +283,11 @@ export const LoginForm = () => {
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profile Photo</span>
               </div>
               <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white" disabled={isRegisterLoading}>
-                {isRegisterLoading ? <><Icons.loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...</> : 'Create Account'}
+                {isRegisterLoading ? <><Icons.loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...</> : 'Sign Up'}
               </Button>
             </HBForm>
           </CardContent>
         </TabsContent>
-
-
-        {/* <CardFooter className="flex flex-col space-y-4 pb-8">
-          <div className="relative w-full">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-slate-200 dark:border-slate-800" /></div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white/0 px-2 text-slate-500 dark:text-slate-400">Or continue with</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <Button variant="outline" className="w-full">Google</Button>
-            <Button variant="outline" className="w-full">GitHub</Button>
-          </div>
-        </CardFooter> */}
       </Tabs>
     </Card>
   );

@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Icons } from '@/components/shared/Icons';
 import { useState, useEffect } from 'react';
 import UserDropdown from './UserDropdown';
+import { navItems } from '../dashboard/constants';
 
 
 const Navbar = () => {
@@ -26,14 +27,7 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navItems = [
-    { label: "Home", href: "/" },
-    { label: "Doctors", href: "/doctors" },
-    { label: "Pharmacy", href: "/pharmacy" },
-    { label: "Contact", href: "/contact" },
-    { label: "Blogs", href: "/blogs" },
-    { label: "About", href: "/about" },
-  ];
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
       <div className="container mx-auto px-4">
@@ -66,12 +60,12 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700 mr-4">
+            <div className="hidden md:flex items-center gap-2 text-md font-bold text-gray-700 mr-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <Icons.phone className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500">Contact Us</span>
+                <span className="text-md text-gray-500">Contact Us</span>
                 <span>+1 315 369 5943</span>
               </div>
             </div>

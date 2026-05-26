@@ -80,6 +80,14 @@ const userApi = baseApi?.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    allAdmins: builder.query({
+      query: (params) => ({
+        url: "/admins",
+        method: "GET",
+        params: params,
+      }),
+      providesTags: ["user"],
+    }),
   }),
 });
 
@@ -92,4 +100,5 @@ export const {
   useSignUpMutation,
   useCreateAdminMutation,
   useUpdateUserStatusMutation,
+  useAllAdminsQuery,
 } = userApi;

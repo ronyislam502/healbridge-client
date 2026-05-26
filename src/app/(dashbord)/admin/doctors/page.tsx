@@ -19,10 +19,22 @@ import { FieldValues } from 'react-hook-form';
 
 const DoctorManagement = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [preview, setPreview] = React.useState<string | null>(null);
   const { data, isLoading } = useGetAllDoctorsQuery({});
   const { data: specialtiesData } = useGetAllSpecialtiesQuery({});
   const [createDoctor, { isLoading: isCreating }] = useCreateDoctorMutation();
   const doctors = data?.data || [];
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    console.log('file', file)
+    if (file) {
+      setSelectedImage(file);
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+    }
+  };
 
   const onSubmit = async (values: FieldValues) => {
     try {
@@ -30,16 +42,17 @@ const DoctorManagement = () => {
       const { profilePhoto, password, ...doctorData } = values;
 
       const payload = {
-        ...doctorData,
-        experience: Number(doctorData.experience),
-        appointmentFee: Number(doctorData.appointmentFee),
+        password,
+        doctor: {
+          ...doctorData,
+          experience: Number(doctorData.experience),
+          appointmentFee: Number(doctorData.appointmentFee),
+        }
       };
 
       formData.append('data', JSON.stringify(payload));
-      formData.append('password', password);
-
-      if (profilePhoto && profilePhoto[0]) {
-        formData.append('image', profilePhoto[0]);
+      if (selectedImage) {
+        formData.append("avatar", selectedImage);
       }
 
       const res = await createDoctor(formData).unwrap();
@@ -85,9 +98,21 @@ const DoctorManagement = () => {
               <HBInput name="designation" label="Designation" icon={<Icons.award className="w-4 h-4" />} />
               <HBInput name="qualification" label="Qualification" icon={<Icons.graduationCap className="w-4 h-4" />} />
               <HBInput name="currentWorkingPlace" label="Current Workplace" icon={<Icons.mapPin className="w-4 h-4" />} />
+              <HBInput name="address" label="Address" icon={<Icons.home className="w-4 h-4" />} />
               <HBInput name="experience" label="Experience (Years)" type="number" icon={<Icons.activity className="w-4 h-4" />} />
               <HBInput name="appointmentFee" label="Consultation Fee ($)" type="number" icon={<Icons.creditCard className="w-4 h-4" />} />
               <HBSelect name="gender" label="Gender" options={[{ key: 'MALE', label: 'Male' }, { key: 'FEMALE', label: 'Female' }]} />
+              <div className="flex flex-col items-center gap-3">
+                <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
+                  {preview ? (
+                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <Icons.user className="w-8 h-8 text-slate-400 group-hover:text-blue-500" />
+                  )}
+                  <input type="file" accept="image/*" onChange={handleImage} className="absolute inset-0 opacity-0 cursor-pointer" />
+                </div>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profile Photo</span>
+              </div>
             </div>
             <Button
               type="submit"

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import Image from 'next/image';
 import { LoginForm } from '@/components/pages/auth/login-form';
 
@@ -29,7 +29,9 @@ const LoginPage = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full px-4 py-12 flex flex-col items-center">
-        <LoginForm />
+        <Suspense fallback={<div className="text-white font-medium">Loading login form...</div>}>
+          <LoginForm />
+        </Suspense>
 
         <div className="mt-8 text-center text-sm text-slate-400">
           &copy; {new Date().getFullYear()} HealBridge Inc. All rights reserved.

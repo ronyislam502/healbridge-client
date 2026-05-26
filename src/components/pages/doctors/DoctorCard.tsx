@@ -25,7 +25,7 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
   const reviews = doctor.review || [];
   const averageRating = reviews.length > 0
     ? (reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : "4.9";
+    : null;
 
   return (
     <Card className={cn(
@@ -45,10 +45,12 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
         
         {/* Floating Badges - Slightly Smaller */}
         <div className="absolute top-4 left-4 flex flex-col gap-1.5">
-          <div className="flex items-center gap-1 bg-orange-500 text-white px-2 py-1 rounded-lg text-[10px] font-black shadow-lg shadow-orange-500/20">
-            <Icons.star className="w-3 h-3 fill-current" />
-            {averageRating}
-          </div>
+          {averageRating && (
+            <div className="flex items-center gap-1 bg-orange-500 text-white px-2 py-1 rounded-lg text-[10px] font-black shadow-lg shadow-orange-500/20">
+              <Icons.star className="w-3 h-3 fill-current" />
+              {averageRating}
+            </div>
+          )}
           <div className="bg-white/90 backdrop-blur-md text-slate-900 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-md">
             {doctor.experience}+ Yrs
           </div>
@@ -84,10 +86,49 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
           <h3 className="text-lg font-black text-slate-900 dark:text-white mb-1 group-hover/title:text-teal-500 transition-colors cursor-pointer line-clamp-1 italic tracking-tight">
             {doctor.name}
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
             {doctor.designation || "Medical Professional"}
           </p>
         </Link>
+
+        {/* Rating and Reviews */}
+        <div className="flex items-center gap-1.5 mb-3">
+          {averageRating ? (
+            <>
+              <div className="flex items-center text-amber-500">
+                {[...Array(5)].map((_, i) => {
+                  const ratingVal = parseFloat(averageRating);
+                  return (
+                    <Icons.star
+                      key={i}
+                      className={cn(
+                        "w-3.5 h-3.5",
+                        i < Math.floor(ratingVal) ? "fill-current" : "text-slate-200 dark:text-slate-700"
+                      )}
+                    />
+                  );
+                })}
+              </div>
+              <span className="text-xs font-bold text-slate-900 dark:text-white italic">
+                {averageRating}
+              </span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+              </span>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center text-slate-200 dark:text-slate-700">
+                {[...Array(5)].map((_, i) => (
+                  <Icons.star key={i} className="w-3.5 h-3.5" />
+                ))}
+              </div>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                No reviews yet
+              </span>
+            </>
+          )}
+        </div>
 
         <div className="space-y-2 mb-3 flex-1">
           <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px] font-medium">

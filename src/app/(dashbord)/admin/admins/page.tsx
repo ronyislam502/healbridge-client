@@ -4,21 +4,20 @@ import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useAllUsersQuery, useCreateAdminMutation } from '@/redux/features/user/userApi';
+import { useAllAdminsQuery, useCreateAdminMutation } from '@/redux/features/user/userApi';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBModal } from '@/components/shared/HBModal';
 import { HBForm } from '@/components/form/HBForm';
 import { HBInput } from '@/components/form/HBInput';
-import { HBSelect } from '@/components/form/HBSelect';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 
 const AdminManagement = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const { data, isLoading } = useAllUsersQuery({ role: 'ADMIN', limit: 100 });
+  const { data, isLoading } = useAllAdminsQuery({ limit: 10 });
   const [createAdmin, { isLoading: isCreating }] = useCreateAdminMutation();
 
-  const admins = data?.data?.filter((user: any) => user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') || [];
+  const admins = data?.data || [];
 
   const onSubmit = async (values: FieldValues) => {
     try {
@@ -61,23 +60,29 @@ const AdminManagement = () => {
     {
       header: 'Role',
       key: 'role',
-      render: (row: any) => (
-        <span className={cn(
-          "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
-          row.role === 'SUPER_ADMIN' ? 'bg-purple-500/10 text-purple-500' : 'bg-slate-500/10 text-slate-500'
-        )}>
-          {row.role}
-        </span>
-      )
+      render: (row: any) => {
+        const role = row.role || row.user?.role;
+        return (
+          <span className={cn(
+            "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic",
+            role === 'SUPER_ADMIN' ? 'bg-purple-500/10 text-purple-500' : 'bg-slate-500/10 text-slate-500'
+          )}>
+            {role}
+          </span>
+        );
+      }
     },
     {
       header: 'Status',
       key: 'status',
-      render: (row: any) => (
-        <span className="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic bg-emerald-500/10 text-emerald-500">
-          {row.status}
-        </span>
-      )
+      render: (row: any) => {
+        const status = row.status || row.user?.status;
+        return (
+          <span className="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic bg-emerald-500/10 text-emerald-500">
+            {status}
+          </span>
+        );
+      }
     },
     {
       header: 'Created At',

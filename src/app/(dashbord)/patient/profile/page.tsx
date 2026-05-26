@@ -65,7 +65,7 @@ const PatientProfile = () => {
                   <div className="absolute -inset-4 bg-teal-500/10 rounded-full blur-2xl animate-pulse"></div>
                   <div className="relative w-44 h-44 rounded-full border-8 border-white dark:border-slate-800 shadow-inner overflow-hidden ring-4 ring-teal-500/20">
                     <Image 
-                      src={profileData?.avatar} 
+                      src={profileData?.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop"} 
                       alt="Avatar" 
                       fill 
                       className="object-cover group-hover:scale-110 transition-transform duration-700"

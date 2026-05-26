@@ -98,24 +98,21 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Map Section Placeholder */}
+      {/* Map Section */}
       <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
         <div className="container mx-auto px-4">
           <div className="rounded-[3rem] overflow-hidden h-[500px] shadow-2xl border-8 border-white dark:border-slate-800 relative group">
-            <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-               {/* Replace with real Google Map iframe if needed */}
-               <div className="text-center">
-                 <div className="w-20 h-20 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                   <Icons.mapPin className="w-10 h-10 text-teal-500" />
-                 </div>
-                 <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-wider italic">
-                   Our Headquarters
-                 </h3>
-                 <p className="text-slate-500 dark:text-slate-400 font-medium">
-                   123 Healthcare Plaza, New York, NY 10001
-                 </p>
-               </div>
-            </div>
+            <iframe
+              src="https://maps.google.com/maps?q=123%20Healthcare%20Plaza,%20New%20York,%20NY%2010001&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0 w-full h-full grayscale dark:invert-[0.9] dark:hue-rotate-[180deg] transition-all duration-500 group-hover:grayscale-0"
+              title="Our Headquarters Map"
+            />
           </div>
         </div>
       </section>

@@ -43,10 +43,10 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
   const selectedSchedule = availableSchedules.find((s: any) => s.scheduleId === selectedSlotId);
 
   const startTime = selectedSchedule
-    ? new Date(selectedSchedule.schedule.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    ? new Date(selectedSchedule.schedule.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
     : "";
   const endTime = selectedSchedule
-    ? new Date(selectedSchedule.schedule.endDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    ? new Date(selectedSchedule.schedule.endDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
     : "";
   const scheduleDateFormatted = date
     ? date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -121,7 +121,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
             {availableSchedules.length > 0 ? (
               <div className="grid grid-cols-2 gap-2">
                 {availableSchedules.map((docSchedule: any) => {
-                  const time = new Date(docSchedule.schedule.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const time = new Date(docSchedule.schedule.startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
                   const isBooked = docSchedule.isBooked;
                   const isSelected = selectedSlotId === docSchedule.scheduleId;
 

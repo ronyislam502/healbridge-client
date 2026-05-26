@@ -6,6 +6,7 @@ import { Icons } from '@/components/shared/Icons';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { useAppSelector } from '@/redux/hooks';
 import { TUser } from '@/redux/features/auth/authSlice';
+import NotificationBell from '@/components/dashboard/NotificationBell';
 
 export default function DashboardLayout({
   children,
@@ -43,10 +44,7 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex items-center gap-6">
-              <button className="relative w-12 h-12 bg-slate-50 dark:bg-slate-800/50 rounded-2xl flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all border border-slate-100 dark:border-slate-800">
-                 <Icons.activity className="w-6 h-6" />
-                 <span className="absolute top-3 right-3 w-2 h-2 bg-teal-500 rounded-full border-2 border-white dark:border-slate-900" />
-              </button>
+              <NotificationBell />
               <div className="flex items-center gap-4 pl-6 border-l border-slate-100 dark:border-slate-800">
                 <div className="text-right hidden sm:block">
                   <p className="text-sm font-black text-slate-900 dark:text-white italic">{user?.name || 'User'}</p>

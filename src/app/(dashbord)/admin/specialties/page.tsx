@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ const SpecialtyManagement = () => {
           </h2>
           <p className="text-slate-500 dark:text-slate-400 font-medium">Manage medical categories and their associated doctor counts.</p>
         </div>
-        <SpecialtyModal 
+        <SpecialtyModal
           mode="add"
           trigger={
             <Button className="h-14 px-8 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex items-center gap-3">
@@ -34,7 +34,7 @@ const SpecialtyManagement = () => {
         />
       </div>
 
-      <HBTable 
+      <HBTable
         isLoading={isLoading}
         loadingMessage="Synchronizing Specialized Fields..."
         data={specialties}
@@ -81,7 +81,7 @@ const SpecialtyManagement = () => {
             align: "right",
             render: (row) => (
               <div className="flex items-center justify-end gap-3">
-                <SpecialtyModal 
+                <SpecialtyModal
                   mode="update"
                   defaultValues={{ title: row.title, image: row.icon }}
                   trigger={

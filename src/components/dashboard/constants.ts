@@ -32,3 +32,11 @@ export const patientLinks = [
   { label: 'Profile', href: '/patient/profile', icon: Icons.userCircle },
 ];
 
+export const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Doctors", href: "/doctors" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+

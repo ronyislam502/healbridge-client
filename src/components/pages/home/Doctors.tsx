@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import Image from "next/image";
+import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Icons } from "@/components/shared/Icons";
 import {
@@ -26,10 +25,10 @@ const Doctors = () => {
     return (
       <section className="py-24 bg-[#F8FAFC]">
         <div className="container mx-auto px-4 text-center">
-           <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
-              <Icons.loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-           </div>
-           <p className="text-sm font-black text-slate-400 uppercase tracking-widest italic">Synchronizing Medical Staff...</p>
+          <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <Icons.loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+          </div>
+          <p className="text-sm font-black text-slate-400 uppercase tracking-widest italic">Synchronizing Medical Staff...</p>
         </div>
       </section>
     );

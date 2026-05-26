@@ -1,13 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { useGetAllPatientsQuery } from '@/redux/features/patient/patientApi';
 import { HBTable } from '@/components/shared/HBTable';
-
-
 import { TPatient } from '@/types/user';
 
 const PatientManagement = () => {
@@ -25,18 +21,18 @@ const PatientManagement = () => {
           <p className="text-slate-500 dark:text-slate-400 font-medium">Manage user accounts and monitor patient activity across the platform.</p>
         </div>
         <div className="flex gap-4">
-           <Button variant="outline" className="h-14 px-8 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-3">
-             <Icons.share2 className="w-5 h-5" />
-             Export Data
-           </Button>
-           <Button className="h-14 px-8 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex items-center gap-3">
-             <Icons.userPlus className="w-5 h-5" />
-             Register Patient
-           </Button>
+          <Button variant="outline" className="h-14 px-8 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-3">
+            <Icons.share2 className="w-5 h-5" />
+            Export Data
+          </Button>
+          <Button className="h-14 px-8 rounded-2xl bg-teal-500 hover:bg-teal-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-teal-500/20 transition-all flex items-center gap-3">
+            <Icons.userPlus className="w-5 h-5" />
+            Register Patient
+          </Button>
         </div>
       </div>
 
-      <HBTable<TPatient> 
+      <HBTable<TPatient>
         isLoading={isLoading}
         loadingMessage="Synchronizing Patient Records..."
         data={patients}

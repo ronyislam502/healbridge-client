@@ -291,7 +291,7 @@ const DoctorProfile = () => {
                   <div className="absolute -inset-4 bg-teal-500/10 rounded-full blur-2xl animate-pulse"></div>
                   <div className="relative w-44 h-44 rounded-full border-8 border-white dark:border-slate-800 shadow-inner overflow-hidden ring-4 ring-teal-500/20 group-hover:scale-105 transition-transform duration-700">
                     <Image
-                      src={profileData?.avatar}
+                      src={profileData?.avatar || "/specialties/neurology.png"}
                       alt="Avatar"
                       fill
                       className="object-cover"

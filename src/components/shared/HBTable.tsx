@@ -60,7 +60,7 @@ const HBTable = <T extends object>({
           <TableHeader className="bg-slate-50 dark:bg-slate-800/50">
             <TableRow className="hover:bg-transparent border-b border-slate-100 dark:border-slate-800">
               {showIndex && (
-                <TableHead className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic h-auto w-16">
+                <TableHead className="px-8 py-5 text-[16px] font-bold text-teal-700 uppercase tracking-widest italic h-auto w-16">
                   SL
                 </TableHead>
               )}
@@ -68,7 +68,7 @@ const HBTable = <T extends object>({
                 <TableHead
                   key={idx}
                   className={cn(
-                    "px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest italic h-auto",
+                    "px-8 py-5 text-[16px] font-bold text-teal-700 uppercase tracking-widest italic h-auto",
                     col.align === "center" && "text-center",
                     col.align === "right" && "text-right",
                     col.className
