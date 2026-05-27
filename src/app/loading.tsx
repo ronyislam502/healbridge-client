@@ -7,8 +7,8 @@ export default function Loading() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
       {/* Background Neon Glowing Orbs */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-purple-500/10 blur-[130px] animate-pulse duration-[6000ms]" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-teal-500/10 blur-[130px] animate-pulse duration-[6000ms]" />
+        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-purple-500/10 blur-[130px] animate-pulse" />
+        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-teal-500/10 blur-[130px] animate-pulse]" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center space-y-8">

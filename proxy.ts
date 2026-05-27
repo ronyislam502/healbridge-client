@@ -3,7 +3,6 @@ import { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import { TUser } from "@/redux/features/auth/authSlice";
 
-
 const AuthRoutes = ["/login", "/register"];
 
 type Role = keyof typeof roleBasedRoutes;
@@ -17,12 +16,15 @@ const roleBasedRoutes = {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("accessToken")?.value;
-  // console.log("token", accessToken);
 
   let user = null;
 
   if (accessToken) {
-    user = jwtDecode(accessToken) as TUser;
+    try {
+      user = jwtDecode(accessToken) as TUser;
+    } catch (error) {
+      console.error("JWT decoding failed in proxy:", error);
+    }
   }
 
   if (!user) {

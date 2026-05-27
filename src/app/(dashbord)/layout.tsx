@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/s
 import { useAppSelector } from '@/redux/hooks';
 import { TUser } from '@/redux/features/auth/authSlice';
 import NotificationBell from '@/components/dashboard/NotificationBell';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardLayout({
   children,
@@ -15,12 +16,20 @@ export default function DashboardLayout({
 }) {
   const [mounted, setMounted] = React.useState(false);
   const user = useAppSelector((state) => state?.auth?.user) as TUser;
+  const router = useRouter();
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
+  React.useEffect(() => {
+    if (mounted && !user) {
+      router.push('/login');
+    }
+  }, [mounted, user, router]);
+
   if (!mounted) return null;
+  if (!user) return null;
 
 
   return (
