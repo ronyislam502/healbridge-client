@@ -10,6 +10,7 @@ import { useGetStatsQuery } from '@/redux/features/statistics/statisticsApi';
 import { useGetAllAppointmentsQuery } from '@/redux/features/appointment/appointmentApi';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, CartesianGrid } from 'recharts';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface APILog {
   timestamp: string;
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
   const [activeSessions, setActiveSessions] = useState(38);
   const [logs, setLogs] = useState<APILog[]>([]);
   const [isLogStreaming, setIsLogStreaming] = useState(true);
-  
+
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   const statsData = statsRes?.data;
@@ -39,7 +40,7 @@ const AdminDashboard = () => {
 
   const rawBarChartData = statsData?.barChartData || [];
   const dataMap: Record<string, number> = {};
-  
+
   rawBarChartData.forEach((item: any) => {
     try {
       const dateKey = new Date(item.month).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
 
   const monthlyData = [];
   const currentDate = new Date();
-  
+
   // Create 6 consecutive months ending at current month
   for (let i = 5; i >= 0; i--) {
     const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
@@ -151,13 +152,13 @@ const AdminDashboard = () => {
           <p className="text-slate-500 dark:text-slate-400 font-medium">Welcome back! Here's what's happening with HealBridge today.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button
+          <Button
             onClick={handleExport}
             className="h-14 px-8 rounded-[1.5rem] bg-slate-900 dark:bg-slate-800 text-white font-black text-sm uppercase tracking-widest hover:bg-teal-500 transition-all shadow-lg flex items-center gap-3 active:scale-95 duration-250 cursor-pointer"
           >
             <Icons.share2 className="w-4 h-4" />
             Export Reports
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -411,14 +412,14 @@ const AdminDashboard = () => {
                   <div className="text-3xl font-black italic text-slate-900 dark:text-white tracking-tight">{vital.value}</div>
                   <div className="text-[10px] font-medium text-slate-400">{vital.desc}</div>
                 </div>
-                
+
                 {/* Micro loading track */}
                 <div className="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full mt-4 overflow-hidden">
-                  <div 
-                    className={cn("h-full rounded-full transition-all duration-1000", 
+                  <div
+                    className={cn("h-full rounded-full transition-all duration-1000",
                       vital.color.replace('text-', 'bg-')
-                    )} 
-                    style={{ width: `${vital.pct}%` }} 
+                    )}
+                    style={{ width: `${vital.pct}%` }}
                   />
                 </div>
               </div>
@@ -443,8 +444,8 @@ const AdminDashboard = () => {
                   onClick={() => setIsLogStreaming(!isLogStreaming)}
                   className={cn(
                     "text-[10px] font-black uppercase tracking-widest italic px-4 py-2 rounded-xl transition-all cursor-pointer",
-                    isLogStreaming 
-                      ? "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20" 
+                    isLogStreaming
+                      ? "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
                       : "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
                   )}
                 >
@@ -473,7 +474,7 @@ const AdminDashboard = () => {
                     <span className={cn(
                       "font-black tracking-wide",
                       log.method === 'GET' ? 'text-teal-400' :
-                      log.method === 'POST' ? 'text-indigo-400' : 'text-amber-400'
+                        log.method === 'POST' ? 'text-indigo-400' : 'text-amber-400'
                     )}>
                       {log.method}
                     </span>
@@ -481,7 +482,7 @@ const AdminDashboard = () => {
                     <span className={cn(
                       "font-bold px-2 py-0.5 rounded text-[10px]",
                       log.status >= 400 ? 'bg-red-500/10 text-red-500' :
-                      log.status >= 300 ? 'bg-blue-500/10 text-blue-500' : 'bg-emerald-500/10 text-emerald-500'
+                        log.status >= 300 ? 'bg-blue-500/10 text-blue-500' : 'bg-emerald-500/10 text-emerald-500'
                     )}>
                       {log.status}
                     </span>

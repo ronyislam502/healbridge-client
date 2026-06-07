@@ -168,13 +168,13 @@ export const LoginForm = () => {
               onSubmit={onLoginSubmit}
               className="space-y-4"
             >
-              <HBInput label="Email" name="email" type="email" placeholder="name@example.com" icon={<Icons.mail className="h-4 w-4" />} required />
+              <HBInput label="Email" name="email" type="email" placeholder="Enter your E-mail" icon={<Icons.mail className="h-4 w-4" />} required />
 
               <HBInput
                 label="Password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
+                placeholder="your password"
                 icon={<Icons.lock className="h-4 w-4" />}
                 required
                 suffix={
@@ -232,13 +232,13 @@ export const LoginForm = () => {
               className="space-y-4"
             >
               <div className='flex gap-2'>
-                <HBInput label="Full Name" name="name" placeholder="John Doe" icon={<Icons.shieldCheck className="h-4 w-4" />} required containerClassName="flex-1" />
-                <HBInput label="Email Address" name="email" type="email" placeholder="john@example.com" icon={<Icons.mail className="h-4 w-4" />} required containerClassName="flex-1" />
+                <HBInput label="Name" name="name" placeholder="your full name" icon={<Icons.shieldCheck className="h-4 w-4" />} required containerClassName="flex-1" />
+                <HBInput label="Email" name="email" type="email" placeholder="your e-mail" icon={<Icons.mail className="h-4 w-4" />} required containerClassName="flex-1" />
               </div>
 
               <div className='flex gap-2'>
-                <HBInput label="Phone Number" name="phone" placeholder="+1 234 567 890" icon={<Icons.phone className="h-4 w-4" />} required containerClassName="flex-1" />
-                <HBInput label="Address" name="address" placeholder="123 Street, City" icon={<Icons.mapPin className="h-4 w-4" />} required containerClassName="flex-1" />
+                <HBInput label="Phone Number" name="phone" placeholder="your contact no" icon={<Icons.phone className="h-4 w-4" />} required containerClassName="flex-1" />
+                <HBInput label="Address" name="address" placeholder="your address" icon={<Icons.mapPin className="h-4 w-4" />} required containerClassName="flex-1" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <HBSelect
@@ -255,7 +255,7 @@ export const LoginForm = () => {
                   label="Password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
+                  placeholder="password"
                   icon={<Icons.lock className="h-4 w-4" />}
                   required
                   containerClassName="flex-1"

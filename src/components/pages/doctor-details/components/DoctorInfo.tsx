@@ -12,7 +12,7 @@ interface DoctorInfoProps {
 const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
   const reviews = doctor.review || [];
   const reviewCount = reviews.length;
-  const averageRating = reviewCount > 0 
+  const averageRating = reviewCount > 0
     ? (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviewCount).toFixed(1)
     : "0.0";
 
@@ -31,7 +31,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
                 {doctor.name?.[0] || "D"}
               </AvatarFallback>
             </Avatar>
-            
+
             <div className="flex-1 mt-16 md:mt-20">
               <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -42,11 +42,11 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
                   {averageRating} ({reviewCount} {reviewCount === 1 ? 'Review' : 'Reviews'})
                 </div>
               </div>
-              
+
               <p className="text-lg text-slate-600 dark:text-slate-400 font-medium mt-1">
                 {doctor.designation} • {doctor.qualification}
               </p>
-              
+
               <div className="flex flex-wrap items-center gap-4 mt-4">
                 <div className="flex items-center text-slate-500 dark:text-slate-500 text-sm font-medium">
                   <Icons.mapPin className="w-4 h-4 mr-1.5 text-teal-500" />
@@ -64,25 +64,25 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
 
       {/* Highlights Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <HighlightCard 
+        <HighlightCard
           icon={<Icons.award className="w-5 h-5 text-teal-600" />}
           label="Experience"
           value={`${doctor.experience} Years`}
           color="bg-teal-50 dark:bg-teal-900/10"
         />
-        <HighlightCard 
+        <HighlightCard
           icon={<Icons.creditCard className="w-5 h-5 text-emerald-600" />}
           label="Consultation"
           value={`$${doctor.appointmentFee}`}
           color="bg-emerald-50 dark:bg-emerald-900/10"
         />
-        <HighlightCard 
+        <HighlightCard
           icon={<Icons.shieldCheck className="w-5 h-5 text-blue-600" />}
           label="Registration"
           value={doctor.registrationNumber}
           color="bg-blue-50 dark:bg-blue-900/10"
         />
-        <HighlightCard 
+        <HighlightCard
           icon={<Icons.stethoscope className="w-5 h-5 text-purple-600" />}
           label="Gender"
           value={doctor.gender}
@@ -99,7 +99,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
           </h3>
           <div className="flex flex-wrap gap-2">
             {doctor.doctorSpecialties?.map((docSpecialty: any) => (
-              <span 
+              <span
                 key={docSpecialty.specialtiesId}
                 className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-teal-500 transition-colors"
               >
@@ -112,7 +112,7 @@ const DoctorInfo = ({ doctor }: DoctorInfoProps) => {
         <section className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-lg">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">About Doctor</h3>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Dr. {doctor.name} is a highly skilled {doctor.designation} with over {doctor.experience} years of experience in {doctor.qualification}. 
+            {doctor.name} is a highly skilled {doctor.designation} with over {doctor.experience} years of experience in {doctor.qualification}.
             Currently working at {doctor.currentWorkingPlace}, they are dedicated to providing the highest quality of care to patients.
             Their expertise covers a wide range of medical conditions, ensuring comprehensive treatment and personalized health plans.
           </p>

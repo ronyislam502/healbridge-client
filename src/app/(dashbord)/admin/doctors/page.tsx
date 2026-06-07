@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useGetAllDoctorsQuery, useCreateDoctorMutation } from '@/redux/features/doctor/doctorApi';
 import { useGetAllSpecialtiesQuery } from '@/redux/features/specialties/specialtiesApi';
+import { DoctorDetailsModal } from './_components/DoctorDetailsModal';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBModal } from '@/components/shared/HBModal';
 import { HBForm } from '@/components/form/HBForm';
@@ -25,6 +26,21 @@ const DoctorManagement = () => {
   const { data: specialtiesData } = useGetAllSpecialtiesQuery({});
   const [createDoctor, { isLoading: isCreating }] = useCreateDoctorMutation();
   const doctors = data?.data || [];
+
+  const [selectedDoctorId, setSelectedDoctorId] = React.useState<string | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
+
+  const handleViewDoctor = (doctor: any) => {
+    setSelectedDoctorId(doctor.id);
+    setIsViewModalOpen(true);
+  };
+
+  const handleViewModalChange = (open: boolean) => {
+    setIsViewModalOpen(open);
+    if (!open) {
+      setSelectedDoctorId(null);
+    }
+  };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -144,6 +160,7 @@ const DoctorManagement = () => {
         isLoading={isLoading}
         loadingMessage="Synchronizing Medical Experts..."
         data={doctors}
+        onRowClick={handleViewDoctor}
         columns={[
           {
             header: "Doctor Profile",
@@ -152,7 +169,7 @@ const DoctorManagement = () => {
               <div className="flex items-center gap-4">
                 <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-teal-500/20 group-hover:border-teal-500 transition-colors">
                   <Image
-                    src={row.avatar || "/specialties/neurology.png"}
+                    src={row.avatar}
                     alt={row.name}
                     fill
                     className="object-cover"
@@ -203,20 +220,39 @@ const DoctorManagement = () => {
             header: "Actions",
             key: "actions",
             align: "right",
-            render: () => (
+            render: (row) => (
               <div className="flex items-center justify-end gap-3">
-                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all">
+                <Button
+                  onClick={() => handleViewDoctor(row)}
+                  className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all"
+                >
                   <Icons.eye className="w-4 h-4" />
-                </button>
-                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
+                </Button>
+                <Button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
                   <Icons.share2 className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             )
           }
         ]}
       />
 
+      {/* Doctor Details Modal */}
+      {selectedDoctorId && (
+        <HBModal
+          title="Doctor Details"
+          description="View comprehensive statistics, reviews, appointments, and earnings for this medical specialist."
+          open={isViewModalOpen}
+          onOpenChange={handleViewModalChange}
+          className="sm:max-w-[700px]"
+        >
+          <DoctorDetailsModal
+            doctorId={selectedDoctorId}
+            open={isViewModalOpen}
+            onOpenChange={handleViewModalChange}
+          />
+        </HBModal>
+      )}
     </div>
   );
 };

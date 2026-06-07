@@ -9,6 +9,8 @@ import { HBPagination } from '@/components/shared/HBPagination';
 import { Button } from '@/components/ui/button';
 import dynamic from 'next/dynamic';
 import CreateReviewModal from '@/components/dialogs/CreateReviewModal';
+import { useGetAllReviewsQuery, useDeleteReviewMutation } from '@/redux/features/review/reviewApi';
+import { toast } from 'sonner';
 
 
 const VideoCall = dynamic(() => import('@/components/shared/VideoCall'), { ssr: false });
@@ -29,6 +31,41 @@ const PatientAppointments = () => {
   }, { pollingInterval: 5000 });
 
   const appointments = appointmentsData?.data || [];
+
+  const patientId = appointments[0]?.patientId;
+  const { data: reviewsData } = useGetAllReviewsQuery(
+    { patientId },
+    { skip: !patientId }
+  );
+
+  const reviewedAppointmentIds = React.useMemo(() => {
+    const reviews = reviewsData?.data || [];
+    return new Set(reviews.map((r: any) => r.appointmentId));
+  }, [reviewsData]);
+
+  const [deleteReview] = useDeleteReviewMutation();
+
+  const handleDeleteReview = async (appointmentId: string) => {
+    const review = reviewsData?.data?.find((r: any) => r.appointmentId === appointmentId);
+    if (!review?.id) {
+      toast.error("Review not found");
+      return;
+    }
+
+    if (!window.confirm("Are you sure you want to delete this review?")) {
+      return;
+    }
+
+    try {
+      const res = await deleteReview(review.id).unwrap();
+      if (res?.success) {
+        toast.success("Review deleted successfully");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to delete review");
+    }
+  };
+
   const meta = appointmentsData?.meta;
 
   const columns = [
@@ -97,18 +134,30 @@ const PatientAppointments = () => {
       render: (row: any) => (
         <div className="flex items-center justify-end gap-2">
           {row.status === 'COMPLETED' && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setReviewAppointment(row);
-                setReviewModalOpen(true);
-              }}
-              title="Leave a Review"
-              className="h-10 w-10 p-0 rounded-xl bg-purple-500/10 text-purple-500 hover:bg-purple-500 hover:text-white transition-colors"
-            >
-              <Icons.star className="w-4 h-4" />
-            </Button>
+            reviewedAppointmentIds.has(row.id) ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleDeleteReview(row.id)}
+                title="Delete Review"
+                className="h-10 w-10 p-0 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+              >
+                <Icons.trash className="w-4 h-4" />
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setReviewAppointment(row);
+                  setReviewModalOpen(true);
+                }}
+                title="Leave a Review"
+                className="h-10 w-10 p-0 rounded-xl bg-purple-500/10 text-purple-500 hover:bg-purple-500 hover:text-white transition-colors"
+              >
+                <Icons.star className="w-4 h-4" />
+              </Button>
+            )
           )}
           {row.payment?.receiptUrl ? (
             <Button variant="ghost" size="sm" asChild className="h-10 w-10 p-0 rounded-xl hover:bg-teal-500/10 hover:text-teal-500">

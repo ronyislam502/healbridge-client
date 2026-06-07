@@ -11,7 +11,7 @@ export const adminLinks = [
   { label: 'Payments', href: '/admin/payments', icon: Icons.creditCard },
   { label: 'Blogs', href: '/admin/blogs', icon: Icons.scrollText },
   { label: 'Contacts', href: '/admin/contacts', icon: Icons.mail },
-  { label: 'Settings', href: '/admin/settings', icon: Icons.shieldCheck },
+  { label: 'Profile', href: '/admin/profile', icon: Icons.shieldCheck },
 ];
 
 export const doctorLinks = [

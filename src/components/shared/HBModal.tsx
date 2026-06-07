@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 interface HBModalProps {
   title: string;
   description?: string;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   open?: boolean;
@@ -32,9 +32,11 @@ const HBModal = ({
 }: HBModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      {trigger && (
+        <DialogTrigger asChild>
+          {trigger}
+        </DialogTrigger>
+      )}
       <DialogContent className={cn(
         "sm:max-w-[600px] bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-[2.5rem] p-0 overflow-hidden shadow-2xl flex flex-col",
         className

@@ -1,6 +1,7 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import Image from 'next/image';
 import { LoginForm } from '@/components/pages/auth/login-form';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Login | HealBridge',
@@ -19,7 +20,7 @@ const LoginPage = () => {
           className="object-cover opacity-40"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-900/40 via-slate-950/80 to-slate-950" />
+        <div className="absolute inset-0  from-teal-900/40 via-slate-950/80 to-slate-950" />
       </div>
 
       {/* Decorative Blur Blobs */}
@@ -36,8 +37,8 @@ const LoginPage = () => {
         <div className="mt-8 text-center text-sm text-slate-400">
           &copy; {new Date().getFullYear()} HealBridge Inc. All rights reserved.
           <div className="mt-2 flex justify-center gap-4">
-            <a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-teal-400 transition-colors">Terms of Service</a>
+            <Link href="/privacy" className="hover:text-teal-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-teal-400 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi?.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     allUsers: builder.query({
       query: ({ page, limit }) => {
@@ -88,6 +89,14 @@ const userApi = baseApi?.injectEndpoints({
       }),
       providesTags: ["user"],
     }),
+    updateAdmin: builder.mutation({
+      query: (args) => ({
+        url: `/admins/update/${args?.id}`,
+        method: "PATCH",
+        body: args?.data,
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
@@ -101,4 +110,5 @@ export const {
   useCreateAdminMutation,
   useUpdateUserStatusMutation,
   useAllAdminsQuery,
+  useUpdateAdminMutation,
 } = userApi;

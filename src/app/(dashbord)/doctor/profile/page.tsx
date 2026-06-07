@@ -68,7 +68,7 @@ const DoctorProfile = () => {
       const doctorData = {
         name: data?.name,
         phone: data?.phone,
-        avatar: data.avatar,
+        avatar: data?.avatar,
         gender: data?.gender,
         address: data?.address,
         designation: data?.designation,
@@ -186,7 +186,7 @@ const DoctorProfile = () => {
                 name: profileData?.name,
                 email: profileData?.email,
                 phone: profileData?.phone,
-                avatar: profileData.avatar,
+                avatar: profileData?.avatar,
                 gender: profileData?.gender,
                 address: profileData?.address,
                 specialty: profileData?.doctorSpecialties?.[0]?.specialties?.title,

@@ -28,6 +28,7 @@ interface HBTableProps<T> {
   rowClassName?: string;
   skeletonCount?: number;
   showIndex?: boolean;
+  onRowClick?: (row: T) => void;
 }
 
 const HBTable = <T extends object>({
@@ -40,6 +41,7 @@ const HBTable = <T extends object>({
   rowClassName,
   skeletonCount = 5,
   showIndex = true,
+  onRowClick,
 }: HBTableProps<T>) => {
   const [mounted, setMounted] = React.useState(false);
 
@@ -84,8 +86,14 @@ const HBTable = <T extends object>({
               data.map((row, rowIdx) => (
                 <TableRow
                   key={rowIdx}
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (target.closest('button') || target.closest('a') || target.closest('input')) return;
+                    onRowClick?.(row);
+                  }}
                   className={cn(
                     "group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors border-b border-slate-50 dark:border-slate-800 last:border-none",
+                    onRowClick && "cursor-pointer",
                     rowClassName
                   )}
                 >

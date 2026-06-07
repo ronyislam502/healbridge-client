@@ -22,8 +22,8 @@ const DoctorListing = () => {
   const [limit] = useState(9);
   const [sort, setSort] = useState("");
   const [page, setPage] = useState(1);
-  
-  // ==== Hooks ====
+
+
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
@@ -32,9 +32,6 @@ const DoctorListing = () => {
     }
   }, [specialtiesFromQuery]);
 
-  // ==== API Calls ====
-  // We pass the states directly to the hook. 
-  // It will automatically re-fetch when any of these change.
   const { data: doctorsData, isLoading } = useGetAllDoctorsQuery({
     search: debouncedSearch,
     specialty: selectedSpecialty,
@@ -83,10 +80,10 @@ const DoctorListing = () => {
     <div className="container mx-auto px-4 py-20">
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Filters Sidebar */}
-        <DoctorFilters 
+        <DoctorFilters
           key={resetKey}
-          specialtiesOptions={specialtiesOptions} 
-          onFilterSubmit={handleFilterSubmit} 
+          specialtiesOptions={specialtiesOptions}
+          onFilterSubmit={handleFilterSubmit}
           onReset={handleReset}
         />
 

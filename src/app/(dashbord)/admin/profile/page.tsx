@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button';
 import { FieldValues } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMyProfilQuery, useUpdateMyProfileMutation } from '@/redux/features/user/userApi';
+import { useMyProfilQuery, useUpdateAdminMutation } from '@/redux/features/user/userApi';
 import { HBProfileSkeleton } from '@/components/shared/HBSkeletons';
 import { toast } from 'sonner';
 import { HBModal } from '@/components/shared/HBModal';
 
 const AdminProfile = () => {
   const { data, isLoading } = useMyProfilQuery({});
-  const [updateProfile, { isLoading: isUpdating }] = useUpdateMyProfileMutation();
+  const [updateAdmin, { isLoading: isUpdating }] = useUpdateAdminMutation();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
@@ -31,20 +31,33 @@ const AdminProfile = () => {
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setIsModalOpen(open);
+    if (!open) {
+      setSelectedImage(null);
+      setPreview(null);
+    }
+  };
+
   const onSubmit = async (values: FieldValues) => {
     try {
       const formData = new FormData();
-      const { profilePhoto, ...dataValues } = values;
-      formData.append('data', JSON.stringify(dataValues));
+      const payload = {
+        admin: {
+          name: values.name,
+          phone: values.phone,
+        }
+      };
+      formData.append('data', JSON.stringify(payload));
 
       if (selectedImage) {
         formData.append("avatar", selectedImage);
       }
 
-      const res = await updateProfile(formData).unwrap();
+      const res = await updateAdmin({ id: profileData?.id, data: formData }).unwrap();
       if (res?.success) {
         toast.success('Profile updated successfully!');
-        setIsModalOpen(false);
+        handleOpenChange(false);
       }
     } catch (err: any) {
       toast.error(err?.data?.message || 'Failed to update profile');
@@ -86,7 +99,7 @@ const AdminProfile = () => {
           title="Edit Admin Profile"
           description="Update your administrative details and account security."
           open={isModalOpen}
-          onOpenChange={setIsModalOpen}
+          onOpenChange={handleOpenChange}
           className="sm:max-w-[550px]"
           trigger={
             <Button className="h-14 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black uppercase tracking-widest text-sm shadow-xl transition-all flex items-center gap-2 group">

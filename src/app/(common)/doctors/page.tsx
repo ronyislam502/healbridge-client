@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import { DoctorListing } from '@/components/pages/doctors/DoctorListing';
 
 export const metadata = {

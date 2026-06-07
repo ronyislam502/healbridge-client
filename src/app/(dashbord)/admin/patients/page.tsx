@@ -1,15 +1,34 @@
 'use client';
 
+import * as React from 'react';
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useGetAllPatientsQuery } from '@/redux/features/patient/patientApi';
+import { PatientDetailsModal } from './_components/PatientDetailsModal';
 import { HBTable } from '@/components/shared/HBTable';
+import { HBModal } from '@/components/shared/HBModal';
 import { TPatient } from '@/types/user';
+import { cn } from '@/lib/utils';
 
 const PatientManagement = () => {
   const { data, isLoading } = useGetAllPatientsQuery({});
   const patients = data?.data || [];
+
+  const [selectedPatientId, setSelectedPatientId] = React.useState<string | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
+
+  const handleViewPatient = (patient: any) => {
+    setSelectedPatientId(patient.id);
+    setIsViewModalOpen(true);
+  };
+
+  const handleViewModalChange = (open: boolean) => {
+    setIsViewModalOpen(open);
+    if (!open) {
+      setSelectedPatientId(null);
+    }
+  };
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -37,6 +56,7 @@ const PatientManagement = () => {
         isLoading={isLoading}
         loadingMessage="Synchronizing Patient Records..."
         data={patients}
+        onRowClick={handleViewPatient}
         columns={[
           {
             header: "Patient",
@@ -65,14 +85,14 @@ const PatientManagement = () => {
             )
           },
           {
-            header: "Contact / Gender",
+            header: "Contact Number",
             key: "phone",
-            render: (row) => (
-              <>
-                <p className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">{row.phone || 'No Contact'}</p>
-                <p className="text-[10px] font-black text-slate-400 uppercase italic">{row.gender || 'Not specified'}</p>
-              </>
-            )
+            render: (row) => <span className="text-sm font-bold text-slate-900 dark:text-white italic">{row.phone || 'No Contact'}</span>
+          },
+          {
+            header: "Gender",
+            key: "gender",
+            render: (row) => <span className="text-[10px] font-black text-slate-400 uppercase italic">{row.gender || 'Not specified'}</span>
           },
           {
             header: "Address",
@@ -83,20 +103,39 @@ const PatientManagement = () => {
             header: "Actions",
             key: "actions",
             align: "right",
-            render: () => (
+            render: (row) => (
               <div className="flex items-center justify-end gap-3">
-                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all">
-                  <Icons.activity className="w-4 h-4" />
-                </button>
-                <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
+                <Button 
+                  onClick={() => handleViewPatient(row)}
+                  className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all"
+                >
+                  <Icons.eye className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-all">
                   <Icons.share2 className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             )
           }
         ]}
       />
 
+      {/* Patient Details Modal */}
+      {selectedPatientId && (
+        <HBModal
+          title="Patient Details"
+          description="View comprehensive medical details, appointment history, patient reviews, and total spend."
+          open={isViewModalOpen}
+          onOpenChange={handleViewModalChange}
+          className="sm:max-w-[700px]"
+        >
+          <PatientDetailsModal
+            patientId={selectedPatientId}
+            open={isViewModalOpen}
+            onOpenChange={handleViewModalChange}
+          />
+        </HBModal>
+      )}
     </div>
   );
 };

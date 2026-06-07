@@ -49,9 +49,15 @@ const HBForm = <T extends FieldValues>({
 
   const { reset } = methods;
 
+  const defaultValuesRef = React.useRef(defaultValues);
+
   React.useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
+    const prev = defaultValuesRef.current;
+    if (JSON.stringify(prev) !== JSON.stringify(defaultValues)) {
+      if (defaultValues) {
+        reset(defaultValues);
+      }
+      defaultValuesRef.current = defaultValues;
     }
   }, [defaultValues, reset]);
 

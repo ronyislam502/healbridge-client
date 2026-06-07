@@ -1,6 +1,5 @@
 'use client';
 
-
 import { Icons } from '@/components/shared/Icons';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -8,14 +7,19 @@ import { SpecialtyModal } from '@/components/dashboard/SpecialtyModal';
 import { useGetAllSpecialtiesQuery } from '@/redux/features/specialties/specialtiesApi';
 import { HBTable } from '@/components/shared/HBTable';
 
+interface TSpecialty {
+  id: string;
+  title: string;
+  icon: string;
+  [key: string]: any;
+}
 
 const SpecialtyManagement = () => {
   const { data, isLoading } = useGetAllSpecialtiesQuery({});
-  const specialties = data?.data || [];
+  const specialties: TSpecialty[] = data?.data || [];
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Page Heading */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic">
@@ -57,9 +61,10 @@ const SpecialtyManagement = () => {
             render: (row) => (
               <div className="relative w-16 h-10 rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800">
                 <Image
-                  src={row.icon || "/specialties/cardiology.png"}
+                  src={row.icon}
                   alt={row.title}
                   fill
+                  sizes="64px"
                   className="object-cover"
                 />
               </div>
@@ -83,10 +88,10 @@ const SpecialtyManagement = () => {
               <div className="flex items-center justify-end gap-3">
                 <SpecialtyModal
                   mode="update"
-                  defaultValues={{ title: row.title, image: row.icon }}
+                  defaultValues={{ id: row.id, title: row.title, image: row.icon }}
                   trigger={
                     <button className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 hover:bg-teal-500/10 transition-all">
-                      <Icons.activity className="w-4 h-4" />
+                      <Icons.edit className="w-4 h-4" />
                     </button>
                   }
                 />

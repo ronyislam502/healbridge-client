@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from "@/components/ui/select";
 import { IInput } from "@/types/global";
 import { cn } from "@/lib/utils";
@@ -57,18 +57,21 @@ const HBSelect = ({
               {labelRight}
             </div>
           )}
-          
-          <Select 
-            value={field.value} 
-            onValueChange={field.onChange} 
+
+          <Select
+            value={field.value}
+            onValueChange={field.onChange}
             disabled={disabled}
           >
-            <SelectTrigger 
+            <SelectTrigger
               className={cn(
-                "w-full bg-success/5 border border-success/30 rounded-2xl py-6 px-6 transition-all duration-300 outline-none",
-                "text-slate-900 dark:text-white font-bold placeholder:text-gray-500",
+                "w-full bg-success/5 border rounded-2xl py-6 px-6 transition-all duration-300 outline-none",
+                "font-bold placeholder:text-gray-500",
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
                 "focus:ring-0 focus:ring-offset-0 focus:border-teal-500/60 focus:bg-teal-500/8",
+                field.value && field.value !== "all"
+                  ? "border-teal-500 text-teal-400 bg-teal-500/8 shadow-[0_0_0_3px_rgba(20,184,166,0.15)]"
+                  : "border-success/30 text-slate-900 dark:text-white",
                 error && "border-error focus:border-error",
                 className
               )}
@@ -77,10 +80,14 @@ const HBSelect = ({
             </SelectTrigger>
             <SelectContent className="bg-slate-900 border-slate-800 text-white">
               {options.map((option, index) => (
-                <SelectItem 
-                  key={option.key || option.value || index} 
+                <SelectItem
+                  key={option.key || option.value || index}
                   value={option.value || option.key || ""}
-                  className="focus:bg-teal-600 focus:text-white cursor-pointer"
+                  className={cn(
+                    "cursor-pointer focus:bg-teal-600 focus:text-white",
+                    // Highlight the currently selected item
+                    field.value === (option.value || option.key || "") && "text-teal-400 font-bold"
+                  )}
                 >
                   {option.label}
                 </SelectItem>

@@ -70,7 +70,7 @@ const HBInput = ({
               }}
               className={cn(
                 "w-full bg-success/5 border border-success/30 rounded-2xl py-4 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed",
-                "text-slate-900 dark:text-white font-bold placeholder:text-gray-500",
+                "text-teal-400 font-bold placeholder:text-slate-400",
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
                 "focus:border-teal-500/60 focus:bg-teal-500/8",
                 icon ? "pl-12" : "px-6",
