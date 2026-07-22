@@ -19,6 +19,7 @@ const DoctorListing = () => {
   // ==== States ====
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>(specialtiesFromQuery);
   const [search, setSearch] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
   const [limit] = useState(9);
   const [sort, setSort] = useState("");
   const [page, setPage] = useState(1);
@@ -35,6 +36,7 @@ const DoctorListing = () => {
   const { data: doctorsData, isLoading } = useGetAllDoctorsQuery({
     search: debouncedSearch,
     specialty: selectedSpecialty,
+    gender,
     sort,
     page,
     limit
@@ -59,6 +61,7 @@ const DoctorListing = () => {
   const handleReset = () => {
     setSearch("");
     setSelectedSpecialty("");
+    setGender("");
     setSort("");
     setPage(1);
     setResetKey(prev => prev + 1);
@@ -68,6 +71,7 @@ const DoctorListing = () => {
   const handleFilterSubmit = (data: any) => {
     setSearch(data.search || "");
     setSelectedSpecialty(data.specialty === 'all' ? '' : (data.specialty || ''));
+    setGender(data.gender || "");
     setSort(data.sort || "");
     setPage(1);
   };

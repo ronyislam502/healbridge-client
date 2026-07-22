@@ -9,7 +9,6 @@ import { PatientDetailsModal } from './_components/PatientDetailsModal';
 import { HBTable } from '@/components/shared/HBTable';
 import { HBModal } from '@/components/shared/HBModal';
 import { TPatient } from '@/types/user';
-import { cn } from '@/lib/utils';
 
 const PatientManagement = () => {
   const { data, isLoading } = useGetAllPatientsQuery({});
@@ -105,7 +104,7 @@ const PatientManagement = () => {
             align: "right",
             render: (row) => (
               <div className="flex items-center justify-end gap-3">
-                <Button 
+                <Button
                   onClick={() => handleViewPatient(row)}
                   className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-teal-500 transition-all"
                 >

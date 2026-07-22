@@ -14,9 +14,10 @@ const LoginPage = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/login-bg.png"
+          src="https://res.cloudinary.com/dkk9lvbtf/image/upload/v1780852102/login-bg_ftc2ck.jpg"
           alt="Medical Background"
           fill
+          sizes="100vw"
           className="object-cover opacity-40"
           priority
         />
@@ -34,11 +35,11 @@ const LoginPage = () => {
           <LoginForm />
         </Suspense>
 
-        <div className="mt-8 text-center text-sm text-slate-400">
+        <div className="mt-8 text-center text-sm text-slate-100">
           &copy; {new Date().getFullYear()} HealBridge Inc. All rights reserved.
           <div className="mt-2 flex justify-center gap-4">
-            <Link href="/privacy" className="hover:text-teal-400 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-teal-400 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="text-white hover:text-teal-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-white hover:text-teal-400 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

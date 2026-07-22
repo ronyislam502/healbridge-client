@@ -13,6 +13,7 @@ import { HBModal } from '@/components/shared/HBModal';
 import { HBForm } from '@/components/form/HBForm';
 import { HBInput } from '@/components/form/HBInput';
 import { HBSelect } from '@/components/form/HBSelect';
+import { Pagination } from '@/components/shared/Pagination';
 import { toast } from 'sonner';
 import { FieldValues } from 'react-hook-form';
 
@@ -22,10 +23,13 @@ const DoctorManagement = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
-  const { data, isLoading } = useGetAllDoctorsQuery({});
+  const [page, setPage] = React.useState(1);
+  const [limit] = React.useState(10);
+  const { data, isLoading } = useGetAllDoctorsQuery({ page, limit });
   const { data: specialtiesData } = useGetAllSpecialtiesQuery({});
   const [createDoctor, { isLoading: isCreating }] = useCreateDoctorMutation();
   const doctors = data?.data || [];
+  const meta = data?.meta;
 
   const [selectedDoctorId, setSelectedDoctorId] = React.useState<string | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = React.useState(false);
@@ -118,7 +122,7 @@ const DoctorManagement = () => {
               <HBInput name="experience" label="Experience (Years)" type="number" icon={<Icons.activity className="w-4 h-4" />} />
               <HBInput name="appointmentFee" label="Consultation Fee ($)" type="number" icon={<Icons.creditCard className="w-4 h-4" />} />
               <HBSelect name="gender" label="Gender" options={[{ key: 'MALE', label: 'Male' }, { key: 'FEMALE', label: 'Female' }]} />
-              <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center">
                 <div className="relative w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden transition-all hover:border-blue-500 group cursor-pointer">
                   {preview ? (
                     <img src={preview} alt="Preview" className="w-full h-full object-cover" />
@@ -177,7 +181,7 @@ const DoctorManagement = () => {
                 </div>
                 <div>
                   <span className="text-base font-black text-slate-900 dark:text-white italic block">{row.name}</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase">{row.email}</span>
+                  <span className="text-[10px] font-bold text-slate-700 uppercase">{row.email}</span>
                 </div>
               </div>
             )
@@ -188,7 +192,7 @@ const DoctorManagement = () => {
             render: (row) => (
               <div className="flex flex-wrap gap-1">
                 {row.doctorSpecialties?.map((ds: any) => (
-                  <span key={ds.specialtiesId} className="text-[9px] font-black text-teal-500 uppercase tracking-tighter italic bg-teal-500/5 px-2 py-0.5 rounded-md border border-teal-500/10">
+                  <span key={ds.specialtiesId} className="text-[12px] font-black text-teal-500 uppercase tracking-tighter italic bg-teal-500/5 px-2 py-0.5 rounded-md border border-teal-500/10">
                     {ds.specialties?.title}
                   </span>
                 ))}
@@ -236,6 +240,16 @@ const DoctorManagement = () => {
           }
         ]}
       />
+
+      {meta && meta.total > limit && (
+        <div className="mt-8 flex justify-center">
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(meta.total / limit)}
+            onPageChange={(pageNumber) => setPage(pageNumber)}
+          />
+        </div>
+      )}
 
       {/* Doctor Details Modal */}
       {selectedDoctorId && (

@@ -19,11 +19,26 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
   const [open, setOpen] = React.useState(false);
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(defaultValues?.image || null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const [createSpecialty, { isLoading: isCreating }] = useCreateSpecialtyMutation();
   const [updateSpecialty, { isLoading: isUpdating }] = useUpdateSpecialtyMutation();
 
   const isLoading = isCreating || isUpdating;
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      setFile(null);
+      setPreview(mode === 'update' ? defaultValues?.image || null : null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } else {
+      setFile(null);
+      setPreview(mode === 'update' ? defaultValues?.image || null : null);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -50,8 +65,7 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
 
       if (res?.success) {
         toast.success(`Specialty ${mode === 'add' ? 'created' : 'updated'} successfully!`);
-        setOpen(false);
-        setFile(null);
+        handleOpenChange(false);
       } else {
         toast.error(res?.message || "Something went wrong");
       }
@@ -63,7 +77,7 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
   return (
     <HBModal
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={handleOpenChange}
       title={mode === 'add' ? "Add New Specialty" : "Update Specialty"}
       description={mode === 'add'
         ? "Create a new medical category for the platform."
@@ -86,6 +100,7 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
 
             <label className="relative cursor-pointer group block">
               <input
+                ref={fileInputRef}
                 type="file"
                 className="hidden"
                 accept="image/*"
@@ -144,7 +159,7 @@ const SpecialtyModal = ({ mode, defaultValues, trigger }: SpecialtyModalProps) =
           <Button
             type="button"
             variant="outline"
-            onClick={() => setOpen(false)}
+            onClick={() => handleOpenChange(false)}
             className="h-16 px-10 rounded-2xl border-slate-200 dark:border-slate-800 font-black text-sm uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-1"
           >
             Discard

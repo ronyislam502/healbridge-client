@@ -76,7 +76,7 @@ const ScheduleManagement = () => {
             <input 
               type="text" 
               placeholder="Search..." 
-              className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl text-xs font-bold outline-none focus:border-teal-500 transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl text-xs font-bold outline-none focus:border-teal-500 transition-colors"
             />
           </div>
           <Button variant="outline" className="h-12 w-12 p-0 rounded-xl border-slate-100 dark:border-slate-800">

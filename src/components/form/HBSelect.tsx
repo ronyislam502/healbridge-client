@@ -50,7 +50,7 @@ const HBSelect = ({
           {(label || labelRight) && (
             <div className="flex items-center justify-between mb-1">
               {label && (
-                <FieldLabel className="text-[10px] font-black text-success uppercase tracking-widest italic">
+                <FieldLabel className="text-[12px] font-black text-success uppercase tracking-widest italic">
                   {label}
                 </FieldLabel>
               )}
@@ -65,18 +65,18 @@ const HBSelect = ({
           >
             <SelectTrigger
               className={cn(
-                "w-full bg-success/5 border rounded-2xl py-6 px-6 transition-all duration-300 outline-none",
-                "font-bold placeholder:text-gray-500",
+                "w-full bg-success/5 border rounded-2xl py-6 px-6 transition-all duration-300 outline-none text-white",
+                "font-bold placeholder:text-gray-400 text-white",
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
-                "focus:ring-0 focus:ring-offset-0 focus:border-teal-500/60 focus:bg-teal-500/8",
+                "focus:border-teal-500/60 focus:bg-teal-500/8",
                 field.value && field.value !== "all"
-                  ? "border-teal-500 text-teal-400 bg-teal-500/8 shadow-[0_0_0_3px_rgba(20,184,166,0.15)]"
-                  : "border-success/30 text-slate-900 dark:text-white",
+                  ? "border-teal-500 text-white bg-teal-500/8 shadow-[0_0_0_3px_rgba(20,184,166,0.15)]"
+                  : "border-success/30 text-white",
                 error && "border-error focus:border-error",
                 className
               )}
             >
-              <SelectValue placeholder={placeholder || `Select ${label}`} />
+              <SelectValue placeholder={placeholder || `Select ${label}`} className="text-white" />
             </SelectTrigger>
             <SelectContent className="bg-slate-900 border-slate-800 text-white">
               {options.map((option, index) => (
@@ -84,7 +84,7 @@ const HBSelect = ({
                   key={option.key || option.value || index}
                   value={option.value || option.key || ""}
                   className={cn(
-                    "cursor-pointer focus:bg-teal-600 focus:text-white",
+                    "cursor-pointer  focus:text-white",
                     // Highlight the currently selected item
                     field.value === (option.value || option.key || "") && "text-teal-400 font-bold"
                   )}

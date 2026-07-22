@@ -71,7 +71,16 @@ export const LoginForm = () => {
         // refreshToken is usually handled by http-only cookies from server
         toast.success(res?.message || "Login successful");
         loginMethods.reset();
-        router.push("/");
+
+        if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') {
+          router.push("/admin");
+        } else if (user?.role === 'DOCTOR') {
+          router.push("/doctor/profile");
+        } else if (user?.role === 'PATIENT') {
+          router.push("/patient");
+        } else {
+          router.push("/");
+        }
       }
     } catch (err: any) {
       toast.error(err?.data?.message || "Login failed. Please check your credentials.");
@@ -221,7 +230,7 @@ export const LoginForm = () => {
             <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Get Started
             </CardTitle>
-            <CardDescription className="text-slate-500 dark:text-slate-400">
+            <CardDescription className="text-slate-500 dark:text-slate-400 mb-2">
               Join HealBridge to manage your healthcare journey
             </CardDescription>
           </CardHeader>
@@ -249,7 +258,7 @@ export const LoginForm = () => {
                     { label: "Male", value: "MALE" },
                     { label: "Female", value: "FEMALE" }
                   ]}
-                  className="h-12 rounded-xl focus:border-blue-600"
+                  className="h-12 rounded-xl"
                 />
                 <HBInput
                   label="Password"

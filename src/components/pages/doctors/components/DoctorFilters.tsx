@@ -1,17 +1,85 @@
 'use client';
 
 import * as React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Icons } from '@/components/shared/Icons';
 import { HBSelect } from '@/components/form/HBSelect';
 import { HBInput } from '@/components/form/HBInput';
 import { HBForm } from '@/components/form/HBForm';
-import { sortOptions, availabilityFilters } from '../constants';
+import { sortOptions } from '../constants';
+import { cn } from '@/lib/utils';
 
 interface DoctorFiltersProps {
   specialtiesOptions: { key: string; label: string }[];
   onFilterSubmit: (data: any) => void;
   onReset: () => void;
 }
+
+const AvailabilitySection = () => {
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name="gender"
+      control={control}
+      defaultValue=""
+      render={({ field }) => (
+        <div className="pt-4">
+          <h4 className="text-[10px] font-black text-teal-400 uppercase tracking-widest italic mb-4">Availability & Gender</h4>
+          <div className="space-y-3">
+            {[
+              { key: '', label: 'All Doctors' },
+              { key: 'MALE', label: 'Male Doctors' },
+              { key: 'FEMALE', label: 'Female Doctors' },
+              { key: 'online', label: 'Online Now' },
+              { key: 'today', label: 'Available Today' },
+            ].map((filter) => {
+              const isGenderOption = filter.key === 'MALE' || filter.key === 'FEMALE' || filter.key === '';
+              const isSelected = filter.key === '' ? !field.value : field.value === filter.key;
+
+              return (
+                <button
+                  key={filter.key || filter.label}
+                  type="button"
+                  onClick={() => {
+                    if (isGenderOption) {
+                      field.onChange(field.value === filter.key ? '' : filter.key);
+                    }
+                  }}
+                  className="w-full flex items-center gap-3 cursor-pointer group text-left"
+                >
+                  <div
+                    className={cn(
+                      "w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-300",
+                      isSelected
+                        ? "bg-teal-500 border-teal-500 text-white shadow-md shadow-teal-500/20"
+                        : "border-slate-700 group-hover:border-teal-500"
+                    )}
+                  >
+                    <Icons.check
+                      className={cn(
+                        "w-3 h-3 text-white transition-opacity",
+                        isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      )}
+                    />
+                  </div>
+                  <span
+                    className={cn(
+                      "text-sm font-medium transition-colors",
+                      isSelected ? "text-white font-bold" : "text-slate-400 group-hover:text-white"
+                    )}
+                  >
+                    {filter.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    />
+  );
+};
 
 const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFiltersProps) => {
   return (
@@ -31,6 +99,7 @@ const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFi
               name="search"
               placeholder="Doctor name or keywords..."
               icon={<Icons.search className="w-4 h-4" />}
+              className="text-white"
             />
 
             <HBSelect
@@ -45,19 +114,7 @@ const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFi
               options={sortOptions}
             />
 
-            <div className="pt-4">
-              <h4 className="text-[10px] font-black text-teal-400 uppercase tracking-widest italic mb-4">Availability</h4>
-              <div className="space-y-3">
-                {availabilityFilters.map((filter) => (
-                  <label key={filter} className="flex items-center gap-3 cursor-pointer group">
-                    <div className="w-5 h-5 rounded-md border border-slate-700 flex items-center justify-center group-hover:border-teal-500 transition-all duration-300">
-                      <Icons.check className="w-3 h-3 text-teal-500 opacity-0 group-hover:opacity-100" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-400 group-hover:text-white transition-colors">{filter}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+            <AvailabilitySection />
 
             <div className="grid grid-cols-2 gap-4 mt-6">
               <button

@@ -43,16 +43,16 @@ const HBModal = ({
       )}>
 
         <div className="bg-slate-900 p-8 border-b border-slate-800">
-           <DialogHeader>
-             <DialogTitle className="text-2xl font-black text-white italic uppercase tracking-wider">
-                {title.split(' ').slice(0, -1).join(' ')} <span className="text-teal-400">{title.split(' ').pop()}</span>
-             </DialogTitle>
-             {description && (
-               <DialogDescription className="text-slate-400 font-medium mt-2">
-                  {description}
-               </DialogDescription>
-             )}
-           </DialogHeader>
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black text-white italic uppercase tracking-wider">
+              {title.split(' ').slice(0, -1).join(' ')} <span className="text-teal-400">{title.split(' ').pop()}</span>
+            </DialogTitle>
+            {description && (
+              <DialogDescription className="text-slate-400 font-medium mt-2">
+                {description}
+              </DialogDescription>
+            )}
+          </DialogHeader>
         </div>
 
         <div className="p-8 overflow-y-auto max-h-[70vh] custom-scrollbar">

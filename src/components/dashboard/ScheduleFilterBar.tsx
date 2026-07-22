@@ -28,7 +28,7 @@ const ScheduleFilterBar = ({ onFilterChange, filters }: ScheduleFilterBarProps) 
               name="startDate"
               value={filters.startDate}
               onChange={handleChange}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold outline-none transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold text-white outline-none transition-all shadow-sm"
             />
           </div>
         </div>
@@ -42,7 +42,7 @@ const ScheduleFilterBar = ({ onFilterChange, filters }: ScheduleFilterBarProps) 
               name="endDate"
               value={filters.endDate}
               onChange={handleChange}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold outline-none transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold text-white outline-none transition-all shadow-sm"
             />
           </div>
         </div>
@@ -57,7 +57,7 @@ const ScheduleFilterBar = ({ onFilterChange, filters }: ScheduleFilterBarProps) 
               name="startTime"
               value={filters.startTime}
               onChange={handleChange}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold outline-none transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold text-white outline-none transition-all shadow-sm"
             />
           </div>
         </div>
@@ -71,7 +71,7 @@ const ScheduleFilterBar = ({ onFilterChange, filters }: ScheduleFilterBarProps) 
               name="endTime"
               value={filters.endTime}
               onChange={handleChange}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold outline-none transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-transparent focus:border-teal-500/50 rounded-2xl text-sm font-bold text-white outline-none transition-all shadow-sm"
             />
           </div>
         </div>

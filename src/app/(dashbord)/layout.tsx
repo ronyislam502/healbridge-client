@@ -47,7 +47,7 @@ export default function DashboardLayout({
                 <input 
                   type="text" 
                   placeholder="Search appointments, doctors..." 
-                  className="bg-transparent border-none outline-none text-sm font-medium text-slate-700 dark:text-slate-300 w-full"
+                  className="bg-transparent border-none outline-none text-sm font-medium text-slate-900 dark:text-white w-full"
                 />
               </div>
             </div>

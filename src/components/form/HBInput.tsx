@@ -45,7 +45,7 @@ const HBInput = ({
           {(label || labelRight) && (
             <div className="flex items-center justify-between mb-1">
               {label && (
-                <FieldLabel className="text-[10px] font-black text-success uppercase tracking-widest italic group-hover:text-teal-400 transition-colors duration-300">
+                <FieldLabel className="text-[12px] font-black text-success uppercase tracking-widest italic group-hover:text-teal-400 transition-colors duration-300">
                   {label}
                 </FieldLabel>
               )}
@@ -69,8 +69,8 @@ const HBInput = ({
                 field.onChange(val);
               }}
               className={cn(
-                "w-full bg-success/5 border border-success/30 rounded-2xl py-4 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed",
-                "text-teal-400 font-bold placeholder:text-slate-400",
+                "w-full bg-success/5 border border-success/30 rounded-2xl py-6 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed",
+                "text-slate-900 dark:text-white font-bold placeholder:text-slate-400",
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
                 "focus:border-teal-500/60 focus:bg-teal-500/8",
                 icon ? "pl-12" : "px-6",

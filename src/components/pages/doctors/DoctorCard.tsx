@@ -19,7 +19,7 @@ interface DoctorCardProps {
 
 const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
   // Safe specialty extraction
-  const specialty = doctor.doctorSpecialties?.[0]?.title || "Specialist";
+  const specialty = doctor.doctorSpecialties?.map((spe: any) => spe.specialties?.title).join(', ') || '';
 
   // Calculate average rating dynamically
   const reviews = doctor.review || [];
@@ -38,8 +38,8 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
           <Image
             src={doctor.avatar}
             alt={doctor.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            height={1200}
+            width={1200}
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         </Link>
@@ -63,9 +63,9 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
 
         {/* Bottom Overlay Info */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform duration-500 pointer-events-none">
-          <div className="flex items-center gap-2 text-white/90 text-[9px] font-black uppercase tracking-widest italic">
+          <div className="flex items-center gap-2 text-white/90 text-[10px] font-black uppercase tracking-widest italic">
             <Icons.activity className="w-2.5 h-2.5 text-teal-400" />
-            Top Specialist
+            {doctor.designation}
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@ const DoctorCard = ({ doctor, className }: DoctorCardProps) => {
             {doctor.name}
           </h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-            {doctor.designation}
+            {specialty}
           </p>
         </Link>
 

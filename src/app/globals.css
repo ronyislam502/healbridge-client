@@ -141,6 +141,10 @@
   html {
     @apply font-sans;
   }
+
+  input, textarea, select {
+    @apply text-slate-900 dark:text-white;
+  }
 }
 
 /* Rich Text Editor & Blog Content Styling */

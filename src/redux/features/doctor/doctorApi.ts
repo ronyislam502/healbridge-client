@@ -13,7 +13,7 @@ const doctorApi = baseApi.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     getAllDoctors:builder.query({
-      query: ({ search, sort, page, limit, specialty, minAppointmentFee, maxAppointmentFee }) => {
+      query: ({ search, sort, page, limit, specialty, gender, minAppointmentFee, maxAppointmentFee }) => {
         const params = new URLSearchParams();
 
         if (search) {
@@ -21,6 +21,9 @@ const doctorApi = baseApi.injectEndpoints({
         }
         if (specialty) {
           params.append("specialties", specialty);
+        }
+        if (gender) {
+          params.append("gender", gender);
         }
         if (sort) {
           const sortMapping: Record<string, { sortBy: string; sortOrder: string }> = {

@@ -1,4 +1,4 @@
-import { Schedule, TSpecialty } from "./specialty"
+import { Schedule, DoctorSpecialty } from "./specialty"
 
 export type TAdmin= {
   id: string
@@ -28,7 +28,7 @@ export type TDoctor= {
   isDeleted: boolean
   createdAt: string
   updateAt: string
-  doctorSpecialties: TSpecialty[]
+  doctorSpecialties: DoctorSpecialty[]
   doctorSchedules: Schedule[]
   review?: any[]
 }

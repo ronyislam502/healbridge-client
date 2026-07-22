@@ -28,7 +28,7 @@ const BlogHero = () => {
               <input
                 type="text"
                 placeholder="Search articles, health tips..."
-                className="w-full bg-transparent px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                className="w-full bg-transparent px-4 py-2 text-slate-900 dark:text-white placeholder:text-gray-400 focus:outline-none"
               />
               <button className="hidden rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary/90 active:scale-95 sm:block">
                 Search

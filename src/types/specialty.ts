@@ -11,7 +11,7 @@ export type DoctorSpecialty= {
   doctorId: string
   createdAt: string
   updatedAt: string
-  specialties: TSpecialty[]
+  specialties: TSpecialty
 }
 
 

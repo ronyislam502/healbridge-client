@@ -52,7 +52,7 @@ const UserDropdown = ({ customTrigger, isMobile }: UserDropdownProps = {}) => {
     return (
       <>
         <Button asChild variant="outline" className="w-full justify-start">
-          <Link href={`/${loggedUser?.role?.toLowerCase()}`}>
+          <Link href={loggedUser?.role === 'SUPER_ADMIN' || loggedUser?.role === 'ADMIN' ? '/admin' : `/${loggedUser?.role?.toLowerCase()}`}>
             <Icons.layoutDashboard className="mr-2 h-4 w-4" />
             Dashboard
           </Link>
@@ -96,7 +96,7 @@ const UserDropdown = ({ customTrigger, isMobile }: UserDropdownProps = {}) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/${loggedUser?.role?.toLowerCase()}`} className="cursor-pointer">
+          <Link href={loggedUser?.role === 'SUPER_ADMIN' || loggedUser?.role === 'ADMIN' ? '/admin' : `/${loggedUser?.role?.toLowerCase()}`} className="cursor-pointer">
             <Icons.layoutDashboard className="mr-2 h-4 w-4" />
             <span>Dashboard</span>
           </Link>

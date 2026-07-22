@@ -36,7 +36,7 @@ const HBTextarea = ({
           {(label || labelRight) && (
             <div className="flex items-center justify-between mb-1">
               {label && (
-                <FieldLabel className="text-[10px] font-black text-success uppercase tracking-widest italic">
+                <FieldLabel className="text-[12px] font-black text-success uppercase tracking-widest italic">
                   {label}
                 </FieldLabel>
               )}
