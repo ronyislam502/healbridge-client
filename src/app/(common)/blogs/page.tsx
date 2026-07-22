@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 const Blogs = () => {
   const [activeCategory, setActiveCategory] = useState('All Articles');
   const { data: blogData, isLoading } = useGetAllBlogsQuery({});
-  
+
   const blogs = blogData?.data || [];
 
   const formattedPosts = useMemo(() => {
@@ -27,10 +27,10 @@ const Blogs = () => {
       author: {
         name: blog.author?.name || 'Admin',
         role: 'Author',
-        avatar: blog.author?.avatar || 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=200&h=200&auto=format&fit=crop',
+        avatar: blog.author?.avatar,
       },
       date: new Date(blog.createdAt).toLocaleDateString(),
-      image: blog.coverImage || 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop',
+      image: blog.coverImage,
       readTime: '5 min read',
     }));
   }, [blogs]);
@@ -40,7 +40,7 @@ const Blogs = () => {
     : formattedPosts.filter((post: any) => post.category === activeCategory);
 
   const FEATURED_POST = formattedPosts.length > 0 ? formattedPosts[0] : null;
-  const REMAINING_POSTS = activeCategory === 'All Articles' 
+  const REMAINING_POSTS = activeCategory === 'All Articles'
     ? filteredPosts.filter((post: any) => post.id !== FEATURED_POST?.id)
     : filteredPosts;
 
@@ -49,11 +49,11 @@ const Blogs = () => {
       <BlogHero />
 
       <section className="container mx-auto px-4 py-12">
-        
+
         {isLoading ? (
-           <div className="mb-20">
-              <HBCardSkeleton />
-           </div>
+          <div className="mb-20">
+            <HBCardSkeleton />
+          </div>
         ) : FEATURED_POST && activeCategory === 'All Articles' ? (
           <div className="mb-20">
             <h2 className="mb-8 text-2xl font-bold text-gray-900">Featured Article</h2>
@@ -117,9 +117,9 @@ const Blogs = () => {
 
         {/* Blog Grid */}
         {isLoading ? (
-           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[...Array(6)].map((_, i) => <HBCardSkeleton key={i} />)}
-           </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => <HBCardSkeleton key={i} />)}
+          </div>
         ) : REMAINING_POSTS.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {REMAINING_POSTS.map((post: any) => (

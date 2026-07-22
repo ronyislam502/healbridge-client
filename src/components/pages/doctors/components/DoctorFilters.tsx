@@ -106,12 +106,14 @@ const DoctorFilters = ({ specialtiesOptions, onFilterSubmit, onReset }: DoctorFi
               label="Specialty"
               name="specialty"
               options={specialtiesOptions}
+              className="text-white"
             />
 
             <HBSelect
               label="Sort By"
               name="sort"
               options={sortOptions}
+              className="text-white"
             />
 
             <AvailabilitySection />

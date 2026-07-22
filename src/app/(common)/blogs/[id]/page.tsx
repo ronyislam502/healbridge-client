@@ -100,10 +100,20 @@ const SingleBlogPage = () => {
       {/* Content Section */}
       <section className="container mx-auto px-4 max-w-4xl">
         <div className="bg-white rounded-[2.5rem] p-8 lg:p-16 shadow-xl shadow-gray-200/50 -mt-24 relative z-20 border border-gray-100">
-          <div 
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-2xl"
-            dangerouslySetInnerHTML={{ __html: blog.content || '' }}
-          />
+          {Array.isArray(blog.features) && blog.features.length > 0 ? (
+            <div className="space-y-6">
+              {blog.features.map((paragraph: string, idx: number) => (
+                <p key={idx} className="text-gray-700 dark:text-gray-200 text-lg leading-relaxed font-normal bg-gray-50/60 dark:bg-slate-800/40 p-6 rounded-2xl border border-gray-100 dark:border-slate-800">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <div 
+              className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-2xl"
+              dangerouslySetInnerHTML={{ __html: blog.content || '' }}
+            />
+          )}
         </div>
       </section>
     </main>

@@ -9,7 +9,7 @@ export const blogApi = baseApi.injectEndpoints({
         formData.append("data", JSON.stringify(bodyData));
         if (image) formData.append("image", image);
         return {
-          url: "/blogs",
+          url: "/blogs/create-blog",
           method: "POST",
           body: formData,
         };

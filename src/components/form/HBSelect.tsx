@@ -65,28 +65,28 @@ const HBSelect = ({
           >
             <SelectTrigger
               className={cn(
-                "w-full bg-success/5 border rounded-2xl py-6 px-6 transition-all duration-300 outline-none text-white",
-                "font-bold placeholder:text-gray-400 text-white",
+                "w-full bg-success/5 border rounded-2xl py-6 px-6 transition-all duration-300 outline-none",
+                "font-bold placeholder:text-gray-400 text-slate-900 dark:text-white",
                 "hover:border-teal-500/40 hover:bg-teal-500/5",
                 "focus:border-teal-500/60 focus:bg-teal-500/8",
                 field.value && field.value !== "all"
-                  ? "border-teal-500 text-white bg-teal-500/8 shadow-[0_0_0_3px_rgba(20,184,166,0.15)]"
-                  : "border-success/30 text-white",
+                  ? "border-teal-500 text-slate-900 dark:text-white bg-teal-500/8 shadow-[0_0_0_3px_rgba(20,184,166,0.15)]"
+                  : "border-success/30 text-slate-900 dark:text-white",
                 error && "border-error focus:border-error",
                 className
               )}
             >
-              <SelectValue placeholder={placeholder || `Select ${label}`} className="text-white" />
+              <SelectValue placeholder={placeholder || `Select ${label}`} />
             </SelectTrigger>
-            <SelectContent className="bg-slate-900 border-slate-800 text-white">
+            <SelectContent className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xl">
               {options.map((option, index) => (
                 <SelectItem
                   key={option.key || option.value || index}
                   value={option.value || option.key || ""}
                   className={cn(
-                    "cursor-pointer  focus:text-white",
+                    "cursor-pointer text-slate-900 dark:text-white focus:bg-teal-500/10 focus:text-teal-500",
                     // Highlight the currently selected item
-                    field.value === (option.value || option.key || "") && "text-teal-400 font-bold"
+                    field.value === (option.value || option.key || "") && "text-teal-500 font-bold bg-teal-500/10"
                   )}
                 >
                   {option.label}
