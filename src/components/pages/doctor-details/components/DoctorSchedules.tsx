@@ -61,8 +61,6 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
         scheduleId: selectedSlotId,
       }).unwrap();
 
-      console.log("res", res)
-
       if (res?.success && res?.data?.paymentUrl) {
         toast.success("Appointment created successfully! Redirecting to secure payment page...", {
           duration: 3000,
@@ -74,12 +72,11 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
         toast.error("Failed to generate payment session. Please try again.");
       }
     } catch (err: any) {
-      console.error("Booking error:", err);
       toast.error(
         err?.data?.message ||
         "Failed to book appointment. Please verify you are logged in as a patient."
       );
-    }
+    } 
   };
 
   return (
@@ -176,7 +173,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
       </Card>
 
       {/* Quick Info Card */}
-      <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-[2rem] p-6 text-white shadow-xl">
+      <div className="bg-linear-to-r from-teal-500 to-blue-600 rounded-[2rem] p-6 text-white shadow-xl">
         <div className="flex items-center gap-4 mb-4">
           <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
             <Icons.clock className="w-6 h-6" />
@@ -194,7 +191,7 @@ const DoctorSchedules = ({ doctorSchedules, appointmentFee, doctorId, doctorName
 
       {/* Confirmation Dialog */}
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-        <DialogContent className="max-w-[450px] bg-slate-950 border-slate-800 text-white rounded-[2rem] overflow-hidden p-6 shadow-2xl">
+        <DialogContent className="max-w-112.5 bg-slate-950 border-slate-800 text-white rounded-[2rem] overflow-hidden p-6 shadow-2xl">
           <DialogHeader className="space-y-3">
             <div className="mx-auto w-12 h-12 bg-teal-500/10 rounded-full flex items-center justify-center text-teal-400">
               <Icons.userCheck className="w-6 h-6" />

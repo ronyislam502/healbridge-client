@@ -11,9 +11,9 @@ import { RootState } from "../store";
 import { toast } from "sonner";
 
 
-// export const url = process.env.NEXT_PUBLIC_BACKEND_URL;
-export const url = "http://localhost:5000";
+export const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 console.log("url", url)
+
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${url}/api/v1`,
